@@ -1,92 +1,227 @@
-# idb
+##Canvas / Ed Discussion group number:
 
+Group 14
 
+##Names of the team members:
 
-## Getting started
+-   Martin Murtiono
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+-   Akif Abidi
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+-   Anthony Do
 
-## Add your files
+-   Kunal Mody
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+-   Samarth Bhat
 
-```
-cd existing_repo
-git remote add origin https://gitlab.com/cs373-group-14/idb.git
-git branch -M main
-git push -uf origin main
-```
+##Name of the project:
 
-## Integrate with your tools
+Rural Farm Aid
 
-- [ ] [Set up project integrations](https://gitlab.com/cs373-group-14/idb/-/settings/integrations)
+##The proposed project:
 
-## Collaborate with your team
+Our website helps rural farmers in the United States identify where they can sell their crops in farmers' markets based on their location and the crops that they grow. It also shows them what non-profit organizations can provide assistance based on their location and crops.
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+##URLs of at least three data sources that you will programmatically scrape using a RESTful API
 
-## Test and Deploy
+<https://www.usdalocalfoodportal.com/fe/fregisterpublicapi/>
 
-Use the built-in continuous integration in GitLab.
+<https://charityapi.orghunter.com>
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+<https://quickstats.nass.usda.gov/>
 
-***
+<https://developers.google.com/maps/>
 
-# Editing this README
+##At least three models:
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+-   Location (state/region in US)
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+-   Type(s) of crops grown
 
-## Name
-Choose a self-explaining name for your project.
+-   Non-profits
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+-   Farmers' markets
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+##An estimate of the number of instances of each model:
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+-   Location: 50
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+-   Type(s) of crops grown: >= 50
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+-   Non-profits: >= 100
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+-   Farmers' markets: >= 1000
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+##Each model must have many attributes:
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+Location (state/ region in US)
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+1.  Number/variety of crops sold
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
+2.  Crops that are grown in the region
 
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
+3.  Climate
 
-## License
-For open source projects, say how it is licensed.
+4.  Name
 
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+5.  Non-profits in the region
+
+6.  Number of markets in the region
+
+7.  Volume of agricultural production
+
+Type(s) of crops grown
+
+1.  Name
+
+2.  Cost of growing crop (seed price)
+
+3.  Average selling price 
+
+4.  Image of crop
+
+5.  Region crop is grown
+
+6.  Time to grow
+
+7.  Shelflife
+
+8.  Drought/weather tolerance
+
+9.  High yield potential
+
+Non-profits
+
+1.  Location
+
+2.  Specializations (grants, infrastructure, materials)
+
+3.  Name of organization
+
+4.  Logo
+
+5.  Contact info
+
+6.  Mission statement
+
+7.  Fees of service (free, low-cost, or some other value)
+
+Farmers' markets
+
+1.  Location
+
+2.  Hours of operation
+
+3.  Name
+
+4.  Produce offered
+
+5.  Non-profits connected
+
+6.  Contact info
+
+7.  Description
+
+##Describe five of those attributes for each model that you can filter or sort:
+
+Location (state/ region in US)
+
+1.  Number/variety of crops sold
+
+2.  Name
+
+3.  Number of markets in the region
+
+4.  Number of non-profits in the region
+
+5.  Volume of agricultural production
+
+Type(s) of crops grown
+
+1.  Cost of growing crop (seed price)
+
+2.  Average selling price 
+
+3.  Region crop is grown
+
+4.  Name of crop
+
+5.  Time to grow
+
+6.  Shelflife
+
+Non-profits
+
+1.  Location
+
+2.  Specializations (grants, infrastructure, materials)
+
+3.  Name
+
+4.  Crop focus
+
+5.  If service has fees or not
+
+Farmers' markets
+
+1.  Location
+
+2.  Hours of operation
+
+3.  Name
+
+4.  Number/variety of produce
+
+5.  Number of vendors
+
+##Instances of each model must connect to instances of at least two other models:
+
+-   Non-profits → location/types of crops
+
+-   Farmers' markets → location/types of crops/non-profits
+
+-   Crops → location
+
+Number of connections:
+
+Location: 3
+
+Type(s) of crops grown: 3
+
+Non-profits: 3
+
+Farmers' Markets: 3
+
+##Describe two types of media for instances of each model:
+
+Crops 
+
+1.  Image of the crop
+
+2.  Important characteristics/values of the crop 
+
+Location
+
+1.  Map of the particular area
+
+2.  Most common crops in a location (could be a graph) 
+
+Non-profits
+
+1.  Links to more information about the organization
+
+2.  Image (logo) 
+
+Farmers' Markets
+
+1.  Add the hours of operation for each instance
+
+2.  Map -- could also integrate Google Maps API to enter an origin and find the shortest route to said market
+
+##Describe three questions that your site will answer:
+
+1.  Where can rural farmers go to sell their products in nearby farmers' markets?
+
+2.  What non-profit organizations can help rural farmers sell their products based on location and crops grown?
+
+3.  How can the farmers get started or receive assistance in selling their crops?
