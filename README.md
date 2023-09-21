@@ -1,8 +1,8 @@
-##Canvas / Ed Discussion group number:
+**Canvas / Ed Discussion group number:**
 
 Group 14
 
-##Names of the team members:
+**Names of the team members:**
 
 -   Martin Murtiono
 
@@ -14,15 +14,15 @@ Group 14
 
 -   Samarth Bhat
 
-##Name of the project:
+**Name of the project:**
 
 Rural Farm Aid
 
-##The proposed project:
+**The proposed project:**
 
 Our website helps rural farmers in the United States identify where they can sell their crops in farmers' markets based on their location and the crops that they grow. It also shows them what non-profit organizations can provide assistance based on their location and crops.
 
-##URLs of at least three data sources that you will programmatically scrape using a RESTful API
+**URLs of at least three data sources that you will programmatically scrape using a RESTful API**
 
 <https://www.usdalocalfoodportal.com/fe/fregisterpublicapi/>
 
@@ -32,7 +32,7 @@ Our website helps rural farmers in the United States identify where they can sel
 
 <https://developers.google.com/maps/>
 
-##At least three models:
+**At least three models:**
 
 -   Location (state/region in US)
 
@@ -42,7 +42,7 @@ Our website helps rural farmers in the United States identify where they can sel
 
 -   Farmers' markets
 
-##An estimate of the number of instances of each model:
+**An estimate of the number of instances of each model:**
 
 -   Location: 50
 
@@ -52,7 +52,7 @@ Our website helps rural farmers in the United States identify where they can sel
 
 -   Farmers' markets: >= 1000
 
-##Each model must have many attributes:
+**Each model must have many attributes:**
 
 Location (state/ region in US)
 
@@ -122,7 +122,7 @@ Farmers' markets
 
 7.  Description
 
-##Describe five of those attributes for each model that you can filter or sort:
+**Describe five of those attributes for each model that you can filter or sort:**
 
 Location (state/ region in US)
 
@@ -174,7 +174,7 @@ Farmers' markets
 
 5.  Number of vendors
 
-##Instances of each model must connect to instances of at least two other models:
+**Instances of each model must connect to instances of at least two other models:**
 
 -   Non-profits → location/types of crops
 
@@ -192,7 +192,7 @@ Non-profits: 3
 
 Farmers' Markets: 3
 
-##Describe two types of media for instances of each model:
+**Describe two types of media for instances of each model:**
 
 Crops 
 
@@ -218,7 +218,7 @@ Farmers' Markets
 
 2.  Map -- could also integrate Google Maps API to enter an origin and find the shortest route to said market
 
-##Describe three questions that your site will answer:
+**Describe three questions that your site will answer:**
 
 1.  Where can rural farmers go to sell their products in nearby farmers' markets?
 
