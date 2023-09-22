@@ -16,11 +16,11 @@ Group 14
 
 **Name of the project:**
 
-Rural Farm Aid
+Central Valley Farm Aid
 
 **The proposed project:**
 
-Our website helps rural farmers in the United States identify where they can sell their crops in farmers' markets based on their location and the crops that they grow. It also shows them what non-profit organizations can provide assistance based on their location and crops.
+Rural and small family farmers inherently face many threats to the viability of their establishments, ranging anywhere from infrastructure to financial constraints. Our website helps rural farmers in the counties of the Central Valley of California identify where they can sell their crops in farmers' markets based on their location. It also shows them what non-profit organizations can provide assistance based on their location.
 
 **URLs of at least three data sources that you will programmatically scrape using a RESTful API**
 
@@ -34,9 +34,7 @@ Our website helps rural farmers in the United States identify where they can sel
 
 **At least three models:**
 
--   Location (state/region in US)
-
--   Type(s) of crops grown
+-   Location (counties)
 
 -   Non-profits
 
@@ -44,17 +42,15 @@ Our website helps rural farmers in the United States identify where they can sel
 
 **An estimate of the number of instances of each model:**
 
--   Location: 50
+-   Location: ~50
 
--   Type(s) of crops grown: >= 50
+-   Non-profits: ~100
 
--   Non-profits: >= 100
-
--   Farmers' markets: >= 1000
+-   Farmers' markets: ~570
 
 **Each model must have many attributes:**
 
-Location (state/ region in US)
+Location (counties and cities)
 
 1.  Number/variety of crops sold
 
@@ -69,26 +65,6 @@ Location (state/ region in US)
 6.  Number of markets in the region
 
 7.  Volume of agricultural production
-
-Type(s) of crops grown
-
-1.  Name
-
-2.  Cost of growing crop (seed price)
-
-3.  Average selling price 
-
-4.  Image of crop
-
-5.  Region crop is grown
-
-6.  Time to grow
-
-7.  Shelflife
-
-8.  Drought/weather tolerance
-
-9.  High yield potential
 
 Non-profits
 
@@ -124,7 +100,7 @@ Farmers' markets
 
 **Describe five of those attributes for each model that you can filter or sort:**
 
-Location (state/ region in US)
+Location (counties and cities)
 
 1.  Number/variety of crops sold
 
@@ -135,20 +111,6 @@ Location (state/ region in US)
 4.  Number of non-profits in the region
 
 5.  Volume of agricultural production
-
-Type(s) of crops grown
-
-1.  Cost of growing crop (seed price)
-
-2.  Average selling price 
-
-3.  Region crop is grown
-
-4.  Name of crop
-
-5.  Time to grow
-
-6.  Shelflife
 
 Non-profits
 
@@ -178,27 +140,17 @@ Farmers' markets
 
 -   Non-profits → location/types of crops
 
--   Farmers' markets → location/types of crops/non-profits
-
--   Crops → location
+-   Farmers' markets → location/non-profits
 
 Number of connections:
 
 Location: 3
-
-Type(s) of crops grown: 3
 
 Non-profits: 3
 
 Farmers' Markets: 3
 
 **Describe two types of media for instances of each model:**
-
-Crops 
-
-1.  Image of the crop
-
-2.  Important characteristics/values of the crop 
 
 Location
 
@@ -222,6 +174,6 @@ Farmers' Markets
 
 1.  Where can rural farmers go to sell their products in nearby farmers' markets?
 
-2.  What non-profit organizations can help rural farmers sell their products based on location and crops grown?
+2.  What non-profit organizations can help rural farmers sell their products based on location?
 
 3.  How can the farmers get started or receive assistance in selling their crops?
