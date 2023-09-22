@@ -172,8 +172,8 @@ Farmers' Markets
 
 **Describe three questions that your site will answer:**
 
-1.  Where can rural farmers go to sell their products in nearby farmers' markets?
+1.  Where can rural and small family farmers go to sell their products in nearby farmers' markets?
 
-2.  What non-profit organizations can help rural farmers sell their products based on location?
+2.  What non-profit organizations can help rural and small family farmers sell their products based on location?
 
 3.  How can the farmers get started or receive assistance in selling their crops?
