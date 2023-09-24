@@ -1,0 +1,24 @@
+.team-members {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-inline: 1rem;
+}
+
+.member-card {
+    box-shadow: 0 .25rem .5rem 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+    padding: 1rem;
+    margin: 1rem;
+    text-align: center;
+    background-color: #f1f1f1;
+    width: 26rem;
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    flex-wrap: nowrap;
+}
+
+.member-card-image {
+    width: 24rem;
+    height: 32rem;
+}
