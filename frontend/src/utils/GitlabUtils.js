@@ -46,7 +46,7 @@ export const fetchGitLabInfo = async() => {
                 id: item.id,
                 name: item.name,
                 bio: "Empty",
-                gitlab: item.username, 
+                username: item.username, 
                 commits: 0,
                 issues: 0,
             }
@@ -67,7 +67,7 @@ export const fetchGitLabInfo = async() => {
         });
         // Set number of commits made
         contributors.forEach(contributor => {
-            if (member.name === contributor.name) {
+            if (member.name === contributor.name || member.username === contributor.name) {
                 member.commits = contributor.commits;
             }
         });

@@ -43,7 +43,7 @@ const About = () => {
                 <MemberCard
                 key={member.id}
                 name={member.name}
-                gitlab={member.gitlab}
+                username={member.username}
                 bio={member.bio}
                 commits={member.commits}
                 issues={member.issues}

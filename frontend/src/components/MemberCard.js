@@ -4,7 +4,7 @@ import React from "react";
 function MemberCard(props) {
   const {
     name,
-    gitlab,
+    username,
     bio,
     commits,
     issues,
@@ -13,7 +13,7 @@ function MemberCard(props) {
   return (
     <div className="member-card">
 
-      <img className="member-card-image" src={`${process.env.PUBLIC_URL}/member-pics/${gitlab}.jpg`} />
+      <img className="member-card-image" src={`${process.env.PUBLIC_URL}/member-pics/${username}.jpg`} />
 
       <div className="member-card-header">
         <h3 className="member-card-name">
@@ -23,8 +23,8 @@ function MemberCard(props) {
 
       <div className="member-card-body">
         <p className="member-card-gitlab">
-          <a className='btn btn-link' href={"https://gitlab.com/" + gitlab}>
-            {gitlab}
+          <a className='btn btn-link' href={"https://gitlab.com/" + username}>
+            {username}
           </a>
         </p>
         <p className="member-card-bio">
@@ -43,7 +43,7 @@ function MemberCard(props) {
 
 MemberCard.propTypes = {
   name: PropTypes.string.isRequired,
-  gitlab: PropTypes.string.isRequired,
+  username: PropTypes.string.isRequired,
   bio: PropTypes.string.isRequired,
   commits: PropTypes.number.isRequired,
   issues: PropTypes.number.isRequired,
