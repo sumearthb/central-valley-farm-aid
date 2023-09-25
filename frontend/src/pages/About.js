@@ -2,6 +2,7 @@ import "../styles/About.css";
 import React, { useState, useEffect } from "react";
 import MemberCard from "../components/MemberCard";
 import { fetchGitLabInfo, getStats } from "../utils/GitlabUtils";
+import ToolCard, { toolsUsed } from "../components/ToolCard";
 
 const About = () => {
     const [memberInfo, setMemberInfo] = useState([]);
@@ -27,7 +28,7 @@ const About = () => {
     <div className="about">
         <h1 className="title">About</h1>
         <div className="about-section">
-            <h1>What is Central Valley Farm Aid?</h1>
+            <h2>What is Central Valley Farm Aid?</h2>
             <p>
                 Central Valley Farm Aid helps rural farmers in the Central Valley region of California identify where they
                 can sell their crops in farmers' markets and shows them any non-profit organizations that could potentially
@@ -37,7 +38,7 @@ const About = () => {
             </p>
         </div>
         <div className="about-section">
-            <h1>Team Members</h1>
+            <h2>Team Members</h2>
             <div className="team-members">
                 {memberInfo.map((member) => (
                 <MemberCard
@@ -52,10 +53,22 @@ const About = () => {
             </div>
         </div>
         <div className="about-section">
-            <h1>Total Stats</h1>
-            <div className="overall-stats">
+            <h2>Total Stats</h2>
+            <div className="total-stats">
                 <p>Total Issues: {totalStats.totalIssues}</p>
                 <p>Total Commits: {totalStats.totalCommits}</p>
+            </div>
+        </div>
+        <div className="about-section">
+            <h2>Tools Used</h2>
+            <div className="tools-used">
+                {toolsUsed.map((tool) => (
+                <ToolCard
+                key={tool.name}
+                name={tool.name}
+                img={tool.img}
+                />
+                ))}
             </div>
         </div>
     </div>
