@@ -1,10 +1,30 @@
-import "../styles/Home.css";
 import React from "react";
+import NPCard from "../components/NPCard/NPCard";
 
 const NonProfits = () => {
-    return (
+  // Hard coded data
+  const NPData = [
+    { title: "Nonprofit 1", image: "/placeholder.png", description: "Description 1" },
+    { title: "Nonprofit 2", image: "/placeholder.png", description: "Description 2" },
+    { title: "Nonprofit 3", image: "/placeholder.png", description: "Description 3" },
+  ];
+
+  return (
     <div className="nonprofits">
-      <h1 className="title">Non-Profit Organizations</h1>
+      <h1 className="title" style={{ marginTop: "30px" }}>Non-Profit Organizations</h1> {/*Title of page*/}
+      <div className="centered-container"> {/* Centered container for cards*/}
+        <div className="np-cards-container"> {/* Applies the container class in CSS file */}
+          {/* Render three NPCard components */}
+          {NPData.map((nonprofit, index) => (
+            <NPCard
+              key={index}
+              title={nonprofit.title}
+              image={nonprofit.image}
+              description={nonprofit.description}
+            />
+          ))}
+        </div>
+      </div>
     </div>
   );
 };

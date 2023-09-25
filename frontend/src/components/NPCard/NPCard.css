@@ -1,0 +1,41 @@
+.np-cards-container {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)); /* Creates a grid with 3 columns of equal width */
+    gap: 20px; /* Adjust the gap between cards */
+  }
+  
+  /* Class that applies to each card */
+  .np-card {
+    border: 1px solid #ccc;
+    padding: 8xpx;
+    margin: 8px;
+    text-align: center;
+    box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
+    background-color: #fff;
+    transition: transform 0.2s ease-in-out;
+    max-width: 200px;
+  }
+  
+  /* Affects image */
+  .np-card img {
+    max-width: 100%;
+    height: auto;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin-bottom: 12px;
+  }
+  
+  /* Affects font size of title of card*/ 
+  .np-card h2 {
+    font-size: 1.5rem;
+    margin: 0;
+    color: #333;
+  }
+
+  /* Class that defines container for centering child elements */
+  .centered-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 80vh; /* Sets specific height for centering vertically */
+  }
