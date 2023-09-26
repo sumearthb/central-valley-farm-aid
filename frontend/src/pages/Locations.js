@@ -1,5 +1,6 @@
 import React from "react";
 import LocationCard from "../components/LocationCard/LocationCard";
+import { Link } from "react-router-dom";
 
 const Locations = () => {
   // Hard coded data
@@ -11,17 +12,27 @@ const Locations = () => {
 
   return (
     <div className="locations">
-      <h1 className="title" style={{ marginTop: "30px" }}>Locations</h1> {/*Title of page*/}
-      <div className="centered-container"> {/* Centered container for cards*/}
-        <div className="location-cards-container"> {/* Applies the container class in CSS file */}
+      <h1 className="title" style={{ marginTop: "30px" }}>
+        Locations
+      </h1>
+      {/* Title of page */}
+      <div className="centered-container">
+        {/* Centered container for cards */}
+        <div className="location-cards-container">
+          {/* Applies the container class in CSS file */}
           {/* Render three LocationCard components */}
           {locationsData.map((location, index) => (
-            <LocationCard
+            <Link
               key={index}
-              title={location.title}
-              image={location.image}
-              description={location.description}
-            />
+              to={`/location/${location.title}`} // Specify the URL for the location
+              style={{ textDecoration: "none" }}
+            >
+              <LocationCard
+                title={location.title}
+                image={location.image}
+                description={location.description}
+              />
+            </Link>
           ))}
         </div>
       </div>
