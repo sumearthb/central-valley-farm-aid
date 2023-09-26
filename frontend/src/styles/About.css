@@ -1,3 +1,8 @@
+.about-section {
+    padding-inline: 16rem;
+    padding-block: 2rem;
+}
+
 .team-members {
     display: flex;
     flex-wrap: wrap;
@@ -7,18 +12,50 @@
 
 .member-card {
     box-shadow: 0 .25rem .5rem 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
-    padding: 1rem;
     margin: 1rem;
-    text-align: center;
+    text-align: left;
     background-color: #f1f1f1;
-    width: 26rem;
-    display: flex;
-    justify-content: flex-start;
-    flex-direction: column;
-    flex-wrap: nowrap;
+    width: 21rem;
 }
 
 .member-card-image {
-    width: 24rem;
-    height: 32rem;
+    width: 21rem;
+    height: 28rem;
+}
+
+.member-card-body {
+    background-color: #F0FDEE;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+#member-card-stats {
+    display: flex;
+    justify-content: center;
+}
+
+.total-stats {
+    padding-block: 1rem;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-evenly;
+    padding-inline: 1rem;
+}
+
+.tools-used {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    padding-inline: 1rem;
+}
+.tool-card {
+    box-shadow: 0 .25rem .5rem 0 rgba(0, 0, 0, 0.2); /* this adds the "card" effect */
+    margin: 1rem;
+    text-align: center;
+    background-color: #f1f1f1;
+}
+.tool-card-image {
+    width: 200px;
+    height: 200px;
 }
