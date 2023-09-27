@@ -5,9 +5,9 @@ import { Link } from "react-router-dom";
 const Locations = () => {
   // Hard coded data
   const locationsData = [
-    { title: "Location 1", image: "/placeholder.png", description: "Description 1" },
-    { title: "Location 2", image: "/placeholder.png", description: "Description 2" },
-    { title: "Location 3", image: "/placeholder.png", description: "Description 3" },
+    { title: "Fresno", image: "/placeholder.png", description: "Description 1" },
+    { title: "Kern", image: "/placeholder.png", description: "Description 2" },
+    { title: "Kings", image: "/placeholder.png", description: "Description 3" },
   ];
 
   return (

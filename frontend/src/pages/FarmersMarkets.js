@@ -1,13 +1,16 @@
 import React from "react";
 import FMCard from "../components/FMCard/FMCard";
 import { Link } from "react-router-dom";
+import fairfax from "../card-pics/markets-pics/fairfaxcommunity.png";
+import springs from "../card-pics/markets-pics/springscommunity.png";
+import novato from "../card-pics/markets-pics/downtownnovato.png";
 
 const FarmersMarkets = () => {
   // Hard-coded data
   const FMData = [
-    { title: "Farmers Market 1", image: "/placeholder.png", description: "Description 1" },
-    { title: "Farmers Market 2", image: "/placeholder.png", description: "Description 2" },
-    { title: "Farmers Market 3", image: "/placeholder.png", description: "Description 3" },
+    { title: "Fairfax Community Farmers' Market", image: fairfax, description: "" },
+    { title: "The Springs Community Farmers' Market", image: springs, description: "Description 2" },
+    { title: "Downtown Novato Community Farmers' Market", image: novato, description: "Description 3" }
   ];
 
   return (
@@ -31,6 +34,7 @@ const FarmersMarkets = () => {
                 title={farmersmarket.title}
                 image={farmersmarket.image}
                 description={farmersmarket.description}
+                nonprofits={farmersmarket.nonprofits}
               />
             </Link>
           ))}
