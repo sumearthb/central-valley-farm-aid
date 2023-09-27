@@ -6,6 +6,7 @@ import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
 import Row from "react-bootstrap/Row";
 import Col from "react-bootstrap/Col";
+import "bootstrap/dist/css/bootstrap.css";
 import "../styles/Home.css";
 
 
@@ -13,8 +14,8 @@ function Home() {
     return (
     <>
       {/* Adding home page photo */}
-      <div className="image">
-        <h1 className="image-text">Welcome to Central Valley Farm Aid!</h1>
+      <div className="background">
+        <h1 className="background-text">Welcome to Central Valley Farm Aid!</h1>
       </div>
 
       {/* Cards for the three models */}
