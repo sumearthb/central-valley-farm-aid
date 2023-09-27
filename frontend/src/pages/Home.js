@@ -1,6 +1,6 @@
 import "../styles/Home.css";
 import React from "react";
-//import { Link } from "react-router-dom";
+import { Link } from "react-router-dom";
 import Card from "react-bootstrap/Card";
 import Button from "react-bootstrap/Button";
 import Container from "react-bootstrap/Container";
@@ -22,7 +22,7 @@ function Home() {
       <Container className="container text-center">
         <Row className="my-4">
           <Col>
-            <Card>
+            <Card style={{ backgroundColor: '#69A765'}}>
               <Card.Body>
                 <Card.Title className="fs-4">
                   Locations
@@ -30,14 +30,16 @@ function Home() {
                 <Card.Text className="fs-5">
                   Explore information about the counties of the Central Valley.
                 </Card.Text>
-                <Button variant="primary">
-                  Search locations
-                </Button>
+                <Link style={{ color: "inherit", textDecoration: "inherit" }} to="/locations">
+                  <Button variant="primary" style={{ backgroundColor: '#9E826B'}} className="border-white">
+                    Search locations
+                  </Button>
+                </Link>
               </Card.Body>
             </Card>
           </Col>
           <Col>
-            <Card>
+            <Card style={{ backgroundColor: '#69A765'}}>
               <Card.Body>
                 <Card.Title className="fs-4">
                   Non-profit Organizations
@@ -45,14 +47,16 @@ function Home() {
                 <Card.Text className="fs-5">
                   See what nonprofits are doing for local farmers.
                 </Card.Text>
-                <Button variant="primary">
-                  Search nonprofits
-                </Button>
+                <Link style={{ color: "inherit", textDecoration: "inherit" }} to="/locations">
+                  <Button variant="primary" style={{ backgroundColor: '#9E826B'}} className="border-white">
+                    Search nonprofits
+                  </Button>
+                </Link>
               </Card.Body>
             </Card>
           </Col>
           <Col>
-            <Card>
+            <Card style={{ backgroundColor: '#69A765'}}>
               <Card.Body>
                 <Card.Title className="fs-4">
                   Farmers' Markets
@@ -60,9 +64,11 @@ function Home() {
                 <Card.Text className="fs-5">
                   Find out more about Farmers' Markets near you!
                 </Card.Text>
-                <Button variant="primary">
-                  Search farmers' markets
-                </Button>
+                <Link style={{ color: "inherit", textDecoration: "inherit" }} to="/locations">
+                  <Button variant="primary" style={{ backgroundColor: '#9E826B'}} className="border-white">
+                    Search farmers' markets
+                  </Button>
+                </Link>
               </Card.Body>
             </Card>
           </Col>
