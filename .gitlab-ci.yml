@@ -2,6 +2,7 @@ stages:
   - build
 
 build:
+  image: node
   stage: build
   script:
     - npm install
