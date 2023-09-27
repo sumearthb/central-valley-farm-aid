@@ -13,7 +13,7 @@ const About = () => {
         };
         fetchData();
         console.log(memberInfo);
-    }, []);
+    });
 
     const [totalStats, setTotalStats] = useState([]);
     useEffect(() => {
