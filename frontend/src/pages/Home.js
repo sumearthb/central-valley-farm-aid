@@ -19,6 +19,7 @@ function Home() {
       </div>
 
       {/* Cards for the three models */}
+      <div className="fit">
       <Container className="container text-center">
         <Row className="my-4">
           <Col>
@@ -74,6 +75,7 @@ function Home() {
           </Col>
         </Row>
       </Container>
+      </div>
     </>
   );
 }

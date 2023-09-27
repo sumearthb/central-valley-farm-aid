@@ -1,4 +1,5 @@
 .background {
+    background-color:#F6EDD9;
     background-image: url("../../public/bg-pics/homepage.jpg");
     background-position: center;
     background-size: cover;
@@ -13,3 +14,8 @@
     text-align: center;
     padding-top: 35vh;
 }
+
+/* .fit {
+    background-color:#F6EDD9;
+    height: 100%;
+} */
