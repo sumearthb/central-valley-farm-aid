@@ -6,7 +6,7 @@ const accessToken = "glpat-2WTHZjG82TSvAuB83fmK"
 
 export const fetchGitLabIssues = async() => {
     return axios.get(
-        `https://gitlab.com/api/v4/projects/${gitlabProjectId}/issues`
+        `https://gitlab.com/api/v4/projects/${gitlabProjectId}/issues?scope=all&per_page=1000`
       ).then(res => res.data);
 }
 
@@ -14,21 +14,6 @@ export const fetchGitLabContributors = async() => {
     return axios.get(
         `https://gitlab.com/api/v4/projects/${gitlabProjectId}/repository/contributors`,
       ).then(res => res.data);
-}
-
-export const getStats = async() => {
-    let issues = await fetchGitLabIssues();
-
-    let totalCommits = 0;
-    let contributors = await fetchGitLabContributors();
-    // Sum up the commits
-    contributors.forEach(contributor => {
-        totalCommits += contributor.commits;
-    });
-    return {
-        totalIssues: issues.length,
-        totalCommits
-    }
 }
 
 export const fetchGitLabInfo = async() => {
@@ -53,9 +38,16 @@ export const fetchGitLabInfo = async() => {
             members.push(member);
         });
       });
+      console.log(`----------- Members: ${members}`)
 
       let issues = await fetchGitLabIssues();
       let contributors = await fetchGitLabContributors();
+
+      // Sum up the commits
+      let totalCommits = 0;
+      contributors.forEach(contributor => {
+        totalCommits += contributor.commits;
+      });
 
       // Iterate through every member
       members.forEach(async member => {
@@ -72,6 +64,7 @@ export const fetchGitLabInfo = async() => {
             }
         });
       });
+
       for (let i = 0; i < members.length; i++) {
         await axios.get(
             `https://gitlab.com/api/v4/users/${members[i].id}`, {
@@ -83,5 +76,12 @@ export const fetchGitLabInfo = async() => {
             members[i].bio = res.data.bio;
           });
       }
-      return members;
+
+      return {
+        members,
+        stats: {
+          totalIssues: issues.length,
+          totalCommits
+        }
+      }
 }

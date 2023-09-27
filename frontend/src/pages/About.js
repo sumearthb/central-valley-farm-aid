@@ -1,28 +1,24 @@
 import "../styles/About.css";
 import React, { useState, useEffect } from "react";
 import MemberCard from "../components/MemberCard";
-import { fetchGitLabInfo, getStats } from "../utils/GitlabUtils";
+import { fetchGitLabInfo } from "../utils/GitlabUtils";
 import ToolCard, { toolsUsed } from "../components/ToolCard";
 
 const About = () => {
     const [memberInfo, setMemberInfo] = useState([]);
+    const [totalStats, setTotalStats] = useState({});
     useEffect(() => {
-        const fetchData = async () => {
-            const info = await fetchGitLabInfo();
-            setMemberInfo(info);
-        };
         fetchData();
         console.log(memberInfo);
-    });
-
-    const [totalStats, setTotalStats] = useState([]);
-    useEffect(() => {
-        const fetchData = async () => {
-            const stats = await getStats();
-            setTotalStats(stats);
-        };
-        fetchData();
     }, []);
+
+    const fetchData = async () => {
+        fetchGitLabInfo()
+        .then(info => {
+            setMemberInfo(info.members);
+            setTotalStats(info.stats);
+        });
+    };
 
     return (
     <div className="about">
