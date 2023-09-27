@@ -22,6 +22,9 @@ Central Valley Farm Aid
 
 Rural and small family farmers inherently face many threats to the viability of their establishments, ranging anywhere from infrastructure to financial constraints. Our website helps rural farmers in the counties of the Central Valley of California identify where they can sell their crops in farmers' markets based on their location. It also shows them what non-profit organizations can provide assistance based on their location.
 
+**API Documentation - Postman:**
+<https://gitlab.com/api/v4/projects/50541840/repository/contributors>
+
 **URLs of at least three data sources that you will programmatically scrape using a RESTful API**
 
 <https://www.usdalocalfoodportal.com/fe/fregisterpublicapi/>
