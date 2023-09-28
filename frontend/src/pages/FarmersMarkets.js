@@ -1,23 +1,26 @@
 import React from "react";
 import FMCard from "../components/FMCard/FMCard";
-import { Link } from "react-router-dom";
-import fairfax from "../card-pics/markets-pics/fairfaxcommunity.png";
-import springs from "../card-pics/markets-pics/springscommunity.png";
-import novato from "../card-pics/markets-pics/downtownnovato.png";
-import { Container, Col, Button } from "react-bootstrap";
-
-const FMData = [
-  { title: "Fairfax Community Farmers' Market", image: fairfax, location: "Location: 142 Bolinas Road, Fairfax, California 94930, USA", hours: "Hours: Wednesday: 04:00 PM - 08:00 PM", seasons: "Seasons: May to October", vendors: "# of vendors: 35" },
-  { title: "The Springs Community Farmers' Market", image: springs, location: "Location: Parking lot at Boyes Blvd & Hwy 12, Boyes Hot Springs , California 95476", hours: "Hours: N/A", seasons: "Seasons: September to November", vendors: "# of vendors: 20" },
-  { title: "Downtown Novato Community Farmers' Market", image: novato, location: "Location: 7th Street behind the CVS between Grant Ave & Novato Blvd , Novato , California 94947", hours: "Hours: Tuesday: 04:00 PM - 08:00 PM", seasons: "Seasons: May to September", vendors: "# of vendors: 45" },
-];
+import fairfax from "../card-pics/fm-pics/fairfaxcommunity.png";
+import springs from "../card-pics/fm-pics/springscommunity.png";
+import novato from "../card-pics/fm-pics/downtownnovato.png";
+import { Container, Col } from "react-bootstrap";
 
 const FMGrid = () => {
+  const FMData = [
+    { title: "Fairfax Community Farmers' Market", image: fairfax, location: "Location: 142 Bolinas Road, Fairfax, California 94930, USA", hours: "Hours: Wednesday: 04:00 PM - 08:00 PM", seasons: "Seasons: May to October", vendors: "# of vendors: 35" },
+    { title: "The Springs Community Farmers' Market", image: springs, location: "Location: Parking lot at Boyes Blvd & Hwy 12, Boyes Hot Springs , California 95476", hours: "Hours: N/A", seasons: "Seasons: September to November", vendors: "# of vendors: 20" },
+    { title: "Downtown Novato Community Farmers' Market", image: novato, location: "Location: 7th Street behind the CVS between Grant Ave & Novato Blvd , Novato , California 94947", hours: "Hours: Tuesday: 04:00 PM - 08:00 PM", seasons: "Seasons: May to September", vendors: "# of vendors: 45" },
+  ];
+
   return (
     <>
     <Container className="d-flex justify-content-center flex-column">
       <Container className="container text-center mt-5 mb-4">
         <h1>Farmers' Markets</h1>
+      </Container>
+
+      <Container>
+        <h3 style={{ marginBottom: "30px" }}>Displaying 3 out of 3 results</h3>
       </Container>
 
       <Container className="px-4">
@@ -33,13 +36,6 @@ const FMGrid = () => {
                   seasons={farmersmarket.seasons}
                   vendors={farmersmarket.vendors}
               />
-              <Link
-                key={index}
-                to={`/farmersmarket/${farmersmarket.title}`} // Specify the URL for the farmers market
-                style={{ textDecoration: "none" }}
-              >
-                <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="border-white">More info</Button>
-              </Link>
             </Col>
           )))}
         </Container>

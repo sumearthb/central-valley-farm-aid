@@ -17,10 +17,6 @@
   height: 600px;
 }
 
-.location-card-title {
-  flex-grow: 1;
-}
-
 /* Affects image */
 .location-card img {
   display: block;

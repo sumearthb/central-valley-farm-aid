@@ -3,7 +3,6 @@ import "./LocationCard.css";
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 
-
 // may have to import proptypes later?
 
 const LocationCard = ({ title, image, crops, population, unemployment, labor_force }) => {

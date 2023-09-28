@@ -1,6 +1,7 @@
 import React from "react";
 import "./FMCard.css";
-import Card from "react-bootstrap/Card";
+import { Card, Button } from "react-bootstrap";
+import { Link } from "react-router-dom";
 
 // may have to import proptypes later?
 
@@ -17,6 +18,12 @@ const FMCard = ({ title, image, location, site, hours, seasons, vendors }) => {
           <p className="fm-card-hours">{hours}</p>
           <p className="fm-card-seasons">{seasons}</p>
           <p className="fm-card-vendors">{vendors}</p>
+          <Link
+            to={`/farmersmarkets/${title}`} // Specify the URL for the farmers market
+            style={{ textDecoration: "none" }}
+          >
+            <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="border-white">More info</Button>
+          </Link>
         </div>
       </Card.Body>
     </Card>
