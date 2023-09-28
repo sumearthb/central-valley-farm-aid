@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import fresno from "../card-pics/locations-pics/fresno.png";
 import kern from "../card-pics/locations-pics/kern.png";
 import kings from "../card-pics/locations-pics/kings.png";
+import { Button, Col, Container } from "react-bootstrap";
 
 const Locations = () => {
   // Hard coded data
@@ -14,35 +15,62 @@ const Locations = () => {
   ];
 
   return (
-    <div className="locations">
-      <h1 className="title" style={{ marginTop: "30px" }}>
-        Locations
-      </h1>
-      {/* Title of page */}
-      <div className="centered-container">
-        {/* Centered container for cards */}
-        <div className="location-cards-container">
-          {/* Applies the container class in CSS file */}
-          {/* Render three LocationCard components */}
-          {locationsData.map((location, index) => (
-            <Link
-              key={index}
-              to={`/location/${index+1}`} // Specify the URL for the location
-              style={{ textDecoration: "none" }}
-            >
+    <>
+    <Container className="d-flex justify-content-center flex-column">
+      <Container className="container text-center mt-5 mb-4">
+        <h1>Locations</h1>
+      </Container>
+
+      <Container className="px-4">
+        <Container className="row gx-3">
+          {( locationsData.map((location, index) => (
+            <Col key={index} xs={12} sm={8} md={5} lg={4}>
               <LocationCard
-                title={location.title}
-                image={location.image}
-                crops={location.crops}
-                population={location.population}
-                unemployment={location.unemployment}
-                labor_force={location.labor_force}
+                  title={location.title}
+                  image={location.image}
+                  crops={location.crops}
+                  population={location.population}
+                  unemployment={location.unemployment}
+                  labor_force={location.labor_force}
               />
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+            </Col>
+          )))}
+        </Container>
+      </Container>
+    </Container>
+    </>
+    // <div className="locations">
+    //   <h1 className="title" style={{ marginTop: "30px" }}>
+    //     Locations
+    //   </h1>
+    //   {/* Title of page */}
+    //   <div className="centered-container px-4">
+    //     {/* Centered container for cards */}
+    //     <div className="location-cards-container row-gx-3">
+    //       {/* Applies the container class in CSS file */}
+    //       {/* Render three LocationCard components */}
+    //       {locationsData.map((location, index) => (
+    //         <Col key={index} xs={12} sm={8} md={5} lg={4}>
+    //           <LocationCard
+    //             title={location.title}
+    //             image={location.image}
+    //             crops={location.crops}
+    //             population={location.population}
+    //             unemployment={location.unemployment}
+    //             labor_force={location.labor_force}
+    //           />
+    //           <Link
+    //             key={index}
+    //             to={`/location/${location.title}`} // Specify the URL for the location
+    //             style={{ textDecoration: "none" }}
+    //           > 
+    //             <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="border-white"> More info</Button>
+    //           </Link>
+    //         </Col>
+    //       ))}
+    //     </div>
+    //   </div>
+    // </div>
   );
 };
 

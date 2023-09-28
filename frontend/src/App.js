@@ -38,9 +38,11 @@ function App() {
             <Route path="/LocationInstance/LocationInstanceOne" element={<LocationInstanceTwo/>} />
             <Route path="/LocationInstance/LocationInstanceOne" element={<LocationInstanceThree/>} />
             <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceOne/>} />
-            <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceTwo/>} /> */}
-            <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceThree/>} />
+            <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceTwo/>} /> 
+            <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceThree/>} /> */}
             <Route path="/location/:id" element={<LocationInstance />} />
+            {/* <Route path="/nonprofit/:id" element={<NonprofitInstance />} />
+            <Route path="/farmersmarkets/:id" element={<MarketInstance/>} /> */}
           </Routes>
         </div>
       </Router>
