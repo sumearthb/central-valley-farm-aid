@@ -14,3 +14,6 @@ pull:
 	@echo
 	git pull
 	git status
+
+build-frontend :
+	docker build -t idb-frontend frontend/

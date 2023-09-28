@@ -8,6 +8,7 @@ function MemberCard(props) {
     name,
     username,
     bio,
+    role,
     commits,
     issues,
   } = props;
@@ -25,6 +26,9 @@ function MemberCard(props) {
             {username}
           </a>
         </Card.Text>
+        <Card.Text className="member-card-role">
+          {role}
+        </Card.Text>
         <Card.Text className="member-card-bio">
           {bio}
         </Card.Text>
@@ -41,6 +45,7 @@ MemberCard.propTypes = {
   name: PropTypes.string.isRequired,
   username: PropTypes.string.isRequired,
   bio: PropTypes.string.isRequired,
+  role: PropTypes.string.isRequired,
   commits: PropTypes.number.isRequired,
   issues: PropTypes.number.isRequired,
 };

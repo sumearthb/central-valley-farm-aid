@@ -31,6 +31,7 @@ export const fetchGitLabInfo = async() => {
                 id: item.id,
                 name: item.name,
                 bio: "Empty",
+                role: "Empty,",
                 username: item.username, 
                 commits: 0,
                 issues: 0,
@@ -74,6 +75,7 @@ export const fetchGitLabInfo = async() => {
               }
           ).then(res => {
             members[i].bio = res.data.bio;
+            members[i].role = res.data.job_title;
           });
       }
 
