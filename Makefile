@@ -17,3 +17,6 @@ pull:
 
 build-frontend :
 	docker build -t idb-frontend frontend/
+
+run-frontend:
+	docker run -dp 80:3000 idb-frontend
