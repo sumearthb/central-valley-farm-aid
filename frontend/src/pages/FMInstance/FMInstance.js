@@ -6,6 +6,8 @@ import novato from "../../card-pics/fm-pics/downtownnovato.png";
 import fairfax2 from "../../card-pics/fm-pics/fminstance-pics/fairfaxinstance.jpg";
 import springs2 from "../../card-pics/fm-pics/fminstance-pics/springsinstance.jpg";
 import novato2 from "../../card-pics/fm-pics/fminstance-pics/novatosinstance.jpg";
+import fresno from "../../card-pics/locations-pics/fresno.png";
+import LocationCard from "../../components/LocationCard/LocationCard";
 
 const FMData = [
     { title: "Fairfax Community Farmers' Market", image: fairfax, location: "Location: 142 Bolinas Road, Fairfax, California 94930, USA", hours: "Hours: Wednesday: 04:00 PM - 08:00 PM", contact: "Email: agriculturalcommunityevents@gmail.com\nPhone Number: (415) 999-5635", seasons: "Seasons: May to October", vendors: "# of vendors: 35", assistance: "WIC, SNAP, WIC Farmers Market, Senior Farmers' Market Nutrition Program", image2: fairfax2 },
@@ -30,6 +32,14 @@ function FMInstance() {
         <p>{instanceData.unemployment}</p>
         <p>{instanceData.assistance}</p>
         <img src={instanceData.image2} className="fm-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px"}}/>
+        <h2>Located in</h2>
+        <LocationCard 
+          title={"Fresno"}
+          image={fresno}
+          crops={"Crops: Corn, Cotton"}
+          population={"Population: 1.014 million"}
+          unemployment={"Unemployment Rate: 7.10%"}
+          labor_force={"Labor Force: 458,361"}/>
       </div>
     );
   }
