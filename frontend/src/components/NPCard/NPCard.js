@@ -1,19 +1,31 @@
 import React from "react";
 import "./NPCard.css";
+import { Card, Button } from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 // may have to import proptypes later?
 
-const NPCard = ({ title, image, description }) => {
+const NPCard = ({ title, image, county, year, NTEE_code, phone, employees }) => {
     return (
       // specifies CSS class used
-      <div className="np-card">
-        <img src={image} alt={title} className="np-card-image" />
-        <div className="np-card-details">
-          <h2 className="np-card-title">{title}</h2>
-          <p className="np-card-description">{description}</p>
+      <Card className="np-card mb-4" style={{position: "relative" }}>
+          <img src={image} alt={title} className="np-card-image mx-auto" />
+          <div className="np-card-details">
+            <h2 className="np-card-title" style={{ marginBottom: "10px" }}>{title}</h2>
+            <p className="np-card-county">{county}</p>
+            <h3 className="np-card-year">{year}</h3>
+            <p className="np-card-NTEE_code">{NTEE_code}</p>  
+            <p className="np-card-phone">{phone}</p>
+            <p className="np-card-employees">{employees}</p>
+            <Link
+            to={`/nonprofits/${title}`}
+            style={{ textDecoration: "none" }}
+          >
+            <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="align-self-end border-white">More info</Button>
+          </Link>
           {/* Add more details if needed */}
-        </div>
-      </div>
+          </div>
+      </Card>
     );
   };
   

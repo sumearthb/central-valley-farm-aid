@@ -7,19 +7,21 @@
   /* Class that applies to each card */
   .fm-card {
     border: 1px solid #ccc;
-    padding: 8xpx;
+    padding: 8px;
     margin: 8px;
-    text-align: center;
+    text-align: start;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     transition: transform 0.2s ease-in-out;
-    max-width: 200px;
+    width: 300px;
+    height: 600px;
   }
   
   /* Affects image */
   .fm-card img {
-    max-width: 100%;
-    height: auto;
+    display: block;
+    width: 30vh;
+    height: 30vh;
     border: 1px solid #ddd;
     border-radius: 4px;
     margin-bottom: 12px;
