@@ -26,7 +26,7 @@ const FMGrid = () => {
             <Col key={index} xs={12} sm={8} md={5} lg={4}>
               <Link
               key={index}
-              to={`/farmersmarket/${encodeURIComponent(farmersmarket.title)}`} // Specify the URL for the farmers market
+              to={`/farmersmarket/${farmersmarket.title}`} // Specify the URL for the farmers market
               style={{ textDecoration: "none" }}
               >
                 <FMCard

@@ -48,7 +48,7 @@ function Home() {
                   <Card.Text className="fs-5">
                     See what nonprofits are doing for local farmers.
                   </Card.Text>
-                  <Link style={{ color: "inherit", textDecoration: "inherit" }} to="/locations">
+                  <Link style={{ color: "inherit", textDecoration: "inherit" }} to="/nonprofits">
                     <Button variant="primary" style={{ backgroundColor: '#9E826B'}} className="border-white">
                       Search nonprofits
                     </Button>
@@ -65,7 +65,7 @@ function Home() {
                   <Card.Text className="fs-5">
                     Find out more about Farmers' Markets near you!
                   </Card.Text>
-                  <Link style={{ color: "inherit", textDecoration: "inherit" }} to="/locations">
+                  <Link style={{ color: "inherit", textDecoration: "inherit" }} to="/farmersmarkets">
                     <Button variant="primary" style={{ backgroundColor: '#9E826B'}} className="border-white">
                       Search farmers' markets
                     </Button>
