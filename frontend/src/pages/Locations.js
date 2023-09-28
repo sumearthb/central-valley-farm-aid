@@ -1,13 +1,16 @@
 import React from "react";
 import LocationCard from "../components/LocationCard/LocationCard";
 import { Link } from "react-router-dom";
+import fresno from "../card-pics/locations-pics/fresno.png";
+import kern from "../card-pics/locations-pics/kern.png";
+import kings from "../card-pics/locations-pics/kings.png";
 
 const Locations = () => {
   // Hard coded data
   const locationsData = [
-    { title: "Fresno", image: "/placeholder.png", description: "Description 1" },
-    { title: "Kern", image: "/placeholder.png", description: "Description 2" },
-    { title: "Kings", image: "/placeholder.png", description: "Description 3" },
+    { title: "Fresno", image: fresno, crops: "Crops: Corn, Cotton", population: "Population: 1.014 million", unemployment: "Unemployment Rate: 7.10%", labor_force: "Labor Force: 458,361"},
+    { title: "Kern", image: kern, crops: "Crops: Corn, Cotton, Wheat", population: "Population: 917,673", unemployment: "Unemployment Rate: 8.1%", labor_force: "Labor Force: 397,355" },
+    { title: "Kings", image: kings, crops: "Crops: Corn, Cotton, Wheat", population: "Population: 153,443", unemployment: "Unemployment Rate: 7.9%", labor_force: "Labor Force: 57,503" }
   ];
 
   return (
@@ -30,7 +33,10 @@ const Locations = () => {
               <LocationCard
                 title={location.title}
                 image={location.image}
-                description={location.description}
+                crops={location.crops}
+                population={location.population}
+                unemployment={location.unemployment}
+                labor_force={location.labor_force}
               />
             </Link>
           ))}
