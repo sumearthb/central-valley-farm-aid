@@ -17,6 +17,7 @@ import NonprofitInstanceTwo from "./pages/NonprofitInstance/NonprofitInstanceTwo
 import NonprofitInstanceThree from "./pages/NonprofitInstance/NonprofitInstanceThree";
 import "bootstrap/dist/css/bootstrap.min.css";
 import NavBar from "./components/NavBar";
+import LocationInstance from "./pages/LocationInstance/LocationInstance";
 
 function App() {
   return (
@@ -30,15 +31,16 @@ function App() {
             <Route path="/locations" element={<Locations/>} />
             <Route path="/nonprofits" element={<NonProfits/>} />
             <Route path="/farmersmarkets" element={<FarmersMarkets/>} />
-            <Route path="/MarketInstance/MarketInstanceOne" element={<MarketInstanceOne/>} />
+            {/* <Route path="/MarketInstance/MarketInstanceOne" element={<MarketInstanceOne/>} />
             <Route path="/MarketInstance/MarketInstanceTwo" element={<MarketInstanceTwo/>} />
             <Route path="/MarketInstance/MarketInstanceThree" element={<MarketInstanceThree/>} />
             <Route path="/LocationInstance/LocationInstanceOne" element={<LocationInstanceOne/>} />
             <Route path="/LocationInstance/LocationInstanceOne" element={<LocationInstanceTwo/>} />
             <Route path="/LocationInstance/LocationInstanceOne" element={<LocationInstanceThree/>} />
             <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceOne/>} />
-            <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceTwo/>} />
+            <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceTwo/>} /> */}
             <Route path="/NonProfitInstance/NonprofitInstanceOne" element={<NonprofitInstanceThree/>} />
+            <Route path="/location/:id" element={<LocationInstance />} />
           </Routes>
         </div>
       </Router>

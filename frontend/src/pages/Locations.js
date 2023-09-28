@@ -27,7 +27,7 @@ const Locations = () => {
           {locationsData.map((location, index) => (
             <Link
               key={index}
-              to={`/location/${location.title}`} // Specify the URL for the location
+              to={`/location/${index+1}`} // Specify the URL for the location
               style={{ textDecoration: "none" }}
             >
               <LocationCard
