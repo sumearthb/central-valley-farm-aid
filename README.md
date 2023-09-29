@@ -4,15 +4,15 @@ Group 14
 
 **Names of the team members:**
 
--   Martin Murtiono (Phase 1 Team Lead)
+-   Martin Murtiono (mbm3532) (Phase 1 Team Lead)
     * Gitlab: @martinmurtiono
--   Akif Abidi
+-   Akif Abidi ()
     * Gitlab: @akif.abidi1
--   Anthony Do
+-   Anthony Do (atd945)
     * Gitlab: @anthonydo8196
--   Kunal Mody
+-   Kunal Mody ()
     * Gitlab: @kunal.mody1
--   Samarth Bhat
+-   Samarth Bhat (sb59742)
     * Gitlab: @samarthbhat
 
 **Website URL**
