@@ -26,7 +26,7 @@ function FMInstance() {
       /* CSS styles to center the card */
       <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
         <h1 style={{ marginBottom: "15px", marginTop: "10px" }}>{instanceData.title}</h1>
-        <img src={instanceData.image} className="fm-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
+        <img src={instanceData.image} alt={instanceData.title} className="fm-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
         <p style={{ marginBottom: "10px", marginTop: "8px" }}>{instanceData.location}</p>
         <p>{instanceData.hours}</p>
         <p>{instanceData.contact}</p>
@@ -34,7 +34,7 @@ function FMInstance() {
         <p>{instanceData.vendors}</p>
         <p>{instanceData.unemployment}</p>
         <p>{instanceData.assistance}</p>
-        <img src={instanceData.image2} className="fm-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px"}}/>
+        <img src={instanceData.image2} alt={instanceData.title} className="fm-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px"}}/>
         <h2>Nearby Counties</h2>
         <LocationCard 
           title={"Fresno"}

@@ -27,14 +27,14 @@ function NPInstance() {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <h1 style={{ marginBottom: "15px", marginTop: "10px" }}>{instanceData.title}</h1>
-      <img src={instanceData.image} className="np-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
+      <img src={instanceData.image} alt={instanceData.title} className="np-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
       <p className="text-wrap break-all" style={{width: "41rem", margin: "0 auto", textAlign: "center", marginBottom: "8px", marginTop: "8px" }}>{instanceData.description}</p>
       <p>{instanceData.county}</p>
       <p>{instanceData.year}</p>
       <p>{instanceData.NTEE_code}</p>
       <p>{instanceData.phone}</p>
       <p>{instanceData.employees}</p>
-      <img src={instanceData.image2} className="np-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px" }}/>
+      <img src={instanceData.image2} alt={instanceData.title} className="np-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px" }}/>
       <h2>Nearby County</h2>
         <LocationCard 
           title={"Fresno"}

@@ -27,13 +27,13 @@ function LocationInstance() {
   return (
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <h1 style={{ marginBottom: "15px", marginTop: "10px" }}>{instanceData.title}</h1>
-      <img src={instanceData.image} className="location-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
+      <img src={instanceData.image} alt={instanceData.title} className="location-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
       <p style={{ marginBottom: "10px", marginTop: "8px" }}>{instanceData.population}</p>
       <p>{instanceData.crops}</p>
       <p>{instanceData.prod}</p>
       <p>{instanceData.labor_force}</p>
       <p>{instanceData.unemployment}</p>
-      <img src={instanceData.image2} className="location-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px"}}/>
+      <img src={instanceData.image2} alt={instanceData.title} className="location-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px"}}/>
       <h2>Nearby Nonprofits</h2>
         <NPCard 
           title={"California Fresh Farmers' Markets Association"}
