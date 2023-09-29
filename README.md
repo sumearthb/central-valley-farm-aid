@@ -4,15 +4,42 @@ Group 14
 
 **Names of the team members:**
 
+-   Martin Murtiono (mbm3532) (Phase 1 Team Lead)
+    * Gitlab: @martinmurtiono
+-   Akif Abidi ()
+    * Gitlab: @akif.abidi1
+-   Anthony Do (atd945)
+    * Gitlab: @anthonydo8196
+-   Kunal Mody ()
+    * Gitlab: @kunal.mody1
+-   Samarth Bhat (sb59742)
+    * Gitlab: @samarthbhat
+
+**Website URL**
+<https://www.centralvalleyfarmaid.me>
+
+**Git SHA**
+
+
+**Gitlab Pipeline**
+<>
+
+**Estimated Completion Times**
 -   Martin Murtiono
-
+    * Estimated: 20 hours
+    * Actual: 24 hours
 -   Akif Abidi
-
+    * Estimated: 20 hours
+    * Actual: 22 hours
 -   Anthony Do
-
+    * Estimated: 21 hours
+    * Actual: 22 hours
 -   Kunal Mody
-
+    * Estimated: 19 hours
+    * Actual: 23 hours
 -   Samarth Bhat
+    * Estimated: 19 hours
+    * Actual: 22 hours
 
 **Name of the project:**
 
