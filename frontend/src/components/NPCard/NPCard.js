@@ -8,8 +8,8 @@ import { Link } from 'react-router-dom';
 const NPCard = ({ title, image, county, year, NTEE_code, phone, employees }) => {
     return (
       // specifies CSS class used
-      <Card className="np-card mb-4" style={{position: "relative" }}>
-          <img src={image} alt={title} className="np-card-image mx-auto" />
+      <Card className="location-card d-flex flex-column">
+          <img src={image} alt={title} className="np-card-image" />
           <div className="np-card-details">
             <h2 className="np-card-title" style={{ marginBottom: "10px" }}>{title}</h2>
             <p className="np-card-county">{county}</p>

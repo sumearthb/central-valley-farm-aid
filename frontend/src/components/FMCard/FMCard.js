@@ -8,9 +8,9 @@ import { Link } from "react-router-dom";
 const FMCard = ({ title, image, location, site, hours, seasons, vendors }) => {
   return (
     // specifies CSS class used
-    <Card className="fm-card mb-4 fm-cards-container" style={{position: "relative" }}>
+    <Card className="location-card d-flex flex-column">
       <Card.Body style={{position: "relative"}}>
-        <img src={image} alt={title} className="fm-card-image mx-auto" />
+        <img src={image} alt={title} className="fm-card-image" />
         <div className="fm-card-details">
           <h2 className="fm-card-title" style={{ marginBottom: "10px" }}>{title}</h2>
           <p className="fm-card-location">{location}</p>
