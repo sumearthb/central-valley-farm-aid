@@ -41,6 +41,9 @@ Group 14
     * Estimated: 19 hours
     * Actual: 22 hours
 
+**Acknowledgements**
+Our home page contains code which references that of Group 7's from Spring 2023: <https://gitlab.com/petarilievCS/cs373-idb7/-/tree/main?ref_type=heads>.
+
 **Name of the project:**
 
 Central Valley Farm Aid
