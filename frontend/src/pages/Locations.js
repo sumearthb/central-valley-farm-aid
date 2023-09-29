@@ -5,7 +5,7 @@ import kern from "../card-pics/locations-pics/kern.png";
 import kings from "../card-pics/locations-pics/kings.png";
 import { Col, Container } from "react-bootstrap";
 
-const Locations = () => {
+const LocationsGrid = () => {
   // Hard coded data
   const locationsData = [
     { title: "Fresno", image: fresno, crops: "Crops: Corn, Cotton", population: "Population: 1.014 million", unemployment: "Unemployment Rate: 7.10%", labor_force: "Labor Force: 458,361"},
@@ -14,7 +14,7 @@ const Locations = () => {
   ];
 
   return (
-    <Container className="d-flex justify-content-center flex-column">
+    <Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <Container className="container text-center mt-5 mb-4">
         <h1>Locations</h1>
       </Container>
@@ -26,7 +26,7 @@ const Locations = () => {
       <Container className="px-4">
         <Container className="row gx-3">
           {( locationsData.map((location, index) => (
-            <Col key={index} xs={12} sm={8} md={5} lg={4}>
+            <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
               <LocationCard
                 title={location.title}
                 image={location.image}
@@ -43,4 +43,4 @@ const Locations = () => {
   );
 };
 
-export default Locations;
+export default LocationsGrid;

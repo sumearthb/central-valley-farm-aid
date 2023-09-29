@@ -7,6 +7,10 @@ import fresno2 from "../../card-pics/locations-pics/locationinstance-pics/fresno
 import kern2 from "../../card-pics/locations-pics/locationinstance-pics/kerncounty2.jpg";
 import kings2 from "../../card-pics/locations-pics/locationinstance-pics/kingscounty2.jpg";
 import "../../components/LocationCard/LocationCard.css";
+import NPCard from "../../components/NPCard/NPCard";
+import californiafresh from "../../card-pics/np-pics/californiafresh.png";
+import FMCard from "../../components/FMCard/FMCard";
+import fairfax from "../../card-pics/fm-pics/fairfaxcommunity.png";
 
 const locationsData = [
   { title: "Fresno", image: fresno, crops: "Crops: Corn, Cotton", prod: "Agricultural Production: $8.0 Billion", population: "Population: 1.014 million", unemployment: "Unemployment Rate: 7.10%", labor_force: "Labor Force: 458,361", image2: fresno2 },
@@ -21,7 +25,7 @@ function LocationInstance() {
   const instanceData = locationsData.find((location) => location.title === id);
 
   return (
-    <div>
+    <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <h1 style={{ marginBottom: "15px", marginTop: "10px" }}>{instanceData.title}</h1>
       <img src={instanceData.image} className="location-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
       <p style={{ marginBottom: "10px", marginTop: "8px" }}>{instanceData.population}</p>
@@ -30,6 +34,23 @@ function LocationInstance() {
       <p>{instanceData.labor_force}</p>
       <p>{instanceData.unemployment}</p>
       <img src={instanceData.image2} className="location-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px"}}/>
+      <h2>Nearby Nonprofits</h2>
+        <NPCard 
+          title={"California Fresh Farmers' Markets Association"}
+          image={californiafresh}
+          county= "County: Fresno"
+          NTEE_code="NTEE Code: K03"
+          phone= "Phone: (559) 417-7970"
+          employees= "Num. Employees: 16"
+          year= "Est: 2015"/>
+          <h2>Nearby Farmers' Markets</h2>
+          <FMCard
+          title={"Fairfax Community Farmers' Market"}
+          image={fairfax}
+          location={"Location: 142 Bolinas Road, Fairfax, California 94930, USA"}
+          hours={"Hours: Wednesday: 04:00 PM - 08:00 PM: 1.014 million"}
+          seasons={"Seasons: May to October"}
+          vendors={"# of vendors: 35"}/>  
     </div>
   );
 }
