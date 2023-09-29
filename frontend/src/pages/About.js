@@ -9,8 +9,9 @@ const About = () => {
     const [totalStats, setTotalStats] = useState({});
     useEffect(() => {
         fetchData();
-        console.log(memberInfo);
-    });
+        // Need empty array so that the function doesnt call infinitely but eslint gives a warning for some reason.
+        // eslint-disable-next-line
+    }, []);
 
     const fetchData = async () => {
         fetchGitLabInfo()
