@@ -10,7 +10,7 @@ const About = () => {
     useEffect(() => {
         fetchData();
         console.log(memberInfo);
-    }, []);
+    });
 
     const fetchData = async () => {
         fetchGitLabInfo()
