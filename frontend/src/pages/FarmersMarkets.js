@@ -3,7 +3,7 @@ import FMCard from "../components/FMCard/FMCard";
 import fairfax from "../card-pics/fm-pics/fairfaxcommunity.png";
 import springs from "../card-pics/fm-pics/springscommunity.png";
 import novato from "../card-pics/fm-pics/downtownnovato.png";
-import { Container, Col } from "react-bootstrap";
+import { Container, Col, Row } from "react-bootstrap";
 
 const FMGrid = () => {
   const FMData = [
@@ -17,16 +17,13 @@ const FMGrid = () => {
     <Container className="d-flex justify-content-center flex-column">
       <Container className="container text-center mt-5 mb-4">
         <h1>Farmers' Markets</h1>
-      </Container>
-
-      <Container>
         <h3 style={{ marginBottom: "30px" }}>Displaying 3 out of 3 results</h3>
       </Container>
 
-      <Container className="px-4">
-        <Container className="row gx-3">
+      <Container className="px-4" style={{ maxWidth: "100%" }}>
+        <Row className="gx-3 justify-content-center">
           {( FMData.map((farmersmarket, index) => (
-            <Col key={index} xs={12} sm={8} md={5} lg={4}>
+            <Col key={index} xs={8} sm={8} md={6} lg={4} className="d-flex justify-content-center">
               <FMCard
                   title={farmersmarket.title}
                   image={farmersmarket.image}
@@ -38,7 +35,7 @@ const FMGrid = () => {
               />
             </Col>
           )))}
-        </Container>
+        </Row>
       </Container>
     </Container>
     </>

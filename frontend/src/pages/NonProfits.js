@@ -3,7 +3,7 @@ import NPCard from "../components/NPCard/NPCard";
 import californiafresh from "../card-pics/np-pics/californiafresh.png";
 import cfe from "../card-pics/np-pics/cfe.jpg";
 import pfl from "../card-pics/np-pics/pfl.png";
-import { Container, Col } from "react-bootstrap/";
+import { Container, Col, Row } from "react-bootstrap/";
 
 const NPGrid = () => {
   const NPData = [
@@ -13,33 +13,30 @@ const NPGrid = () => {
   ];
 
   return (
-    <Container className="d-flex justify-content-center flex-column">
+    <Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <Container className="container text-center mt-5 mb-4">
         <h1>Non-Profit Organizations</h1>
-      </Container>
-
-      <Container>
         <h3 style={{ marginBottom: "30px" }}>Displaying 3 out of 3 results</h3>
       </Container>
 
       <Container className="px-4">
-        <Container className="row gx-3">
-          {( NPData.map((np, index) => (
-            <Col key={index} xs={12} sm={8} md={5} lg={4}>
-                <NPCard
-                  title={np.title}
-                  image={np.image}
-                  county={np.county}
-                  NTEE_code={np.NTEE_code}
-                  phone={np.phone}
-                  employees={np.employees}
-                  year={np.year}
-                />
-            </Col>
-            ))
-          )}
-        </Container>
-      </Container>
+  <Row className="gx-3 justify-content-center">
+    {NPData.map((np, index) => (
+      <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
+        <NPCard
+          title={np.title}
+          image={np.image}
+          county={np.county}
+          NTEE_code={np.NTEE_code}
+          phone={np.phone}
+          employees={np.employees}
+          year={np.year}
+        />
+      </Col>
+    ))}
+  </Row>
+</Container>
+
     </Container>
   );
 };
