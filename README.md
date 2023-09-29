@@ -6,11 +6,11 @@ Group 14
 
 -   Martin Murtiono (mbm3532) (Phase 1 Team Lead)
     * Gitlab: @martinmurtiono
--   Akif Abidi ()
+-   Akif Abidi (asa3676)
     * Gitlab: @akif.abidi1
 -   Anthony Do (atd945)
     * Gitlab: @anthonydo8196
--   Kunal Mody ()
+-   Kunal Mody (km49555)
     * Gitlab: @kunal.mody1
 -   Samarth Bhat (sb59742)
     * Gitlab: @samarthbhat
@@ -19,10 +19,10 @@ Group 14
 <https://www.centralvalleyfarmaid.me>
 
 **Git SHA**
-
+983a3b9fb5535aadfbbabb90ded3a76348b3d1ac
 
 **Gitlab Pipeline**
-<>
+<https://gitlab.com/cs373-group-14/idb/-/pipelines>
 
 **Estimated Completion Times**
 -   Martin Murtiono
