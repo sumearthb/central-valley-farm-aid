@@ -1,9 +1,11 @@
 import requests
 import mysql.connector
 
-# API endpoint to fetch data from
-api_url = "https://www.usdalocalfoodportal.com/fe/datasharing/"
 
+# Fetch data from the API
+api_calls = [
+    "put all API calls here",
+]
 # MySQL database connection details
 db_config = {
     "host": "YOUR_DB_HOST",
@@ -11,7 +13,7 @@ db_config = {
     "password": "YOUR_DB_PASSWORD",
     "database": "YOUR_DB_NAME",
 }
-
+ 
 # Function to fetch data from the API
 def fetch_data_from_api(url):
     try:
@@ -21,8 +23,8 @@ def fetch_data_from_api(url):
         else:
             print(f"Failed to fetch data from API. Status Code: {response.status_code}")
             return None
-    except Exception as e:
-        print(f"Error fetching data from API: {str(e)}")
+    except Exception as excep:
+        print(f"Error fetching data from API: {str(excep)}")
         return None
 
 # Function to insert data into the MySQL database
@@ -52,9 +54,8 @@ def insert_data_into_mysql(data, db_config):
             connection.close()
 
 if __name__ == "__main__":
-    # Fetch data from the API
-    api_data = fetch_data_from_api(api_url)
-
-    # if api_data:
-    #     # Insert data into the MySQL database
-    #     insert_data_into_mysql(api_data, db_config)
+    for api_url in api_calls:
+        api_data = fetch_data_from_api(api_url)
+        if api_data:
+            # Insert data into the MySQL database
+            insert_data_into_mysql(api_data, db_config)
