@@ -1,11 +1,13 @@
 import requests
 import mysql.connector
 
+# ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
 
-# Fetch data from the API
-api_calls = [
-    "put all API calls here",
-]
+'''
+1. Fetch API calls, decode to json 
+2. send to DB
+'''
+
 # MySQL database connection details
 db_config = {
     "host": "YOUR_DB_HOST",
@@ -13,9 +15,19 @@ db_config = {
     "password": "YOUR_DB_PASSWORD",
     "database": "YOUR_DB_NAME",
 }
- 
+
 # Function to fetch data from the API
-def fetch_data_from_api(url):
+def fetch_location_crop_data():
+
+    url = "https://quickstats.nass.usda.gov/api/api_GET/?key=2937E8A6-338E-3BD9-8E2E-1EF47FF8D729&sector_desc=crops&year=2018&state_alpha=CA&agg_level_desc=County&county_name=Glenn&county_name=Colusa&county_name=Kings&county_name=Kern&county_name=Sacremento&county_name=San Joaquin&county_name=Madera&county_name=Merced&county_name=Sutter&county_name=Yolo&county_name=Tulare&county_name=Tehama&county_name=Fresno"
+
+    payload = "2937E8A6-338E-3BD9-8E2E-1EF47FF8D729\n"
+    headers = {
+    'Content-Type': 'text/plain',
+    'Cookie': 'quickstats_session=8d2caf8817c780bfdf00f743ccb75759328623ad'
+    }
+
+    response = requests.request("GET", url, headers=headers, data=payload)
     try:
         response = requests.get(url)
         if response.status_code == 200:
