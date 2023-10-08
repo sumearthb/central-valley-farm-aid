@@ -18,9 +18,6 @@ db_config = {
     "database": "YOUR_DB_NAME",
 }
 
-location_data = {}
-
-
 # Function to fetch data from the API
 def fetch_location_crop_data():
     url = "https://quickstats.nass.usda.gov/api/api_GET/?key=2937E8A6-338E-3BD9-8E2E-1EF47FF8D729&sector_desc=crops&year=2018&state_alpha=CA&agg_level_desc=County&county_name=Glenn&county_name=Colusa&county_name=Kings&county_name=Kern&county_name=Sacremento&county_name=San Joaquin&county_name=Madera&county_name=Merced&county_name=Sutter&county_name=Yolo&county_name=Tulare&county_name=Tehama&county_name=Fresno"
@@ -53,15 +50,56 @@ def insert_location_crop_data_to_db(db_config):
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
 
-        # Assuming 'data' is a list of dictionaries
+        # Query every record and apply INSERT keyword to put in DB
+        # Note: have trimmed down the orignal query to key-pairs that may be useful to display
         for record in data:
-            # Customize this part to match your data structure
-            query = """
-                INSERT INTO your_table_name (column1, column2, ...)
-                VALUES (%s, %s, ...);
-            """
+            insert_query = '''
+                INSERT INTO your_table_name (
+                    country_name,
+                    county_name,
+                    statisticcat_desc,
+                    location_desc,
+                    asd_code,
+                    begin_code,
+                    group_desc,
+                    agg_level_desc,
+                    commodity_desc,
+                    prodn_practice_desc,
+                    state_name,
+                    state_ansi,
+                    sector_desc,
+                    source_desc,
+                    year,
+                    domaincat_desc,
+                    state_alpha,
+                    short_desc,
+                    util_practice_desc,
+                    asd_desc
+                ) VALUES (
+                    %(country_name)s,
+                    %(county_name)s,
+                    %(statisticcat_desc)s,
+                    %(location_desc)s,
+                    %(asd_code)s,
+                    %(begin_code)s,
+                    %(group_desc)s,
+                    %(agg_level_desc)s,
+                    %(commodity_desc)s,
+                    %(prodn_practice_desc)s,
+                    %(state_name)s,
+                    %(state_ansi)s,
+                    %(sector_desc)s,
+                    %(source_desc)s,
+                    %(year)s,
+                    %(domaincat_desc)s,
+                    %(state_alpha)s,
+                    %(short_desc)s,
+                    %(util_practice_desc)s,
+                    %(asd_desc)s
+                )
+            '''
             values = (record['column1'], record['column2'], ...)  # Replace with actual data
-            cursor.execute(query, values)
+            cursor.execute(insert_query, values)
 
         connection.commit()
         print("Location_crop successfully inserted into MySQL database.")
