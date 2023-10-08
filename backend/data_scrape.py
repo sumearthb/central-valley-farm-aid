@@ -4,8 +4,10 @@ import mysql.connector
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
 
 '''
-1. Fetch API calls, decode to json 
-2. send to DB
+1. Fetch API calls, decode to json. Every object is a unordered (jumbled) list of keypairs, but 
+    all objeects have commodity, county and short desc. 
+2. send relevcant info to DB
+
 '''
 
 # MySQL database connection details
@@ -27,9 +29,12 @@ def fetch_location_crop_data():
     'Content-Type': 'text/plain',
     'Cookie': 'quickstats_session=8d2caf8817c780bfdf00f743ccb75759328623ad'
     }
+    
     try: 
         response = requests.request("GET", url, headers=headers, data=payload)
         if response.status_code == 200:
+            res = response.json()
+            print(res.data.count)
             return response.json()
         else:
             print(f"Failed to fetch data from nass.usda API. Status Code: {response.status_code}")
@@ -40,7 +45,10 @@ def fetch_location_crop_data():
         return None
 
 # Function to insert data into the MySQL database
-def insert_data_into_mysql(data, db_config):
+def insert_location_crop_data_to_db(db_config):
+    # Query data from API
+    data = fetch_location_crop_data()    
+
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
@@ -56,7 +64,7 @@ def insert_data_into_mysql(data, db_config):
             cursor.execute(query, values)
 
         connection.commit()
-        print("Data successfully inserted into MySQL database.")
+        print("Location_crop successfully inserted into MySQL database.")
 
     except mysql.connector.Error as err:
         print(f"Error inserting data into MySQL: {err}")
@@ -66,9 +74,7 @@ def insert_data_into_mysql(data, db_config):
             connection.close()
 
 if __name__ == "__main__":
-    print(fetch_location_crop_data())
-    # for api_url in api_calls:
-    #     api_data = fetch_data_from_api(api_url)
-    #     if api_data:
-    #         # Insert data into the MySQL database
-    #         insert_data_into_mysql(api_data, db_config)
+
+    # location crop data
+    insert_location_crop_data_to_db(db_config=db_config)
+
