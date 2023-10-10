@@ -18,6 +18,57 @@ db_config = {
     "database": "YOUR_DB_NAME",
 }
 
+
+# Create SQL Data tables
+def create_crop_table():
+    # The SQL query to create a new table
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS your_table_name (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        country_name VARCHAR(255),
+        county_name VARCHAR(255),
+        statisticcat_desc VARCHAR(255),
+        location_desc VARCHAR(255),
+        asd_code VARCHAR(10),
+        begin_code VARCHAR(10),
+        group_desc VARCHAR(255),
+        agg_level_desc VARCHAR(255),
+        commodity_desc VARCHAR(255),
+        prodn_practice_desc VARCHAR(255),
+        state_name VARCHAR(255),
+        state_ansi VARCHAR(10),
+        sector_desc VARCHAR(255),
+        source_desc VARCHAR(255),
+        year INT,
+        domaincat_desc VARCHAR(255),
+        state_alpha VARCHAR(2),
+        short_desc VARCHAR(255),
+        util_practice_desc VARCHAR(255),
+        asd_desc VARCHAR(255)
+    );
+    """
+
+    try:
+        # Establish a database connection
+        connection = mysql.connector.connect(**db_config)
+
+        # Create a cursor object to interact with the database
+        cursor = connection.cursor()
+
+        # Execute the CREATE TABLE query
+        cursor.execute(create_table_query)
+
+        print("Table created successfully.")
+
+    except mysql.connector.Error as err:
+        print("Error creating the table:", err)
+
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        connection.close()
+
+
 #------------------------------------------------------------------------
 # CHARITY DATA
 def fetch_charity_data() -> dict:
@@ -132,7 +183,7 @@ def insert_location_crop_data_to_db(db_config):
         # Note: have trimmed down the orignal query to key-pairs that may be useful to display
         for record in data:
             insert_query = '''
-                INSERT INTO your_table_name (
+                INSERT INTO crop_data (
                     country_name,
                     county_name,
                     statisticcat_desc,
