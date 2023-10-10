@@ -198,7 +198,11 @@ def insert_charity_crop_data_to_db(db_config):
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
-        # TODO 
+        
+        for record in data:
+            # TODO
+            pass
+             
     except mysql.connector.Error as err:
         print(f"Error inserting data into MySQL: {err}")
     finally:
