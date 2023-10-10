@@ -23,7 +23,7 @@ db_config = {
 def create_crop_table():
     # The SQL query to create a new table
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS your_table_name (
+    CREATE TABLE IF NOT EXISTS crop_table (
         id INT AUTO_INCREMENT PRIMARY KEY,
         country_name VARCHAR(255),
         county_name VARCHAR(255),
@@ -58,7 +58,7 @@ def create_crop_table():
         # Execute the CREATE TABLE query
         cursor.execute(create_table_query)
 
-        print("Table created successfully.")
+        print("crop table created successfully.")
 
     except mysql.connector.Error as err:
         print("Error creating the table:", err)
@@ -68,7 +68,55 @@ def create_crop_table():
         cursor.close()
         connection.close()
 
+def create_charity_table():
+    
 
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS charity_data (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        ein VARCHAR(20) NOT NULL,
+        charityName VARCHAR(255) NOT NULL,
+        url VARCHAR(255),
+        donationUrl VARCHAR(255),
+        city VARCHAR(100),
+        state VARCHAR(50),
+        zipCode VARCHAR(20),
+        start INT,
+        rows INT,
+        recordCount INT,
+        score INT,
+        acceptingDonations INT,
+        category VARCHAR(255),
+        eligibleCd INT,
+        deductibilityCd INT,
+        statusCd INT,
+        website VARCHAR(255),
+        missionStatement TEXT,
+        parent_ein VARCHAR(20),
+        latitude DECIMAL(10, 6),
+        longitude DECIMAL(10, 6)
+    );
+    """
+
+    try:
+        # Establish a database connection
+        connection = mysql.connector.connect(**db_config)
+
+        # Create a cursor object to interact with the database
+        cursor = connection.cursor()
+
+        # Execute the table creation SQL statement
+        cursor.execute(create_table_query)
+
+        print("Table 'charity_data' created successfully.")
+
+    except mysql.connector.Error as err:
+        print("Error creating table:", err)
+
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        connection.close()
 #------------------------------------------------------------------------
 # CHARITY DATA
 def fetch_charity_data() -> dict:
