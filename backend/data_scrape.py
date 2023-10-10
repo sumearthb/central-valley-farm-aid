@@ -19,18 +19,34 @@ db_config = {
 }
 
 
-def fetch_charity_data():
-    import requests
+def fetch_charity_data() -> dict:
+    # We have two API calls here. The API uses search terms to get relevant queries and cannot 
+    # query more than one search term at once, so we do it seperetly
 
+    # Query one: search term "farmer market"
     url = "http://data.orghunter.com/v1/charitysearch?user_key=6abaefdede85bfc1b540f4e9d6ff7882&searchTerm=farmer market&state=CA&rows=100"
     payload = {}
     headers = {
         'Cookie': 'laravel_session=eyJpdiI6IlBvbHJLTDR0SFh3SWdaOXJRbkRzXC9EQk9tUjlRMnVXWmFIMGdmbzgzWU9jPSIsInZhbHVlIjoic204QVBDdFpPSkRKYmZ4RUlxNW1oc3Y2eittR2ZscHR1S01ya2FuYjFjWnFpeUxTeE44SEdxTlhneE82ZWFlMjJsbFdqdGhoWUdXbzBkb3FwcHRlc0E9PSIsIm1hYyI6IjM2ZGZjYmRhOTE4ZTM4MjIwMDUwMmZmY2Q5OTE0NjdjOGE4OThjMTU0YjY5ZjE5ZmJlZmI5MzZjODljYzMxODMifQ%3D%3D'
     }
 
-    response = requests.request("GET", url, headers=headers, data=payload)
+    try:
+        response = requests.request("GET", url, headers=headers, data=payload)
+        if response.status_code == 200:
+            res1: dict = response.json()
+            print("CHARITY DATA-----", res1.data.count)
+        else:
+            print(f"Failed to fetch data from charity API. Status Code: {response.status_code}")
+            return None
 
-    print(response.text)
+    except Exception as excep:
+        print(f"Error fetching data from API: {str(excep)}")
+        return None
+
+    
+    res: dict = res1.update(res2)
+
+    return res
 
 
 # Function to fetch data from the API
@@ -46,7 +62,7 @@ def fetch_location_crop_data():
         response = requests.request("GET", url, headers=headers, data=payload)
         if response.status_code == 200:
             res = response.json()
-            print(res.data.count)
+            print("CROP DATA-----", res.data.count)
             return response.json()
         else:
             print(f"Failed to fetch data from nass.usda API. Status Code: {response.status_code}")
