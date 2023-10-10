@@ -69,8 +69,6 @@ def create_crop_table():
         connection.close()
 
 def create_charity_table():
-    
-
     create_table_query = """
     CREATE TABLE IF NOT EXISTS charity_data (
         id INT AUTO_INCREMENT PRIMARY KEY,
@@ -194,6 +192,19 @@ def fetch_charity_data() -> dict:
 
     return res
 
+def insert_charity_crop_data_to_db(db_config):
+    data = fetch_charity_data()
+
+    try:
+        connection = mysql.connector.connect(**db_config)
+        cursor = connection.cursor()
+        # TODO 
+    except mysql.connector.Error as err:
+        print(f"Error inserting data into MySQL: {err}")
+    finally:
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 #------------------------------------------------------------------------
 # CROP DATA
 def fetch_location_crop_data() -> dict:
@@ -291,5 +302,9 @@ def insert_location_crop_data_to_db(db_config):
 if __name__ == "__main__":
 
     # location crop data
+    create_crop_table() # does not create new table if it exists
     insert_location_crop_data_to_db(db_config=db_config)
+
+    # charities data
+    create_charity_table
 
