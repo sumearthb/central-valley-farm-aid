@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "mysql+pymysql://admin:020402020402@api-scraping-database.crn5q2iybxzv.us-east-1.rds.amazonaws.com:3306/api-scraping-database"
+] = "mysql+pymysql://admin:Rural_Farm_Aid01@api-scrape-data.crn5q2iybxzv.us-east-1.rds.amazonaws.com:3306/api-scrape-data"
 db = SQLAlchemy(app)
 
 # Add Association tables
