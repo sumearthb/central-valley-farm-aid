@@ -13,12 +13,52 @@ db = SQLAlchemy(app)
 # Add Association tables
 
 class Locations(db.Model):
-    __tablename__ = "locations"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    country_name         = db.Column(db.String(255))
+    county_name          = db.Column(db.String(255))
+    statisticcat_desc    = db.Column(db.String(255))
+    location_desc        = db.Column(db.String(255))
+    asd_code             = db.Column(db.String(10))
+    begin_code           = db.Column(db.String(10))
+    group_desc           = db.Column(db.String(255))
+    agg_level_desc       = db.Column(db.String(255))
+    commodity_desc       = db.Column(db.String(255))
+    prodn_practice_desc  = db.Column(db.String(255))
+    state_name           = db.Column(db.String(255))
+    state_ansi           = db.Column(db.String(10))
+    sector_desc          = db.Column(db.String(255))
+    source_desc          = db.Column(db.String(255))
+    year                 = db.Column(db.Integer)
+    domaincat_desc       = db.Column(db.String(255))
+    state_alpha          = db.Column(db.String(2))
+    short_desc           = db.Column(db.String(255))
+    util_practice_desc   = db.Column(db.String(255))
+    asd_desc             = db.Column(db.String(255))
     
 class FMs(db.Model):  
     __tablename__ = "something"
 
 class NPs(db.Model):     
-    __tablename__ = "something" 
-
+    id                   = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    ein                  = db.Column(db.String(20), nullable=False)
+    charityName          = db.Column(db.String(255), nullable=False)
+    url                  = db.Column(db.String(255))
+    donationUrl          = db.Column(db.String(255))
+    city                 = db.Column(db.Text(100))
+    state                = db.Column(db.String(50))
+    zipCode              = db.Column(db.String(20))
+    start                = db.Column(db.Integer)
+    rows                 = db.Column(db.Integer)
+    recordCount          = db.Column(db.Integer)
+    score                = db.Column(db.Integer)
+    acceptingDonations   = db.Column(db.Integer)
+    category             = db.Column(db.String(255))
+    eligibleCd           = db.Column(db.Integer)
+    deductibilityCd      = db.Column(db.Integer)
+    statusCd             = db.Column(db.Integer)
+    website              = db.Column(db.String(255))
+    missionStatement     = db.Column(db.Text)
+    parent_ein           = db.Column(db.String(20))
+    latitude             = db.Column(db.Decimal(10, 6))
+    longitude            = db.Column(db.Decimal(10, 6)) 
     
