@@ -13,10 +13,10 @@ import pandas as pd
 
 # MySQL database connection details
 db_config = {
-    "host": "YOUR_DB_HOST",
-    "user": "YOUR_DB_USER",
-    "password": "YOUR_DB_PASSWORD",
-    "database": "YOUR_DB_NAME",
+    "host": "api-scrape-data.crn5q2iybxzv.us-east-1.rds.amazonaws.com",
+    "user": "admin",
+    "password": "Rural_Farm_Aid01",
+    "database": "api_data",
 }
 
 
@@ -220,38 +220,45 @@ def fetch_farmer_market_data() -> dict:
     columns_to_drop = ['update_time', 'webscriping', 'listing_id', 'SNAP_option', 'SNAP_option_1', 'SNAP_option_2', 'FNAP_1', 'FNAP_2', 'FNAP_3', 'FNAP_4', 'FNAP_5', 'FNAP_888', 'acceptedpayment', 'acceptedpayment_1', 'acceptedpayment_2', 'acceptedpayment_3', 'acceptedpayment_4', 'acceptedpayment_5', 'acceptedpayment_6', 'acceptedpayment_7', 'acceptedpayment_888', 'acceptedpayment_7_desc',	'acceptedpayment_other_desc' ]
     df = df.drop(columns=columns_to_drop)
 
-    columns_to_drop = ['specialproductionmethods_1', 'specialproductionmethods_2',
-       'specialproductionmethods_3', 'specialproductionmethods_4',
-       'specialproductionmethods_5', 'specialproductionmethods_6',
-       'specialproductionmethods_7', 'specialproductionmethods_8',
-       'specialproductionmethods_9', 'specialproductionmethods_10',
-       'specialproductionmethods_11', 'specialproductionmethods_12',
-       'specialproductionmethods_13', 'specialproductionmethods_14',
-       'specialproductionmethods_888', 'specialproductionmethods_other_desc',
-       'saleschannel_onlineorder', 'saleschannel_onlineorder_1',
-       'saleschannel_onlineorder_2', 'saleschannel_onlineorder_3',
-       'saleschannel_onlineorder_2_desc', 'saleschannel_onlineorder_3_desc',
-       'saleschannel_onlineorder_other_desc', 'saleschannel_phoneorder',
-       'saleschannel_csaorder', 'saleschannel_csaorder_1',
-       'saleschannel_csaorder_2', 'saleschannel_csaorder_3',
-       'saleschannel_csaorder_1_desc', 'saleschannel_csaorder_2_desc',
-       'saleschannel_csaorder_3_desc', 'saleschannel_csa_vendor',
-       'saleschannel_csa_vendor_1', 'saleschannel_csa_vendor_2',
-       'saleschannel_deliverymethod', 'saleschannel_deliverymethod_1',
-       'saleschannel_deliverymethod_2', 'saleschannel_deliverymethod_3',
-       'saleschannel_deliverymethod_2_desc', 'diversegroup',
-       'diversegroup_1', 'diversegroup_2', 'diversegroup_3', 'diversegroup_4',
-       'diversegroup_5', 'diversegroup_6', 'diversegroup_888',
-       'diversegroup_other_desc', 'FNAP_3_desc', 'orgnization_1',
-       'orgnization_2', 'orgnization_3', 'orgnization_4', 'orgnization_888',
-       'orgnization_1_desc', 'orgnization_2_desc', 'orgnization_3_desc',
-       'orgnization_4_desc', 'orgnization_other_desc']
-    
-    df = df.drop(columns=columns_to_drop)
+    # filter out all the garbage columsn
+    columns_to_keep = ['listing_name', 'location_address', 'orgnization', 'listing_desc',
+       'location_x', 'location_y', 'location_desc', 'location_site',
+       'location_site_otherdesc', 'location_indoor',
+       'specialproductionmethods', 'FNAP']
 
-
-    # Print the first few rows of the DataFrame to verify the data
+    df = df[columns_to_keep]
     print(df.columns)
+
+
+    try:
+        # Establish a database connection
+        connection = mysql.connector.connect(**db_config)
+
+        # Create a cursor object to interact with the database
+        cursor = connection.cursor()
+
+        # Define the SQL INSERT statement
+        insert_query = f"""
+        INSERT INTO your_table_name ({', '.join(columns_to_keep)})
+        VALUES ({', '.join(['%s'] * len(columns_to_keep))})
+        """
+
+        # Iterate through the cleaned data and insert it into the MySQL database
+        for index, row in df.iterrows():
+            data = tuple(row)
+            cursor.execute(insert_query, data)
+
+        # Commit the changes to the database
+        connection.commit()
+        print("Data inserted into the farmers database successfully.")
+
+    except mysql.connector.Error as err:
+        print("Error inserting data into the farmers market database:", err)
+
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        connection.close()
 
 #------------------------------------------------------------------------
 # CHARITY DATA
