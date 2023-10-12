@@ -1,5 +1,6 @@
 import requests
 import mysql.connector
+import pandas as pd
 
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
 
@@ -209,6 +210,44 @@ def insert_location_crop_data_to_db(db_config):
             connection.close()
 
 #------------------------------------------------------------------------
+# FARMERS MARKET DATA
+def fetch_farmer_market_data() -> dict:
+    # Read the XLSX file into a DataFrame
+    xlsx_file = "farmersmarketdata.xlsx"
+    df = pd.read_excel(xlsx_file)
+    
+    # Drop garbage columns
+    columns_to_drop = ['update_time', 'webscriping', 'listing_id', 'SNAP_option', 'SNAP_option_1', 'SNAP_option_2', 'FNAP_1', 'FNAP_2', 'FNAP_3', 'FNAP_4', 'FNAP_5', 'FNAP_888', 'acceptedpayment', 'acceptedpayment_1', 'acceptedpayment_2', 'acceptedpayment_3', 'acceptedpayment_4', 'acceptedpayment_5', 'acceptedpayment_6', 'acceptedpayment_7', 'acceptedpayment_888', 'acceptedpayment_7_desc',	'acceptedpayment_other_desc' ]
+    df = df.drop(columns=columns_to_drop)
+
+    columns_to_drop = ['specialproductionmethods_1', 'specialproductionmethods_2',
+       'specialproductionmethods_3', 'specialproductionmethods_4',
+       'specialproductionmethods_5', 'specialproductionmethods_6',
+       'specialproductionmethods_7', 'specialproductionmethods_8',
+       'specialproductionmethods_9', 'specialproductionmethods_10',
+       'specialproductionmethods_11', 'specialproductionmethods_12',
+       'specialproductionmethods_13', 'specialproductionmethods_14',
+       'specialproductionmethods_888', 'specialproductionmethods_other_desc',
+       'saleschannel_onlineorder', 'saleschannel_onlineorder_1',
+       'saleschannel_onlineorder_2', 'saleschannel_onlineorder_3',
+       'saleschannel_onlineorder_2_desc', 'saleschannel_onlineorder_3_desc',
+       'saleschannel_onlineorder_other_desc', 'saleschannel_phoneorder',
+       'saleschannel_csaorder', 'saleschannel_csaorder_1',
+       'saleschannel_csaorder_2', 'saleschannel_csaorder_3',
+       'saleschannel_csaorder_1_desc', 'saleschannel_csaorder_2_desc',
+       'saleschannel_csaorder_3_desc', 'saleschannel_csa_vendor',
+       'saleschannel_csa_vendor_1', 'saleschannel_csa_vendor_2',
+       'saleschannel_deliverymethod', 'saleschannel_deliverymethod_1',
+       'saleschannel_deliverymethod_2', 'saleschannel_deliverymethod_3',
+       'saleschannel_deliverymethod_2_desc']
+    
+    df = df.drop(columns=columns_to_drop)
+
+
+    # Print the first few rows of the DataFrame to verify the data
+    print(df.columns.__len__)
+
+#------------------------------------------------------------------------
 # CHARITY DATA
 def fetch_charity_data() -> dict:
     # We have two API calls here. The API uses search terms to get relevant queries and cannot 
@@ -307,7 +346,7 @@ def insert_charity_crop_data_to_db(db_config):
         
         for record in data:
             # Iterate through the API data and insert it into the MySQL database
-            cursor.execute(insert_query, data)
+            cursor.execute(insert_query, record)
 
         # Commit the changes to the database
         connection.commit()
@@ -327,13 +366,14 @@ def insert_charity_crop_data_to_db(db_config):
 # Defining main function
 def main(): 
     # location crop data
-    create_crop_table() # does not create new table if it exists
-    insert_location_crop_data_to_db(db_config=db_config)
+    # create_crop_table() # does not create new table if it exists
+    # insert_location_crop_data_to_db(db_config=db_config)
 
-    # charities data
-    create_charity_table()
-    fetch_charity_data(db_config=db_config)
+    # # charities data
+    # create_charity_table()
+    # fetch_charity_data(db_config=db_config)
 
+    fetch_farmer_market_data()
   
 
 if __name__=="__main__": 
