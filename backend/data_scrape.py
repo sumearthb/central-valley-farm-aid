@@ -71,7 +71,7 @@ def create_crop_table():
 
 def create_charity_table():
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS charity_data (
+    CREATE TABLE IF NOT EXISTS charity_table (
         id INT AUTO_INCREMENT PRIMARY KEY,
         ein VARCHAR(20) NOT NULL,
         charityName VARCHAR(255) NOT NULL,
@@ -152,7 +152,7 @@ def insert_location_crop_data_to_db(db_config):
         # Note: have trimmed down the orignal query to key-pairs that may be useful to display
         for record in data:
             insert_query = '''
-                INSERT INTO crop_data (
+                INSERT INTO crop_table (
                     country_name,
                     county_name,
                     statisticcat_desc,
@@ -239,13 +239,19 @@ def fetch_farmer_market_data() -> dict:
        'saleschannel_csa_vendor_1', 'saleschannel_csa_vendor_2',
        'saleschannel_deliverymethod', 'saleschannel_deliverymethod_1',
        'saleschannel_deliverymethod_2', 'saleschannel_deliverymethod_3',
-       'saleschannel_deliverymethod_2_desc']
+       'saleschannel_deliverymethod_2_desc', 'diversegroup',
+       'diversegroup_1', 'diversegroup_2', 'diversegroup_3', 'diversegroup_4',
+       'diversegroup_5', 'diversegroup_6', 'diversegroup_888',
+       'diversegroup_other_desc', 'FNAP_3_desc', 'orgnization_1',
+       'orgnization_2', 'orgnization_3', 'orgnization_4', 'orgnization_888',
+       'orgnization_1_desc', 'orgnization_2_desc', 'orgnization_3_desc',
+       'orgnization_4_desc', 'orgnization_other_desc']
     
     df = df.drop(columns=columns_to_drop)
 
 
     # Print the first few rows of the DataFrame to verify the data
-    print(df.columns.__len__)
+    print(df.columns)
 
 #------------------------------------------------------------------------
 # CHARITY DATA
@@ -332,7 +338,7 @@ def insert_charity_crop_data_to_db(db_config):
 
          # Define the SQL INSERT statement
         insert_query = """
-        INSERT INTO your_table_name (
+        INSERT INTO charity_table (
             ein, charityName, url, donationUrl, city, state, zipCode,
             start, rows, recordCount, score, acceptingDonations,
             category, eligibleCd, deductibilityCd, statusCd, website,
