@@ -2,7 +2,6 @@ from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 
-# Just need to change master password
 app = Flask(__name__)
 CORS(app)
 app.config[
@@ -35,6 +34,9 @@ class Locations(db.Model):
     util_practice_desc   = db.Column(db.String(255))
     asd_desc             = db.Column(db.String(255))
     
+    def __repr__(self):
+        return f"Location ('{self.county_name}')"
+    
 class FMs(db.Model):  
     __tablename__ = "something"
 
@@ -61,4 +63,7 @@ class NPs(db.Model):
     parent_ein           = db.Column(db.String(20))
     latitude             = db.Column(db.Decimal(10, 6))
     longitude            = db.Column(db.Decimal(10, 6)) 
+    
+    def __repr__(self):
+        return f"Nonprofit ('{self.charityName}')"
     
