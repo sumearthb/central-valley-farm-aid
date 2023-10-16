@@ -18,5 +18,11 @@ pull:
 build-frontend :
 	docker build -t idb-frontend frontend/
 
+build-backend :
+	docker build -t idb-backend backend/
+
 run-frontend:
 	docker run -dp 80:3000 idb-frontend
+
+run-backend:
+	docker run idb-backend
