@@ -1,10 +1,35 @@
 stages:          
   - build
 
-build:
+build_frontend:
   image: node
   stage: build
   script:
     - cd frontend
     - npm install
     - npm run build
+
+# test_frontend:
+#   image: node
+#   stage: test
+#   script:
+#     - cd frontend
+#     - npm install
+#     - npm test
+
+# test_frontend_gui:
+#   image: python:3
+#   stage: test
+#   script:
+#     - cd frontend
+#     - ...
+
+# test_backend:
+#   image: python:3
+#   stage: test
+#   before_script:
+#     - pip install -r backend/requirements.txt
+#   script:
+#     - python3 backend/tests.py
+
+
