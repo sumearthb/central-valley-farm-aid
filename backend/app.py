@@ -23,7 +23,15 @@ PAGE_SIZE = 20
 @app.route('/')
 def home():
 	return "Welcome to Central Valley Farm Aid!" 
+    
+"""
+Implementation for search and filtering-specific 
+endpoints will be completed in phase 3
 
+Phase 2 will see the implementation of the GetAll__ endpoints
+"""
+
+# TODO ~ phase 3
 @app.route('/api/SearchAll')
 def search_all():
     return 0
@@ -40,6 +48,7 @@ def query_FMs(mode):
     query = db.session.query(FMs)
     return query
 
+# TODO ~ phase 3
 @app.route("/api/GetLocations")
 def get_locations():
     query = query_locations(1)
@@ -55,13 +64,14 @@ def get_all_locations():
     query = query_locations(0)
     location_list = []
     for location in query:
-        location_dict = {}
+        location_dict = LocationSchema.dump(location)
         location_list.append(location_dict)
     response = jsonify({"instance_count" : len(location_list), "locations" : location_list})
     return response 
 
-@app.route("/api/NPs")
-def get_NPs():
+# TODO ~ phase 3
+@app.route("/api/GetNonProfit")
+def get_nonprofit():
     query = query_NPs(1)
     NP_list = []
     for NP in query:
@@ -75,11 +85,12 @@ def get_all_nonprofits():
     query = query_NPs(0)
     NP_list = []
     for NP in query:
-        NP_dict = {}
+        NP_dict = NPSchema.dump(NP)
         NP_list.append(NP_dict)
     response = jsonify({"instance_count" : len(NP_list), "locations" : NP_list})
     return response 
 
+# TODO ~ phase 3
 @app.route("/api/GetMarket")
 def get_market():
     query = query_FMs(1)
@@ -95,7 +106,7 @@ def get_all_markets():
     query = query_FMs(0)
     FM_list = []
     for FM in query:
-        FM_dict = {}
+        FM_dict = FMSchema.dump(FM)
         FM_list.append(FM_dict)
     response = jsonify({"instance_count" : len(FM_list), "locations" : FM_list})
     return response
