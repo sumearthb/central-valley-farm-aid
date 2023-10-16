@@ -118,7 +118,7 @@ def create_farmers_market_table():
     pass
 #------------------------------------------------------------------------
 # CROP DATA
-def fetch_location_crop_data() -> dict:
+def fetch_location_crop_data():
     url = "https://quickstats.nass.usda.gov/api/api_GET/?key=2937E8A6-338E-3BD9-8E2E-1EF47FF8D729&sector_desc=crops&year=2018&state_alpha=CA&agg_level_desc=County&county_name=Glenn&county_name=Colusa&county_name=Kings&county_name=Kern&county_name=Sacremento&county_name=San Joaquin&county_name=Madera&county_name=Merced&county_name=Sutter&county_name=Yolo&county_name=Tulare&county_name=Tehama&county_name=Fresno&county_name=Stanislaus&county_name=Butte"
     payload = "2937E8A6-338E-3BD9-8E2E-1EF47FF8D729\n"
     headers = {
@@ -168,8 +168,8 @@ def fetch_location_crop_data() -> dict:
         if obj['county_name'] == "":
             random_index = random.randint(0, len(county_names) - 1)
             obj['county_name'] = county_names[random_index]
-
-    print(res['data'])
+    
+    return res['data']
 
 # Function to insert data into the MySQL database
 def insert_location_crop_data_to_db(db_config):
@@ -243,7 +243,7 @@ def insert_location_crop_data_to_db(db_config):
 
 #------------------------------------------------------------------------
 # FARMERS MARKET DATA
-def fetch_and_insert_farmer_market_data() -> dict:
+def fetch_and_insert_farmer_market_data():
     # Read the XLSX file into a DataFrame
     xlsx_file = "farmersmarketdata.xlsx"
     df = pd.read_excel(xlsx_file)
@@ -289,7 +289,7 @@ def fetch_and_insert_farmer_market_data() -> dict:
 
 #------------------------------------------------------------------------
 # CHARITY DATA
-def fetch_charity_data() -> dict:
+def fetch_charity_data():
     # We have two API calls here. The API uses search terms to get relevant queries and cannot 
     # query more than one search term at once, so we do it seperetly
     res1 = {}
@@ -359,9 +359,8 @@ def fetch_charity_data() -> dict:
     
     # Join the seperate API calls in a singular list of data points
     res: list = res1['data']
-    res.append(res2['data'])
-    res.append(res3['data'])
-    print(res)
+    res.extend(res2['data'])
+    res.extend(res3['data'])
     return res
 
 def insert_charity_crop_data_to_db(db_config):
@@ -370,19 +369,47 @@ def insert_charity_crop_data_to_db(db_config):
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
 
-         # Define the SQL INSERT statement
-        insert_query = """
-        INSERT INTO charity_table (
-            ein, charityName, url, donationUrl, city, state, zipCode,
-            start, category, eligibleCd, deductibilityCd, statusCd, website,
-            missionStatement, latitude, longitude
-        ) VALUES (
-            %(ein)s, %(charityName)s, %(url)s, %(donationUrl)s, %(city)s, %(state)s, %(zipCode)s,
-            %(start)s, %(category)s, %(eligibleCd)s, %(deductibilityCd)s, %(statusCd)s, %(website)s,
-            %(missionStatement)s, %(latitude)s, %(longitude)s
-        """
-        
+
         for record in data:
+            # Define the SQL INSERT statement
+            insert_query = '''
+                INSERT INTO charity_table (
+                    ein,
+                    charityName,
+                    url,
+                    donationUrl,
+                    city,
+                    state,
+                    zipCode,
+                    start,
+                    category,
+                    eligibleCd,
+                    deductibilityCd,
+                    statusCd,
+                    website,
+                    missionStatement,
+                    latitude,
+                    longitude
+                ) VALUES (
+                    %(ein)s,
+                    %(charityName)s,
+                    %(url)s,
+                    %(donationUrl)s,
+                    %(city)s,
+                    %(state)s,
+                    %(zipCode)s,
+                    %(start)s,
+                    %(category)s,
+                    %(eligibleCd)s,
+                    %(deductibilityCd)s,
+                    %(statusCd)s,
+                    %(website)s,
+                    %(missionStatement)s,
+                    %(latitude)s,
+                    %(longitude)s
+                )
+            '''
+        
             # Iterate through the API data and insert it into the MySQL database
             cursor.execute(insert_query, record)
 
@@ -404,12 +431,13 @@ def insert_charity_crop_data_to_db(db_config):
 # Defining main function
 def main(): 
     # location crop data
+    fetch_location_crop_data()
     # create_crop_table() # does not create new table if it exists
     # insert_location_crop_data_to_db(db_config=db_config)
 
     # # charities data
     # create_charity_table()
-    print(fetch_charity_data())
+    #fetch_charity_data()
 
     # Farmer Market data - made into one function for this case 
     #fetch_and_insert_farmer_market_data()
