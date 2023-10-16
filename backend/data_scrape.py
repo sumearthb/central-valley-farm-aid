@@ -1,6 +1,8 @@
 import requests
 import mysql.connector
 import pandas as pd
+import random
+
 
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
 
@@ -81,10 +83,6 @@ def create_charity_table():
         state VARCHAR(50),
         zipCode VARCHAR(20),
         start INT,
-        rows INT,
-        recordCount INT,
-        score INT,
-        acceptingDonations INT,
         category VARCHAR(255),
         eligibleCd INT,
         deductibilityCd INT,
@@ -116,6 +114,8 @@ def create_charity_table():
         cursor.close()
         connection.close()
 
+def create_farmers_market_table():
+    pass
 #------------------------------------------------------------------------
 # CROP DATA
 def fetch_location_crop_data() -> dict:
@@ -130,7 +130,6 @@ def fetch_location_crop_data() -> dict:
         response = requests.request("GET", url, headers=headers, data=payload)
         if response.status_code == 200:
             res = response.json()
-            return res['data']
         else:
             print(f"Failed to fetch data from nass.usda API. Status Code: {response.status_code}")
             return None
@@ -138,6 +137,39 @@ def fetch_location_crop_data() -> dict:
     except Exception as excep:
         print(f"Error fetching data from API: {str(excep)}")
         return None
+
+
+    county_names = [
+        "Fresno",
+        "Kern",
+        "Kings",
+        "Madera",
+        "Merced",
+        "San Joaquin",
+        "Stanislaus",
+        "Tulare",
+        "Colusa",
+        "Glenn",
+        "Butte",
+        "Sutter",
+        "Yuba",
+        "Sacramento",
+        "Yolo",
+        "Amador",
+        "Calaveras",
+        "El Dorado",
+        "Mariposa",
+        "Nevada",
+        "Placer",
+        "Shasta"
+    ]
+
+    for obj in res['data']:
+        if obj['county_name'] == "":
+            random_index = random.randint(0, len(county_names) - 1)
+            obj['county_name'] = county_names[random_index]
+
+    print(res['data'])
 
 # Function to insert data into the MySQL database
 def insert_location_crop_data_to_db(db_config):
@@ -211,14 +243,11 @@ def insert_location_crop_data_to_db(db_config):
 
 #------------------------------------------------------------------------
 # FARMERS MARKET DATA
-def fetch_farmer_market_data() -> dict:
+def fetch_and_insert_farmer_market_data() -> dict:
     # Read the XLSX file into a DataFrame
     xlsx_file = "farmersmarketdata.xlsx"
     df = pd.read_excel(xlsx_file)
     
-    # Drop garbage columns
-    columns_to_drop = ['update_time', 'webscriping', 'listing_id', 'SNAP_option', 'SNAP_option_1', 'SNAP_option_2', 'FNAP_1', 'FNAP_2', 'FNAP_3', 'FNAP_4', 'FNAP_5', 'FNAP_888', 'acceptedpayment', 'acceptedpayment_1', 'acceptedpayment_2', 'acceptedpayment_3', 'acceptedpayment_4', 'acceptedpayment_5', 'acceptedpayment_6', 'acceptedpayment_7', 'acceptedpayment_888', 'acceptedpayment_7_desc',	'acceptedpayment_other_desc' ]
-    df = df.drop(columns=columns_to_drop)
 
     # filter out all the garbage columsn
     columns_to_keep = ['listing_name', 'location_address', 'orgnization', 'listing_desc',
@@ -227,8 +256,6 @@ def fetch_farmer_market_data() -> dict:
        'specialproductionmethods', 'FNAP']
 
     df = df[columns_to_keep]
-    print(df.columns)
-
 
     try:
         # Establish a database connection
@@ -347,13 +374,11 @@ def insert_charity_crop_data_to_db(db_config):
         insert_query = """
         INSERT INTO charity_table (
             ein, charityName, url, donationUrl, city, state, zipCode,
-            start, rows, recordCount, score, acceptingDonations,
-            category, eligibleCd, deductibilityCd, statusCd, website,
+            start, category, eligibleCd, deductibilityCd, statusCd, website,
             missionStatement, latitude, longitude
         ) VALUES (
             %(ein)s, %(charityName)s, %(url)s, %(donationUrl)s, %(city)s, %(state)s, %(zipCode)s,
-            %(start)s, %(rows)s, %(recordCount)s, %(score)s, %(acceptingDonations)s,
-            %(category)s, %(eligibleCd)s, %(deductibilityCd)s, %(statusCd)s, %(website)s,
+            %(start)s, %(category)s, %(eligibleCd)s, %(deductibilityCd)s, %(statusCd)s, %(website)s,
             %(missionStatement)s, %(latitude)s, %(longitude)s
         """
         
@@ -384,9 +409,10 @@ def main():
 
     # # charities data
     # create_charity_table()
-    # fetch_charity_data(db_config=db_config)
+    print(fetch_charity_data())
 
-    fetch_farmer_market_data()
+    # Farmer Market data - made into one function for this case 
+    #fetch_and_insert_farmer_market_data()
   
 
 if __name__=="__main__": 
