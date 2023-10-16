@@ -56,7 +56,7 @@ def get_locations():
     for location in query:
         location_dict = {}
         location_list.append(location_dict)
-    response = jsonify({"instance_count" : len(location_list), "locations" : location_list})
+    response = jsonify({"instance_count" : len(location_list), "data" : location_list})
     return response
 
 @app.route("/api/GetAllLocations")
@@ -66,8 +66,8 @@ def get_all_locations():
     for location in query:
         location_dict = LocationSchema.dump(location)
         location_list.append(location_dict)
-    response = jsonify({"instance_count" : len(location_list), "locations" : location_list})
-    return response 
+    response = jsonify({"instance_count" : len(location_list), "data" : location_list})
+    return response
 
 # TODO ~ phase 3
 @app.route("/api/GetNonProfit")
@@ -77,7 +77,7 @@ def get_nonprofit():
     for NP in query:
         NP_dict = {}
         NP_list.append(NP_dict)
-    response = jsonify({"instance_count" : len(NP_list), "locations" : NP_list})
+    response = jsonify({"instance_count" : len(NP_list), "data" : NP_list})
     return response 
 
 @app.route("/api/GetAllNonProfit")
@@ -87,7 +87,7 @@ def get_all_nonprofits():
     for NP in query:
         NP_dict = NPSchema.dump(NP)
         NP_list.append(NP_dict)
-    response = jsonify({"instance_count" : len(NP_list), "locations" : NP_list})
+    response = jsonify({"instance_count" : len(NP_list), "data" : NP_list})
     return response 
 
 # TODO ~ phase 3
@@ -98,7 +98,7 @@ def get_market():
     for FM in query:
         FM_dict = {}
         FM_list.append(FM_dict)
-    response = jsonify({"instance_count" : len(FM_list), "locations" : FM_list})
+    response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
     return response
 
 @app.route("/api/GetAllMarkets")
@@ -108,7 +108,7 @@ def get_all_markets():
     for FM in query:
         FM_dict = FMSchema.dump(FM)
         FM_list.append(FM_dict)
-    response = jsonify({"instance_count" : len(FM_list), "locations" : FM_list})
+    response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
     return response
 
 # Running app
