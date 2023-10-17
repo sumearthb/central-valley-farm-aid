@@ -6,7 +6,7 @@ app = Flask(__name__)
 CORS(app)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "mysql+pymysql://admin:Rural_Farm_Aid01@api-scrape-data.crn5q2iybxzv.us-east-1.rds.amazonaws.com:3306/api_data"
+] = "mysql+pymysql://admin:Rural_Farm_Aid01@database-2.crn5q2iybxzv.us-east-1.rds.amazonaws.com:3306/central_valley_db"
 db = SQLAlchemy(app)
 
 # Add Association tables
@@ -38,7 +38,20 @@ class Locations(db.Model):
         return f"Location ('{self.county_name}')"
     
 class FMs(db.Model):  
-    __tablename__ = "something"
+    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    listing_name         = db.Column(db.String(255))
+    location_address     = db.Column(db.String(255))
+    orgnization          = db.Column(db.String(255))
+    listing_desc         = db.Column(db.Text)
+    location_x           = db.Column(db.Integer)
+    location_y           = db.Column(db.Integer)
+    location_desc        = db.Column(db.Text)
+    location_site        = db.Column(db.Text)
+    prod_methods         = db.Column(db.Text)
+    fnap                 = db.Column(db.Text)
+    
+    def __repr__(self):
+        return f"Farmers' Market ('{self.listing_name}')"
 
 class NPs(db.Model):     
     id                   = db.Column(db.Integer, primary_key=True, autoincrement=True)
@@ -46,7 +59,7 @@ class NPs(db.Model):
     charityName          = db.Column(db.String(255), nullable=False)
     url                  = db.Column(db.String(255))
     donationUrl          = db.Column(db.String(255))
-    city                 = db.Column(db.Text(100))
+    city                 = db.Column(db.String(255))
     state                = db.Column(db.String(50))
     zipCode              = db.Column(db.String(20))
     start                = db.Column(db.Integer)

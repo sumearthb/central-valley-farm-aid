@@ -49,7 +49,7 @@ def query_FMs(mode):
     return query
 
 # TODO ~ phase 3
-@app.route("/api/GetLocations")
+@app.route("/api/GetLocations", methods = ['GET'])
 def get_locations():
     query = query_locations(1)
     location_list = []
@@ -59,7 +59,7 @@ def get_locations():
     response = jsonify({"instance_count" : len(location_list), "data" : location_list})
     return response
 
-@app.route("/api/GetAllLocations")
+@app.route("/api/GetAllLocations", methods = ['GET'])
 def get_all_locations():
     query = query_locations(0)
     location_list = []
@@ -70,7 +70,7 @@ def get_all_locations():
     return response
 
 # TODO ~ phase 3
-@app.route("/api/GetNonProfit")
+@app.route("/api/GetNonProfit", methods = ['GET'])
 def get_nonprofit():
     query = query_NPs(1)
     NP_list = []
@@ -80,7 +80,7 @@ def get_nonprofit():
     response = jsonify({"instance_count" : len(NP_list), "data" : NP_list})
     return response 
 
-@app.route("/api/GetAllNonProfit")
+@app.route("/api/GetAllNonProfit", methods = ['GET'])
 def get_all_nonprofits():
     query = query_NPs(0)
     NP_list = []
@@ -91,7 +91,7 @@ def get_all_nonprofits():
     return response 
 
 # TODO ~ phase 3
-@app.route("/api/GetMarket")
+@app.route("/api/GetMarket", methods = ['GET'])
 def get_market():
     query = query_FMs(1)
     FM_list = []
@@ -101,7 +101,7 @@ def get_market():
     response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
     return response
 
-@app.route("/api/GetAllMarkets")
+@app.route("/api/GetAllMarkets", methods = ['GET'])
 def get_all_markets():
     query = query_FMs(0)
     FM_list = []
