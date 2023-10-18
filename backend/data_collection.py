@@ -298,13 +298,15 @@ def fetch_and_insert_farmer_market_data():
     # trim down to only cali locations and useful columns
     df = df[columns_to_keep]
     df = df[df['location_address'].str.contains('California')]
+    df.fillna(0, inplace=True)
+    
     
     # Use latitute/ longitude to find closest charities to farmers' markets
     # Farmers market data lat/ lon columns: location_x/ location_y (floats)
     
     # returns long list of charity objects, with fields longitude and latitude
-    charity_data = fetch_charity_data()
-    print(charity_data[0])
+    #charity_data = fetch_charity_data()
+    #print(charity_data[0])
     # Convert to PANDAS DATAFRAME HERE ****
     # Charity data lat/ lon columns: latitudue/ longitude (floats)
     # df['closest_charities'] = ''
@@ -589,7 +591,7 @@ def insert_charity_crop_data_to_db(db_config):
 # Defining main function
 def main(): 
     # location crop data
-    fetch_location_crop_data()
+    # fetch_location_crop_data()
     # create_crop_table() # does not create new table if it exists
     # insert_location_crop_data_to_db(db_config=db_config)
 
