@@ -9,8 +9,6 @@ app.config[
 ] = "mysql+pymysql://admin:Central_Valley1@database-1.cnowuhjix5ja.us-west-1.rds.amazonaws.com:3306/api_scraping"
 db = SQLAlchemy(app)
 
-# Add Association tables
-
 class Locations(db.Model):
     __tablename__ = "crop_table"
     

@@ -1,10 +1,8 @@
 # Import flask and datetime module for showing date and time
 from flask import Flask, request, jsonify, Response
-import datetime
 from models import Locations, NPs, FMs, app, db
 from schema import LocationSchema, NPSchema, FMSchema
 from flask_cors import CORS
-import json
 from sqlalchemy import or_, func, and_, Integer
 from sqlalchemy.sql.expression import asc, desc
 
@@ -36,32 +34,21 @@ Phase 2 will see the implementation of the GetAll__ endpoints
 def search_all():
     return 0
 
-def query_locations(mode):
+def query_locations():
     query = db.session.query(Locations)
     return query
 
-def query_NPs(mode):
+def query_NPs():
     query = db.session.query(NPs)
     return query
 
-def query_FMs(mode):
+def query_FMs():
     query = db.session.query(FMs)
     return query
 
-# TODO ~ phase 3
-@app.route("/api/GetLocations", methods = ['GET'])
-def get_locations():
-    query = query_locations(1)
-    location_list = []
-    for location in query:
-        location_dict = {}
-        location_list.append(location_dict)
-    response = jsonify({"instance_count" : len(location_list), "data" : location_list})
-    return response
-
-@app.route("/api/GetAllLocations", methods = ['GET'])
-def get_all_locations():
-    query = query_locations(0)
+@app.route("/api/GetLocations/<name>", methods = ['GET'])
+def get_locations(name):
+    query = db.session.query(Locations).filter_by(county_name=name)
     location_list = []
     for location in query:
         location_schema = LocationSchema()
@@ -70,20 +57,20 @@ def get_all_locations():
     response = jsonify({"instance_count" : len(location_list), "data" : location_list})
     return response
 
-# TODO ~ phase 3
-@app.route("/api/GetNonProfit", methods = ['GET'])
-def get_nonprofit():
-    query = query_NPs(1)
-    NP_list = []
-    for NP in query:
-        NP_dict = {}
-        NP_list.append(NP_dict)
-    response = jsonify({"instance_count" : len(NP_list), "data" : NP_list})
-    return response 
+@app.route("/api/GetAllLocations", methods = ['GET'])
+def get_all_locations():
+    query = query_locations()
+    location_list = []
+    for location in query:
+        location_schema = LocationSchema()
+        location_dict = location_schema.dump(location)
+        location_list.append(location_dict)
+    response = jsonify({"instance_count" : len(location_list), "data" : location_list})
+    return response
 
-@app.route("/api/GetAllNonProfit", methods = ['GET'])
-def get_all_nonprofits():
-    query = query_NPs(0)
+@app.route("/api/GetNonProfit/<name>", methods = ['GET'])
+def get_nonprofit(name):
+    query = db.session.query(NPs).filter_by(charityName=name)
     NP_list = []
     for NP in query:
         NP_schema = NPSchema()
@@ -92,20 +79,31 @@ def get_all_nonprofits():
     response = jsonify({"instance_count" : len(NP_list), "data" : NP_list})
     return response 
 
-# TODO ~ phase 3
-@app.route("/api/GetMarket", methods = ['GET'])
-def get_market():
-    query = query_FMs(1)
+@app.route("/api/GetAllNonProfit", methods = ['GET'])
+def get_all_nonprofits():
+    query = query_NPs()
+    NP_list = []
+    for NP in query:
+        NP_schema = NPSchema()
+        NP_dict = NP_schema.dump(NP)
+        NP_list.append(NP_dict)
+    response = jsonify({"instance_count" : len(NP_list), "data" : NP_list})
+    return response 
+
+@app.route("/api/GetMarket/<name>", methods = ['GET'])
+def get_market(name):
+    query = db.session.query(FMs).filter_by(listing_name=name)
     FM_list = []
     for FM in query:
-        FM_dict = {}
+        FM_schema = FMSchema()
+        FM_dict = FM_schema.dump(FM)
         FM_list.append(FM_dict)
     response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
     return response
 
 @app.route("/api/GetAllMarkets", methods = ['GET'])
 def get_all_markets():
-    query = query_FMs(0)
+    query = query_FMs()
     FM_list = []
     for FM in query:
         FM_schema = FMSchema()

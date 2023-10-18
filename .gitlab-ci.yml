@@ -30,6 +30,6 @@ build_frontend:
 #   before_script:
 #     - pip install -r backend/requirements.txt
 #   script:
-#     - python3 backend/tests.py
+#     - cd backend && python3 tests.py
 
 
