@@ -2,6 +2,7 @@ import requests
 import mysql.connector
 import pandas as pd
 import random
+import numpy as np
 
 
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
@@ -104,7 +105,7 @@ def create_charity_table():
         # Execute the table creation SQL statement
         cursor.execute(create_table_query)
 
-        print("Table 'charity_data' created successfully.")
+        print("Table 'charity_table' created successfully.")
 
     except mysql.connector.Error as err:
         print("Error creating table:", err)
@@ -115,7 +116,44 @@ def create_charity_table():
         connection.close()
 
 def create_farmers_market_table():
-    pass
+    create_table_query = """
+    CREATE TABLE IF NOT EXISTS farmers_market_table (
+        id INT AUTO_INCREMENT PRIMARY KEY,
+        listing_name VARCHAR(255),
+        location_address VARCHAR(255),
+        orgnization VARCHAR(255),
+        listing_desc VARCHAR(255),
+        location_x FLOAT,
+        location_y FLOAT,
+        location_desc VARCHAR(255),
+        location_site VARCHAR(255),
+        location_site_otherdesc VARCHAR(255),
+        location_indoor VARCHAR(255),
+        specialproductionmethods VARCHAR(255),
+        FNAP VARCHAR(255)
+    );
+    """
+
+    try:
+        # Establish a database connection
+        connection = mysql.connector.connect(**db_config)
+
+        # Create a cursor object to interact with the database
+        cursor = connection.cursor()
+
+        # Execute the table creation SQL statement
+        cursor.execute(create_table_query)
+
+        print("Table 'farmers_market_table' created successfully.")
+
+    except mysql.connector.Error as err:
+        print("Error creating table:", err)
+
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        connection.close()
+
 #------------------------------------------------------------------------
 # CROP DATA
 def fetch_location_crop_data():
@@ -244,18 +282,59 @@ def insert_location_crop_data_to_db(db_config):
 #------------------------------------------------------------------------
 # FARMERS MARKET DATA
 def fetch_and_insert_farmer_market_data():
+    pd.set_option("display.max_columns", 500)
+    pd.set_option("display.width", 1000)
     # Read the XLSX file into a DataFrame
     xlsx_file = "farmersmarketdata.xlsx"
     df = pd.read_excel(xlsx_file)
     
 
-    # filter out all the garbage columsn
+    # filter out all unneeded columsn
     columns_to_keep = ['listing_name', 'location_address', 'orgnization', 'listing_desc',
        'location_x', 'location_y', 'location_desc', 'location_site',
        'location_site_otherdesc', 'location_indoor',
        'specialproductionmethods', 'FNAP']
 
+    # trim down to only cali locations and useful columns
     df = df[columns_to_keep]
+    df = df[df['location_address'].str.contains('California')]
+    
+    # Use latitute/ longitude to find closest charities to farmers' markets
+    # Farmers market data lat/ lon columns: location_x/ location_y (floats)
+    
+    # returns long list of charity objects, with fields longitude and latitude
+    charity_data = fetch_charity_data()
+    # Convert to PANDAS DATAFRAME HERE ****
+    # Charity data lat/ lon columns: latitudue/ longitude (floats)
+    closest_charities = pd.Series()
+    threshold = 0.5
+    for index_fm, row_fm in df.iterrows():
+        charities = []
+        for index_ch, row_ch in charity_data.iterrows():
+            fm_point = np.asarray([row_fm['location_x'], row_fm['location_y']])
+            charity_point = np.asarray(row_ch['latitude'], row_ch['longitude'])
+        
+            if np.linalg.norm(fm_point - charity_point) <= threshold:
+                charities.append(row_ch['charityName'])
+        closest_charities.
+    
+    made_into_json = '''
+    {
+    'listing_name': 'Colorado Farm and Art Market',
+    'location_address': '7350 Pine Creek Road, Colorado Springs, Colorado',
+    'orgnization': None,
+    'listing_desc': None,
+    'location_x': -104.81468,
+    'location_y': 38.9377160,
+    'location_desc': 'Behind the patio of the Margarita at Pine Creek',
+    'location_site': 'Private business parking lot; A restaurant--The Margarita at Pine Creek',
+    'location_site_otherdesc': 'No Indoor; Organic (USDA Certified); SNAP;Accept EBT at a central location;',
+    'location_indoor': 'No',
+    'specialproductionmethods': 'Organic (USDA Certified)',
+    'FNAP': 'SNAP;Accept EBT at a central location;'
+}
+    '''
+    print(df.columns())
 
     try:
         # Establish a database connection
@@ -263,11 +342,9 @@ def fetch_and_insert_farmer_market_data():
 
         # Create a cursor object to interact with the database
         cursor = connection.cursor()
-
-        # Define the SQL INSERT statement
         insert_query = f"""
-        INSERT INTO your_table_name ({', '.join(columns_to_keep)})
-        VALUES ({', '.join(['%s'] * len(columns_to_keep))})
+            INSERT INTO {table_name} ({', '.join(columns_to_keep)})
+            VALUES ({', '.join(['%s'] * len(columns_to_keep))})
         """
 
         # Iterate through the cleaned data and insert it into the MySQL database
@@ -279,13 +356,31 @@ def fetch_and_insert_farmer_market_data():
         connection.commit()
         print("Data inserted into the farmers database successfully.")
 
-    except mysql.connector.Error as err:
-        print("Error inserting data into the farmers market database:", err)
+    except Exception as e:
+        print("Error:", e)
+        connection.rollback()
+    #     # Define the SQL INSERT statement
+    #     insert_query = f"""
+    #     INSERT INTO your_table_name ({', '.join(columns_to_keep)})
+    #     VALUES ({', '.join(['%s'] * len(columns_to_keep))})
+    #     """
 
-    finally:
-        # Close the cursor and connection
-        cursor.close()
-        connection.close()
+    #     # Iterate through the cleaned data and insert it into the MySQL database
+    #     for index, row in df.iterrows():
+    #         data = tuple(row)
+    #         cursor.execute(insert_query, data)
+
+    #     # Commit the changes to the database
+    #     connection.commit()
+    #     print("Data inserted into the farmers database successfully.")
+
+    # except mysql.connector.Error as err:
+    #     print("Error inserting data into the farmers market database:", err)
+
+    # finally:
+    #     # Close the cursor and connection
+    #     cursor.close()
+    #     connection.close()
 
 #------------------------------------------------------------------------
 # CHARITY DATA
@@ -439,8 +534,9 @@ def main():
     # create_charity_table()
     #fetch_charity_data()
 
-    # Farmer Market data - made into one function for this case 
-    #fetch_and_insert_farmer_market_data()
+    # Farmer Market data 
+    create_farmers_market_table()
+    fetch_and_insert_farmer_market_data()
   
 
 if __name__=="__main__": 
