@@ -35,27 +35,27 @@ class Locations(db.Model):
     asd_desc             = db.Column(db.String(255))
     
     def __repr__(self):
-        return f"Location ('{self.county_name}')"
+        return f"Location: ('{self.county_name}')"
     
 class FMs(db.Model):  
-    __tablename__ = "your_table_name"
+    __tablename__ = "farmers_market_table"
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     listing_name         = db.Column(db.String(255))
     location_address     = db.Column(db.String(255))
     orgnization          = db.Column(db.String(255))
-    listing_desc         = db.Column(db.Text)
-    location_x           = db.Column(db.Integer)
-    location_y           = db.Column(db.Integer)
-    location_desc        = db.Column(db.Text)
-    location_site        = db.Column(db.Text)
-    otherdesc            = db.Column(db.Text)
-    location_indoor      = db.Column(db.Text)
-    prod_methods         = db.Column(db.Text)
-    fnap                 = db.Column(db.Text)
+    listing_desc         = db.Column(db.String(255))
+    location_x           = db.Column(db.Float)
+    location_y           = db.Column(db.Float)
+    location_desc        = db.Column(db.String(255))
+    location_site        = db.Column(db.String(255))
+    otherdesc            = db.Column(db.String(255))
+    location_indoor      = db.Column(db.String(255))
+    prod_methods         = db.Column(db.String(255))
+    fnap                 = db.Column(db.String(255))
     
     def __repr__(self):
-        return f"Farmers' Market ('{self.listing_name}')"
+        return f"Farmers' Market: ('{self.listing_name}')"
 
 class NPs(db.Model):   
     __tablename__ = "charity_table"
@@ -79,5 +79,5 @@ class NPs(db.Model):
     longitude            = db.Column(db.Double) 
     
     def __repr__(self):
-        return f"Nonprofit ('{self.charityName}')"
+        return f"Nonprofit: ('{self.charityName}')"
     

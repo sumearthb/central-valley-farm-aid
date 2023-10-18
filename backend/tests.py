@@ -3,7 +3,7 @@ from app import app
 from flask import Flask, jsonify
 from schema import LocationSchema, FMSchema, NPSchema
 from models import Locations, NPs, FMs
-from sqlalchemy import create_engine, Column, Integer, String, Text, Double
+from sqlalchemy import create_engine, Column, Integer, String, Text, Double, Float
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker, declarative_base
 
@@ -65,21 +65,21 @@ class mockNPsTable(Base):
     longitude            = Column(Double)
     
 class mockFMsTable(Base):
-    __tablename__ = "your_table_name"
+    __tablename__ = "farmers_market_table"
 
     id = Column(Integer, primary_key=True, autoincrement=True)
     listing_name         = Column(String(255))
     location_address     = Column(String(255))
     orgnization          = Column(String(255))
-    listing_desc         = Column(Text)
-    location_x           = Column(Integer)
-    location_y           = Column(Integer)
-    location_desc        = Column(Text)
-    location_site        = Column(Text)
-    otherdesc            = Column(Text)
-    location_indoor      = Column(Text)
-    prod_methods         = Column(Text)
-    fnap                 = Column(Text)
+    listing_desc         = Column(String(255))
+    location_x           = Column(Float)
+    location_y           = Column(Float)
+    location_desc        = Column(String(255))
+    location_site        = Column(String(255))
+    otherdesc            = Column(String(255))
+    location_indoor      = Column(String(255))
+    prod_methods         = Column(String(255))
+    fnap                 = Column(String(255))
     
 
 def get_all_locations(query):
