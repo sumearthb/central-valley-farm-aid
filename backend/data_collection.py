@@ -306,17 +306,22 @@ def fetch_and_insert_farmer_market_data():
     charity_data = fetch_charity_data()
     # Convert to PANDAS DATAFRAME HERE ****
     # Charity data lat/ lon columns: latitudue/ longitude (floats)
-    closest_charities = pd.Series()
-    threshold = 0.5
+    df['closest_charities'] = ''
+    all_closest_charities = []
+    threshold = 5
     for index_fm, row_fm in df.iterrows():
         charities = []
-        for index_ch, row_ch in charity_data.iterrows():
-            fm_point = np.asarray([row_fm['location_x'], row_fm['location_y']])
-            charity_point = np.asarray(row_ch['latitude'], row_ch['longitude'])
-        
-            if np.linalg.norm(fm_point - charity_point) <= threshold:
-                charities.append(row_ch['charityName'])
-        closest_charities.
+        for charity in charity_data:
+            fm_point = np.asarray([float(row_fm['location_x']), float(row_fm['location_y'])])
+            charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
+            print(np.linalg.norm(fm_point - charity_point))
+            # if np.linalg.norm(fm_point - charity_point) <= threshold:
+            # charities.append(charity['charityName'])
+        break
+        all_closest_charities.append(charities)
+    
+    for i in range(5):
+        print(all_closest_charities[i])
     
     made_into_json = '''
     {
@@ -334,7 +339,6 @@ def fetch_and_insert_farmer_market_data():
     'FNAP': 'SNAP;Accept EBT at a central location;'
 }
     '''
-    print(df.columns())
 
     try:
         # Establish a database connection
@@ -342,23 +346,33 @@ def fetch_and_insert_farmer_market_data():
 
         # Create a cursor object to interact with the database
         cursor = connection.cursor()
+        
+        # Define the SQL INSERT statement
         insert_query = f"""
-            INSERT INTO {table_name} ({', '.join(columns_to_keep)})
-            VALUES ({', '.join(['%s'] * len(columns_to_keep))})
+        INSERT INTO farmers_market_table (
+            listing_name, location_address, orgnization, listing_desc,
+            location_x, location_y, location_desc, location_site,
+            location_site_otherdesc, location_indoor, specialproductionmethods, FNAP
+        ) VALUES ({', '.join(['%s'] * len(df.columns))})
         """
 
-        # Iterate through the cleaned data and insert it into the MySQL database
-        for index, row in df.iterrows():
-            data = tuple(row)
-            cursor.execute(insert_query, data)
+        values = [tuple(row) for _, row in df.iterrows()]
+        cursor.executemany(insert_query, values)
 
         # Commit the changes to the database
         connection.commit()
-        print("Data inserted into the farmers database successfully.")
 
-    except Exception as e:
-        print("Error:", e)
-        connection.rollback()
+        print("Farmers Data inserted into the table successfully.")
+
+    except mysql.connector.Error as err:
+        print("Error inserting data into the table:", err)
+
+    finally:
+        # Close the cursor and connection
+        cursor.close()
+        connection.close()
+
+
     #     # Define the SQL INSERT statement
     #     insert_query = f"""
     #     INSERT INTO your_table_name ({', '.join(columns_to_keep)})
@@ -534,8 +548,8 @@ def main():
     # create_charity_table()
     #fetch_charity_data()
 
-    # Farmer Market data 
-    create_farmers_market_table()
+    ## Farmer Market data 
+    #create_farmers_market_table()
     fetch_and_insert_farmer_market_data()
   
 
