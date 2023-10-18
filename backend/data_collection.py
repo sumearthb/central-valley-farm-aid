@@ -16,10 +16,10 @@ import numpy as np
 
 # MySQL database connection details
 db_config = {
-    "host": "api-scrape-data.crn5q2iybxzv.us-east-1.rds.amazonaws.com",
+    "host": "database-1.cnowuhjix5ja.us-west-1.rds.amazonaws.com",
     "user": "admin",
-    "password": "Rural_Farm_Aid01",
-    "database": "api_data",
+    "password": "Central_Valley1",
+    "database": "api_scraping",
 }
 
 
@@ -598,7 +598,7 @@ def main():
     #fetch_charity_data()
 
     ## Farmer Market data 
-    #create_farmers_market_table()
+    create_farmers_market_table()
     fetch_and_insert_farmer_market_data()
   
 
