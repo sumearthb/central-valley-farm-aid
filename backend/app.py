@@ -64,7 +64,8 @@ def get_all_locations():
     query = query_locations(0)
     location_list = []
     for location in query:
-        location_dict = LocationSchema.dump(location)
+        location_schema = LocationSchema()
+        location_dict = location_schema.dump(location)
         location_list.append(location_dict)
     response = jsonify({"instance_count" : len(location_list), "data" : location_list})
     return response
@@ -85,7 +86,8 @@ def get_all_nonprofits():
     query = query_NPs(0)
     NP_list = []
     for NP in query:
-        NP_dict = NPSchema.dump(NP)
+        NP_schema = NPSchema()
+        NP_dict = NP_schema.dump(NP)
         NP_list.append(NP_dict)
     response = jsonify({"instance_count" : len(NP_list), "data" : NP_list})
     return response 
@@ -106,7 +108,8 @@ def get_all_markets():
     query = query_FMs(0)
     FM_list = []
     for FM in query:
-        FM_dict = FMSchema.dump(FM)
+        FM_schema = FMSchema()
+        FM_dict = FM_schema.dump(FM)
         FM_list.append(FM_dict)
     response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
     return response

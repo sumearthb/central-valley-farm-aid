@@ -1,17 +1,15 @@
 import unittest
-import app
+from app import app
+from flask import Flask, jsonify
+from schema import LocationSchema, FMSchema, NPSchema
 from models import Locations, NPs, FMs
 from sqlalchemy import create_engine, Column, Integer, String, Text, Double
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker, declarative_base
 
+test = Flask(__name__)
+
 Base = declarative_base()
-# url = URL.create(
-#     drivername="sqlite:///:memory:",
-#     username="cv",
-#     host="/tmp/sqlite/socket",
-#     database="cvtest"
-# )
 engine = create_engine("sqlite:///:memory:")
 Session = sessionmaker(bind=engine)
 
@@ -84,11 +82,42 @@ class mockFMsTable(Base):
     fnap                 = Column(Text)
     
 
+def get_all_locations(query):
+    location_list = []
+    for location in query:
+        location_schema = LocationSchema()
+        location_dict = location_schema.dump(location)
+        location_list.append(location_dict)
+    with app.app_context():
+        response = jsonify({"instance_count" : len(location_list), "data" : location_list})
+    return response
+
+def get_all_nonprofits(query):
+    NP_list = []
+    for NP in query:
+        NP_schema = NPSchema()
+        NP_dict = NP_schema.dump(NP)
+        NP_list.append(NP_dict)
+    with app.app_context():
+        response = jsonify({"instance_count" : len(NP_list), "data" : NP_list})
+    return response
+
+def get_all_markets(query):
+    FM_list = []
+    for FM in query:
+        FM_schema = FMSchema()
+        FM_dict = FM_schema.dump(FM)
+        FM_list.append(FM_dict)
+    with app.app_context():
+        response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
+    return response
+
+
 class Tests(unittest.TestCase):
     
     def setUp(self):
-        app.app.config["TESTING"] = True
-        self.client = app.app.test_client()
+        test.config["TESTING"] = True
+        self.client = test.test_client()
         Base.metadata.create_all(engine)
         self.session = Session()
         self.valid_location = Locations(
@@ -114,7 +143,6 @@ class Tests(unittest.TestCase):
             asd_desc = "asd"
         )
         self.valid_NP = NPs(
-            id = 1,
             ein = "ein",
             charityName = "cha",
             url = "https://hi",
@@ -151,6 +179,7 @@ class Tests(unittest.TestCase):
         self.session.add(self.valid_location)
         self.session.commit()
         query = self.session.query(mockLocationsTable)
+        self.assertIsNotNone(query)
         assert query.first().county_name == "fresno"
         assert query.first().source_desc == "source"
         assert query.first().asd_desc == "asd"
@@ -159,6 +188,7 @@ class Tests(unittest.TestCase):
         self.session.add(self.valid_NP)
         self.session.commit()
         query = self.session.query(mockNPsTable)
+        self.assertIsNotNone(query)
         assert query.first().start == 2019
         assert query.first().category == "Farmers' Market"
         assert query.first().longitude == 1.9987
@@ -167,15 +197,43 @@ class Tests(unittest.TestCase):
         self.session.add(self.valid_FM)
         self.session.commit()
         query = self.session.query(mockFMsTable)
+        self.assertIsNotNone(query)
         assert query.first().listing_name == "Benica Certified Farmers Market"
         assert query.first().location_address == "First Street between B & D Streets, Benicia, California 94510"
         assert query.first().orgnization == ""
 
-    def test_search_all(self):
-        pass
+    def test_get_all_locations(self):
+        self.session.add(self.valid_location)
+        self.session.commit()
+        query = self.session.query(mockLocationsTable)
+        self.assertIsNotNone(query)
+        response = get_all_locations(query)
+        self.assertIsNotNone(response)
+        assert response.json["instance_count"] == 1
         
-    def test_get_location(self):
-        pass
+    def test_get_all_nonprofits(self):
+        self.session.add(self.valid_NP)
+        self.session.commit()
+        query = self.session.query(mockNPsTable)
+        self.assertIsNotNone(query)
+        response = get_all_nonprofits(query)
+        self.assertIsNotNone(response)
+        assert response.json["instance_count"] == 1
+        
+    def test_get_all_markets(self):
+        self.session.add(self.valid_FM)
+        self.session.commit()
+        query = self.session.query(mockFMsTable)
+        self.assertIsNotNone(query)
+        response = get_all_markets(query)
+        self.assertIsNotNone(response)
+        assert response.json["instance_count"] == 1    
+        
+    # def test_search_all(self):
+    #     pass
+        
+    # def test_get_location(self):
+    #     pass
 
     # def test_get_all_locations(self):
     #     with self.client:
