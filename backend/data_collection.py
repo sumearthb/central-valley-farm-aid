@@ -304,24 +304,23 @@ def fetch_and_insert_farmer_market_data():
     
     # returns long list of charity objects, with fields longitude and latitude
     charity_data = fetch_charity_data()
+    print(charity_data[0])
     # Convert to PANDAS DATAFRAME HERE ****
     # Charity data lat/ lon columns: latitudue/ longitude (floats)
-    df['closest_charities'] = ''
-    all_closest_charities = []
-    threshold = 5
-    for index_fm, row_fm in df.iterrows():
-        charities = []
-        for charity in charity_data:
-            fm_point = np.asarray([float(row_fm['location_x']), float(row_fm['location_y'])])
-            charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
-            print(np.linalg.norm(fm_point - charity_point))
-            # if np.linalg.norm(fm_point - charity_point) <= threshold:
-            # charities.append(charity['charityName'])
-        break
-        all_closest_charities.append(charities)
+    # df['closest_charities'] = ''
+    # all_closest_charities = []
+    # threshold = 100
+    # for index_fm, row_fm in df.iterrows():
+    #     charities = []
+    #     for charity in charity_data:
+    #         fm_point = np.asarray([float(row_fm['location_y']), float(row_fm['location_x'])])
+    #         charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
+    #         if np.linalg.norm(fm_point - charity_point) <= threshold:
+    #             charities.append(charity['charityName'])
+    #     all_closest_charities.append(charities)
     
-    for i in range(5):
-        print(all_closest_charities[i])
+    # for i in range(5):
+    #     print(all_closest_charities[i])
     
     made_into_json = '''
     {
@@ -373,28 +372,6 @@ def fetch_and_insert_farmer_market_data():
         connection.close()
 
 
-    #     # Define the SQL INSERT statement
-    #     insert_query = f"""
-    #     INSERT INTO your_table_name ({', '.join(columns_to_keep)})
-    #     VALUES ({', '.join(['%s'] * len(columns_to_keep))})
-    #     """
-
-    #     # Iterate through the cleaned data and insert it into the MySQL database
-    #     for index, row in df.iterrows():
-    #         data = tuple(row)
-    #         cursor.execute(insert_query, data)
-
-    #     # Commit the changes to the database
-    #     connection.commit()
-    #     print("Data inserted into the farmers database successfully.")
-
-    # except mysql.connector.Error as err:
-    #     print("Error inserting data into the farmers market database:", err)
-
-    # finally:
-    #     # Close the cursor and connection
-    #     cursor.close()
-    #     connection.close()
 
 #------------------------------------------------------------------------
 # CHARITY DATA
@@ -403,7 +380,11 @@ def fetch_charity_data():
     # query more than one search term at once, so we do it seperetly
     res1 = {}
     res2 = {}
-
+    res3 = {}
+    res4 = {}
+    res5 = {}
+    res6 = {}
+    
     # Query one: search term "farmer market"
     url1 = "http://data.orghunter.com/v1/charitysearch?user_key=6abaefdede85bfc1b540f4e9d6ff7882&searchTerm=farmer market&state=CA&rows=100"
     payload = {}
@@ -425,18 +406,20 @@ def fetch_charity_data():
         return None
 
 
-    # Query two: search term "farmers market"
-    url2 = "http://data.orghunter.com/v1/charitysearch?user_key=6abaefdede85bfc1b540f4e9d6ff7882&searchTerm=farmers market&state=CA"
+    # Query one: search term "agriculture"
+    url2 = "http://data.orghunter.com/v1/charitysearch?user_key=6abaefdede85bfc1b540f4e9d6ff7882&searchTerm=agriculture&state=CA"
+
     payload = {}
     headers = {
-    'Cookie': 'laravel_session=eyJpdiI6InhLMkg4TENYaGpXR0JWT0I1aXA1amR3SkVGWERJVG1KcUZDaWZJc1I4dXc9IiwidmFsdWUiOiJpTTl4bVlqZStTc0pESjh1VjR0YzVzZE5NMURPZDNYcXgxWFFkclQrV1JFOG5tXC9CNXdmRmUrT2grSU1jRXIzRmo5S2Q3UnZPdzFCMHFCMlM3SXp2QVE9PSIsIm1hYyI6ImRkNjZjYTdmMGM0MTI2MjZjMjg3MGZiMmY0YzU5MTRjYjM3OTI5Mjk4Nzk2ZWQ0YjY2MmYwNTRlZWViZmExMDcifQ%3D%3D'
+    'Cookie': 'laravel_session=eyJpdiI6IlBDYTd3VG9GOU1GSVBvMVwvcDc5RUl5emJMVUFsYzhDdGtHMThcL1dIV3phTT0iLCJ2YWx1ZSI6Ikp5WFpGYUlUQ0s5d0xlZHowZ3ZzSmFVeXZkcXNkTmhFZ3BkNjExNG0zVDU1SjBQaFI1UFp4ajh5blwvbVBRN2hEZTA3NnZZMnFPSnlZVnVwV3gzbG9Hdz09IiwibWFjIjoiZjdkZjIwMjcwN2E4ODFkMGUxZDdkZjFmYmUzOGVhMWYxZTgyZTg0NWMwZWYxMDY1OTBjZDBkMDUxNGEyOTVhYSJ9'
     }
+
+    response = requests.request("GET", url2, headers=headers, data=payload)  
 
     try:
         response = requests.request("GET", url2, headers=headers, data=payload)
         if response.status_code == 200:
             res2: dict = response.json()
-            #print("CHARITY DATA 2-----", res2)
         else:
             print(f"Failed to fetch data from charity API 2. Status Code: {response.status_code}")
             return None
@@ -444,6 +427,7 @@ def fetch_charity_data():
     except Exception as excep:
         print(f"Error fetching data from API: {str(excep)}")
         return None
+
 
     # Query three: search term "farmer" with Food Category to narrow down
     url3 = "http://data.orghunter.com/v1/charitysearch?user_key=6abaefdede85bfc1b540f4e9d6ff7882&searchTerm=farmer&state=CA&rows=100&category=K"
@@ -465,11 +449,76 @@ def fetch_charity_data():
         print(f"Error fetching data from API: {str(excep)}")
         return None
 
-    
+    # Query four: search term "farming"
+
+    url4 = "http://data.orghunter.com/v1/charitysearch?user_key=6abaefdede85bfc1b540f4e9d6ff7882&searchTerm=farming&state=CA"
+
+    payload = {}
+    headers = {
+    'Cookie': 'laravel_session=eyJpdiI6Im9Jcm1FZENDWW00ZlNjVlFjdk5aeVAzZk5ZV1daamRsT0hhVnRCMGRTNkU9IiwidmFsdWUiOiJsRVNGelltbktqMDBQNjh1b0p2cm9JUkNDS1pZMHNZTUhzcTlVZ2duTXJhMDFHRVhTUWxURFV3WnVHelluWGZsbDdnSVBHajFsajFoUENqWjAzRkNSZz09IiwibWFjIjoiNzJkY2UyMmI2YmRjZGM1NTRkNzVmZDJkZjM1YmZkNGNlOTBmN2RiNmE0ZDVhYTEwYTBlNTI4M2Y2Mzk0OGQ5NyJ9'
+    }
+
+    try:
+        response = requests.request("GET", url4, headers=headers, data=payload)
+        if response.status_code == 200:
+            res4: dict = response.json()
+        else:
+            print(f"Failed to fetch data from charity API 4. Status Code: {response.status_code}")
+            return None
+
+    except Exception as excep:
+        print(f"Error fetching data from API: {str(excep)}")
+        return None
+
+
+    # query five: search term "product"
+    url5 = "http://data.orghunter.com/v1/charitysearch?user_key=6abaefdede85bfc1b540f4e9d6ff7882&searchTerm=produce&state=CA&category=K"
+
+    payload = {}
+    headers = {
+    'Cookie': 'laravel_session=eyJpdiI6IkkzcGIyU01iVDhJYkV4ZG9IMnNIRjZ6UUwzQ2NpeUljRHl3eEwrQlBwTU09IiwidmFsdWUiOiJ5anBaR3A1Z0Z3RHdMaEFyRk5LYzJHaDd5SVVQNHZVQk84ZWg4RE5sWElEN0JNb0R3VFdrRVludGlERktaN2lqc2xDRGNzaURWMDdWeDZQXC9SRWpuSFE9PSIsIm1hYyI6ImQ1YzQzNzY1OGE5NzFmNjc5MDk5NDNlYTJmN2YzNzU2YzBkNTExYWEyYTc3ZmRjMjgxZWY1Y2Y1NzI3MDAyZmIifQ%3D%3D'
+    }
+
+    try:
+        response = requests.request("GET", url5, headers=headers, data=payload)
+        if response.status_code == 200:
+            res5: dict = response.json()
+        else:
+            print(f"Failed to fetch data from charity API 4. Status Code: {response.status_code}")
+            return None
+
+    except Exception as excep:
+        print(f"Error fetching data from API: {str(excep)}")
+        return None
+
+
+
+    # query six: search term "vegetable"
+    url6 = "http://data.orghunter.com/v1/charitysearch?user_key=6abaefdede85bfc1b540f4e9d6ff7882&searchTerm=vegetable&state=CA"
+
+    payload = {}
+    headers = {
+    'Cookie': 'laravel_session=eyJpdiI6IkNlZFNwWlhzdmhvbVRGd0hKek1MbFVxUlk3OVhMMjJGclF5QUhcL3haWlNzPSIsInZhbHVlIjoiaG5nR2hkZ2dZR2x6NUl2YTRJa013ZnZkUDBLRHI0TXBXQ25RUkZcL1F4VUNUekhLSUd1RmdOVnRXSWhuOWdQTHBiVjgyOGFZcDVzcFl3VjV3Q0FXSFVRPT0iLCJtYWMiOiJiNjljNDAxY2U1NTQxNDMyMzVkYWRmYTQ5Y2I4YmQ4ZGRiZjA0N2Q0YmFhZDU1NzRlNmI1OGZkNDU2ZTRjNzdmIn0%3D'
+    }
+
+    try:
+        response = requests.request("GET", url6, headers=headers, data=payload)
+        if response.status_code == 200:
+            res6: dict = response.json()
+        else:
+            print(f"Failed to fetch data from charity API 4. Status Code: {response.status_code}")
+            return None
+
+    except Exception as excep:
+        print(f"Error fetching data from API: {str(excep)}")
+        return None
+
     # Join the seperate API calls in a singular list of data points
     res: list = res1['data']
     res.extend(res2['data'])
-    res.extend(res3['data'])
+    res.extend(res3["data"])
+    res.extend(res4['data'])
+    res.extend(res5['data'])
     return res
 
 def insert_charity_crop_data_to_db(db_config):
