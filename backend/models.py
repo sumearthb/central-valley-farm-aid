@@ -6,12 +6,14 @@ app = Flask(__name__)
 CORS(app)
 app.config[
     "SQLALCHEMY_DATABASE_URI"
-] = "mysql+pymysql://admin:Rural_Farm_Aid01@database-2.crn5q2iybxzv.us-east-1.rds.amazonaws.com:3306/central_valley_db"
+] = "mysql+pymysql://admin:Central_Valley1@database-1.cnowuhjix5ja.us-west-1.rds.amazonaws.com:3306/api_scraping"
 db = SQLAlchemy(app)
 
 # Add Association tables
 
 class Locations(db.Model):
+    __tablename__ = "crop_table"
+    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     country_name         = db.Column(db.String(255))
     county_name          = db.Column(db.String(255))
@@ -38,6 +40,8 @@ class Locations(db.Model):
         return f"Location ('{self.county_name}')"
     
 class FMs(db.Model):  
+    __tablename__ = "your_table_name"
+    
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     listing_name         = db.Column(db.String(255))
     location_address     = db.Column(db.String(255))
@@ -47,13 +51,17 @@ class FMs(db.Model):
     location_y           = db.Column(db.Integer)
     location_desc        = db.Column(db.Text)
     location_site        = db.Column(db.Text)
+    otherdesc            = db.Column(db.Text)
+    location_indoor      = db.Column(db.Text)
     prod_methods         = db.Column(db.Text)
     fnap                 = db.Column(db.Text)
     
     def __repr__(self):
         return f"Farmers' Market ('{self.listing_name}')"
 
-class NPs(db.Model):     
+class NPs(db.Model):   
+    __tablename__ = "charity_table"
+      
     id                   = db.Column(db.Integer, primary_key=True, autoincrement=True)
     ein                  = db.Column(db.String(20), nullable=False)
     charityName          = db.Column(db.String(255), nullable=False)
@@ -63,19 +71,14 @@ class NPs(db.Model):
     state                = db.Column(db.String(50))
     zipCode              = db.Column(db.String(20))
     start                = db.Column(db.Integer)
-    rows                 = db.Column(db.Integer)
-    recordCount          = db.Column(db.Integer)
-    score                = db.Column(db.Integer)
-    acceptingDonations   = db.Column(db.Integer)
     category             = db.Column(db.String(255))
     eligibleCd           = db.Column(db.Integer)
     deductibilityCd      = db.Column(db.Integer)
     statusCd             = db.Column(db.Integer)
     website              = db.Column(db.String(255))
     missionStatement     = db.Column(db.Text)
-    parent_ein           = db.Column(db.String(20))
-    latitude             = db.Column(db.Decimal(10, 6))
-    longitude            = db.Column(db.Decimal(10, 6)) 
+    latitude             = db.Column(db.Double)
+    longitude            = db.Column(db.Double) 
     
     def __repr__(self):
         return f"Nonprofit ('{self.charityName}')"
