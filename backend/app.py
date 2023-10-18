@@ -59,7 +59,10 @@ def get_locations(name):
 
 @app.route("/api/GetAllLocations", methods = ['GET'])
 def get_all_locations():
+    page = request.args.get("page") 
     query = query_locations()
+    if page is not None:
+        query = paginate(query, int(page))
     location_list = []
     for location in query:
         location_schema = LocationSchema()
@@ -81,7 +84,10 @@ def get_nonprofit(name):
 
 @app.route("/api/GetAllNonProfit", methods = ['GET'])
 def get_all_nonprofits():
+    page = request.args.get("page")
     query = query_NPs()
+    if page is not None:
+        query = paginate(query, int(page))
     NP_list = []
     for NP in query:
         NP_schema = NPSchema()
@@ -103,7 +109,10 @@ def get_market(name):
 
 @app.route("/api/GetAllMarkets", methods = ['GET'])
 def get_all_markets():
+    page = request.args.get("page")
     query = query_FMs()
+    if page is not None:
+        query = paginate(query, int(page))
     FM_list = []
     for FM in query:
         FM_schema = FMSchema()
@@ -111,6 +120,9 @@ def get_all_markets():
         FM_list.append(FM_dict)
     response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
     return response
+
+def paginate(query, page_num, page_size=PAGE_SIZE):
+    return query.paginate(page=page_num, per_page=page_size, error_out=False).items
 
 # Running app
 if __name__ == '__main__':
