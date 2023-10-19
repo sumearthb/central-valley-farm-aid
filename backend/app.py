@@ -11,9 +11,6 @@ from sqlalchemy.sql.expression import asc, desc
 # Flask handles incoming HTTP req, uses SQLAlch to interact with database, then
 # marshmallow schemas to format data before sending it as json response to clients
 
-# Initializing flask app
-app = Flask(__name__)
-
 # size for each page -- pagination
 PAGE_SIZE = 20
 

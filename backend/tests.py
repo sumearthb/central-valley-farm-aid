@@ -14,7 +14,7 @@ engine = create_engine("sqlite:///:memory:")
 Session = sessionmaker(bind=engine)
 
 class mockLocationsTable(Base):
-    __tablename__ = "crop_table"
+    __tablename__ = "location_table"
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     country_name         = Column(String(255))
@@ -76,9 +76,9 @@ class mockFMsTable(Base):
     location_y           = Column(Float)
     location_desc        = Column(String(255))
     location_site        = Column(String(255))
-    otherdesc            = Column(String(255))
+    location_site_otherdesc            = Column(String(255))
     location_indoor      = Column(String(255))
-    prod_methods         = Column(String(255))
+    specialproductionmethods         = Column(String(255))
     fnap                 = Column(String(255))
     
 
@@ -169,9 +169,9 @@ class Tests(unittest.TestCase):
             location_y = "38.046215",           
             location_desc = "First Street Between B And D Streets",         
             location_site = "Closed-off public street;",         
-            otherdesc = "",
+            location_site_otherdesc = "",
             location_indoor = "No Indoor;",
-            prod_methods = "Organic (USDA Certified);",          
+            specialproductionmethods = "Organic (USDA Certified);",          
             fnap = "WIC;SNAP;Accept EBT at a central location;;"
         )
 

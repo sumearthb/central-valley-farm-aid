@@ -10,7 +10,7 @@ app.config[
 db = SQLAlchemy(app)
 
 class Locations(db.Model):
-    __tablename__ = "crop_table"
+    __tablename__ = "location_table"
     
     id = db.Column(db.Integer, primary_key=True, autoincrement=True)
     country_name         = db.Column(db.String(255))
@@ -34,8 +34,8 @@ class Locations(db.Model):
     util_practice_desc   = db.Column(db.String(255))
     asd_desc             = db.Column(db.String(255))
     
-    def __repr__(self):
-        return f"Location: ('{self.county_name}')"
+    # def __repr__(self):
+    #     return f"Location: ('{self.county_name}')"
     
 class FMs(db.Model):  
     __tablename__ = "farmers_market_table"
@@ -49,13 +49,13 @@ class FMs(db.Model):
     location_y           = db.Column(db.Float)
     location_desc        = db.Column(db.String(255))
     location_site        = db.Column(db.String(255))
-    otherdesc            = db.Column(db.String(255))
+    location_site_otherdesc            = db.Column(db.String(255))
     location_indoor      = db.Column(db.String(255))
-    prod_methods         = db.Column(db.String(255))
+    specialproductionmethods         = db.Column(db.String(255))
     fnap                 = db.Column(db.String(255))
     
-    def __repr__(self):
-        return f"Farmers' Market: ('{self.listing_name}')"
+    # def __repr__(self):
+    #     return f"Farmers' Market: ('{self.listing_name}')"
 
 class NPs(db.Model):   
     __tablename__ = "charity_table"
@@ -78,6 +78,6 @@ class NPs(db.Model):
     latitude             = db.Column(db.Double)
     longitude            = db.Column(db.Double) 
     
-    def __repr__(self):
-        return f"Nonprofit: ('{self.charityName}')"
+    # def __repr__(self):
+    #     return f"Nonprofit: ('{self.charityName}')"
     
