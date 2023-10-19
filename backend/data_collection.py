@@ -203,7 +203,7 @@ def fetch_location_crop_data():
     return county_crop_cnt
 
 # Function to insert data into the MySQL database
-def insert_location_crop_data_to_db(db_config):
+def insert_location_crop_data_to_db():
     # Query data from API
     data = fetch_location_crop_data()    
 
@@ -211,15 +211,13 @@ def insert_location_crop_data_to_db(db_config):
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
         for location, crops in data.items():
-            print(location, crops)
             crop_data_json = json.dumps({"crops" : tuple(crops)})
-            record = {'location': location, 'data': crop_data_json}
+            record = {'location': location, 'crops': crop_data_json}
             
-            insert_query = 'INSERT INTO location_table (location, data) VALUES (%(location)s, %(data)s );'
+            insert_query = 'INSERT INTO location_table (location, crops) VALUES (%(location)s, %(crops)s );'
             cursor.execute(insert_query, record)
             connection.commit()
 
-            print("INSERTED------")
         print("Location_crop successfully inserted into MySQL database.")
 
     except mysql.connector.Error as err:
@@ -256,12 +254,9 @@ def insert_farmer_market_data():
     
     # returns long list of charity objects, with fields longitude and latitude
     charity_data = fetch_charity_data()
-    #print(charity_data[0])
-    # Convert to PANDAS DATAFRAME HERE ****
     # Charity data lat/ lon columns: latitudue/ longitude (floats)
-    # Dont know what to do with this yet:
     all_closest_charities = []
-    threshold = 100
+    threshold = 0.45
     for index_fm, row_fm in df.iterrows():
         charities = []
         for charity in charity_data:
@@ -270,12 +265,11 @@ def insert_farmer_market_data():
             charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
             if np.linalg.norm(fm_point - charity_point) <= threshold:
                 charities.append(charity['charityName'])
-        all_closest_charities.append(charities)
-        charities_data_json = json.dumps({"nearby_charities": tuple(all_closest_charities)})
+        all_closest_charities.append(json.dumps({"nearby_charities": tuple(charities)}))
     
-    # [[charity1, charity2], [], []]; each inner list will represent a single farmer's market closest charities
-    df['closest_charities'] = charities_data_json
-
+    
+    # [{'nearby_charities': [charity1, charity2, ...]}, {'nearby_charities': []}, {}]
+    df['closest_charities'] = all_closest_charities
     try:
         # Establish a database connection
         connection = mysql.connector.connect(**db_config)
@@ -377,7 +371,6 @@ def fetch_charity_data():
         response = requests.request("GET", url3, headers=headers, data=payload)
         if response.status_code == 200:
             res3: dict = response.json()
-            #print("CHARITY DATA 3-----", res3)
         else:
             print(f"Failed to fetch data from charity API 4. Status Code: {response.status_code}")
             return None
@@ -522,17 +515,18 @@ def insert_charity_crop_data_to_db():
             connection.close()
 
 
+
 # Defining main function
 def main(): 
     # location crop data
-    #create_crop_table() # does not create new table if it exists
-    #insert_location_crop_data_to_db(db_config=db_config)
+    create_crop_table() # does not create new table if it exists
+    insert_location_crop_data_to_db()
 
     # charities data
-    #create_charity_table()
-    #insert_charity_crop_data_to_db()
+    create_charity_table()
+    insert_charity_crop_data_to_db()
 
-    # ## Farmer Market data 
+    # Farmer Market data 
     create_farmers_market_table()
     insert_farmer_market_data()
   
