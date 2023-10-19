@@ -21,14 +21,14 @@ WORKDIR /usr/src/backend
 RUN pip3 install --upgrade pip
 RUN pip3 install -r requirements.txt
 
-# EXPOSE 8080
-# COPY . .
+EXPOSE 8080
+COPY . .
 
-# CMD ["gunicorn", "wsgi:app", "-w 2", "-b 0.0.0.0:8080", "-t 30"]
+CMD ["gunicorn", "wsgi:app", "-w 2", "-b 0.0.0.0:8080", "-t 30"]
 
-EXPOSE 80
+# EXPOSE 80
 
-CMD ["python3", "waitress_server.py"]
+# CMD ["python3", "waitress_server.py"]
 
 
 # # CMD bash
