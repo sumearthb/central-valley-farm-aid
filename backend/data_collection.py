@@ -112,7 +112,8 @@ def create_farmers_market_table():
         location_site_otherdesc VARCHAR(255),
         location_indoor VARCHAR(255),
         specialproductionmethods VARCHAR(255),
-        FNAP VARCHAR(255)
+        FNAP VARCHAR(255),
+        closest_charities JSON
     );
     """
 
@@ -209,10 +210,8 @@ def insert_location_crop_data_to_db(db_config):
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
-
-        #locations = list(data.keys())
-        #crops = list(data.values())
         for location, crops in data.items():
+            print(location, crops)
             crop_data_json = json.dumps({"crops" : tuple(crops)})
             record = {'location': location, 'data': crop_data_json}
             
@@ -220,15 +219,7 @@ def insert_location_crop_data_to_db(db_config):
             cursor.execute(insert_query, record)
             connection.commit()
 
-
-        # # for location, crops in data.items():
-        # keys = ', '.join(record.keys())
-        # values = ', '.join(["%s"] * len(record))
-        # insert_query = f"INSERT INTO crop_table ({keys}) VALUES ({values});"
-
-        # cursor.execute(insert_query, tuple(record.values()))
-        # connection.commit()
-
+            print("INSERTED------")
         print("Location_crop successfully inserted into MySQL database.")
 
     except mysql.connector.Error as err:
@@ -280,11 +271,10 @@ def insert_farmer_market_data():
             if np.linalg.norm(fm_point - charity_point) <= threshold:
                 charities.append(charity['charityName'])
         all_closest_charities.append(charities)
+        charities_data_json = json.dumps({"nearby_charities": tuple(all_closest_charities)})
     
     # [[charity1, charity2], [], []]; each inner list will represent a single farmer's market closest charities
-    df['closest_charities'] = all_closest_charities
-    # for i in range(5):
-    #     print(all_closest_charities[i])
+    df['closest_charities'] = charities_data_json
 
     try:
         # Establish a database connection
@@ -298,7 +288,7 @@ def insert_farmer_market_data():
         INSERT INTO farmers_market_table (
             listing_name, location_address, orgnization, listing_desc,
             location_x, location_y, location_desc, location_site,
-            location_site_otherdesc, location_indoor, specialproductionmethods, FNAP
+            location_site_otherdesc, location_indoor, specialproductionmethods, FNAP, closest_charities
         ) VALUES ({', '.join(['%s'] * len(df.columns))})
         """
 
@@ -468,7 +458,7 @@ def fetch_charity_data():
     res.extend(res5['data'])
     return res
 
-def insert_charity_crop_data_to_db(db_config):
+def insert_charity_crop_data_to_db():
     data = fetch_charity_data()
     try:
         connection = mysql.connector.connect(**db_config)
@@ -535,16 +525,16 @@ def insert_charity_crop_data_to_db(db_config):
 # Defining main function
 def main(): 
     # location crop data
-    create_crop_table() # does not create new table if it exists
-    insert_location_crop_data_to_db(db_config=db_config)
+    #create_crop_table() # does not create new table if it exists
+    #insert_location_crop_data_to_db(db_config=db_config)
 
     # charities data
-    # create_charity_table()
-    # insert_charity_crop_data_to_db
+    #create_charity_table()
+    #insert_charity_crop_data_to_db()
 
     # ## Farmer Market data 
-    # create_farmers_market_table()
-    # insert_farmer_market_data()
+    create_farmers_market_table()
+    insert_farmer_market_data()
   
 
 if __name__=="__main__": 
