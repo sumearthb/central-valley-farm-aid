@@ -2,6 +2,7 @@ import requests
 import mysql.connector
 import pandas as pd
 import random
+import json
 import numpy as np
 
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
@@ -26,9 +27,9 @@ db_config = {
 def create_crop_table():
     # The SQL query to create a new table
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS location_data (
+    CREATE TABLE IF NOT EXISTS location_table (
         location VARCHAR(255) NOT NULL,
-        data JSON,
+        crops JSON,
         PRIMARY KEY (location)
     );
     """
@@ -43,7 +44,7 @@ def create_crop_table():
         # Execute the CREATE TABLE query
         cursor.execute(create_table_query)
 
-        print("crop table created successfully.")
+        print("location_table created successfully.")
 
     except mysql.connector.Error as err:
         print("Error creating the table:", err)
@@ -191,14 +192,14 @@ def fetch_location_crop_data():
             random_index = random.randint(0, len(county_names) - 1)
             obj['county_name'] = county_names[random_index]
             
-    
+    # make a dictionary of counties and their corresponding crops
     county_crop_cnt = {}
     for obj in res['data']:
         if obj['county_name'] not in county_crop_cnt:
             county_crop_cnt[obj['county_name']] = set()
         county_crop_cnt[obj['county_name']].add(obj['commodity_desc'])
-    print(county_crop_cnt)
-    return res['data']
+
+    return county_crop_cnt
 
 # Function to insert data into the MySQL database
 def insert_location_crop_data_to_db(db_config):
@@ -209,13 +210,24 @@ def insert_location_crop_data_to_db(db_config):
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
 
-        for record in data:
-            keys = ', '.join(record.keys())
-            values = ', '.join(["%s"] * len(record))
-            insert_query = f"INSERT INTO crop_table ({keys}) VALUES ({values});"
-
-            cursor.execute(insert_query, tuple(record.values()))
+        #locations = list(data.keys())
+        #crops = list(data.values())
+        for location, crops in data.items():
+            crop_data_json = json.dumps({"crops" : tuple(crops)})
+            record = {'location': location, 'data': crop_data_json}
+            
+            insert_query = 'INSERT INTO location_table (location, data) VALUES (%(location)s, %(data)s );'
+            cursor.execute(insert_query, record)
             connection.commit()
+
+
+        # # for location, crops in data.items():
+        # keys = ', '.join(record.keys())
+        # values = ', '.join(["%s"] * len(record))
+        # insert_query = f"INSERT INTO crop_table ({keys}) VALUES ({values});"
+
+        # cursor.execute(insert_query, tuple(record.values()))
+        # connection.commit()
 
         print("Location_crop successfully inserted into MySQL database.")
 
@@ -462,7 +474,6 @@ def insert_charity_crop_data_to_db(db_config):
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
 
-
         for record in data:
             # Define the SQL INSERT statement
             insert_query = '''
@@ -528,12 +539,12 @@ def main():
     insert_location_crop_data_to_db(db_config=db_config)
 
     # charities data
-    create_charity_table()
-    insert_charity_crop_data_to_db
+    # create_charity_table()
+    # insert_charity_crop_data_to_db
 
-    ## Farmer Market data 
-    create_farmers_market_table()
-    insert_farmer_market_data()
+    # ## Farmer Market data 
+    # create_farmers_market_table()
+    # insert_farmer_market_data()
   
 
 if __name__=="__main__": 
