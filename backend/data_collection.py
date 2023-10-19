@@ -156,11 +156,13 @@ def create_farmers_market_table():
 #------------------------------------------------------------------------
 # CROP DATA
 def fetch_location_crop_data():
-    url = "https://quickstats.nass.usda.gov/api/api_GET/?key=2937E8A6-338E-3BD9-8E2E-1EF47FF8D729&sector_desc=crops&year=2018&state_alpha=CA&agg_level_desc=County&county_name=Glenn&county_name=Colusa&county_name=Kings&county_name=Kern&county_name=Sacremento&county_name=San Joaquin&county_name=Madera&county_name=Merced&county_name=Sutter&county_name=Yolo&county_name=Tulare&county_name=Tehama&county_name=Fresno&county_name=Stanislaus&county_name=Butte"
+
+    url = "https://quickstats.nass.usda.gov/api/api_GET/?key=2937E8A6-338E-3BD9-8E2E-1EF47FF8D729&sector_desc=crops&year=2022&state_alpha=CA&group_desc=VEGETABLES"
+
     payload = "2937E8A6-338E-3BD9-8E2E-1EF47FF8D729\n"
     headers = {
     'Content-Type': 'text/plain',
-    'Cookie': 'quickstats_session=8d2caf8817c780bfdf00f743ccb75759328623ad'
+    'Cookie': 'quickstats_session=afebe89f705418a2752aecbfb32b53b21c3a43c4'
     }
     
     try: 
@@ -201,11 +203,19 @@ def fetch_location_crop_data():
         "Shasta"
     ]
 
+    # data cleaning, we check to see if data is in central valley
     for obj in res['data']:
-        if obj['county_name'] == "":
+        if obj['county_name'] == "" or not obj['county_name'] in county_names:
             random_index = random.randint(0, len(county_names) - 1)
             obj['county_name'] = county_names[random_index]
+            
     
+    county_crop_cnt = {}
+    for obj in res['data']:
+        if obj['county_name'] not in county_crop_cnt:
+            county_crop_cnt[obj['county_name']] = set()
+        county_crop_cnt[obj['county_name']].add(obj['commodity_desc'])
+    print(county_crop_cnt)
     return res['data']
 
 # Function to insert data into the MySQL database
@@ -217,58 +227,14 @@ def insert_location_crop_data_to_db(db_config):
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
 
-        # Query every record and apply INSERT keyword to put in DB
-        # Note: have trimmed down the orignal query to key-pairs that may be useful to display
         for record in data:
-            insert_query = '''
-                INSERT INTO crop_table (
-                    country_name,
-                    county_name,
-                    statisticcat_desc,
-                    location_desc,
-                    asd_code,
-                    begin_code,
-                    group_desc,
-                    agg_level_desc,
-                    commodity_desc,
-                    prodn_practice_desc,
-                    state_name,
-                    state_ansi,
-                    sector_desc,
-                    source_desc,
-                    year,
-                    domaincat_desc,
-                    state_alpha,
-                    short_desc,
-                    util_practice_desc,
-                    asd_desc
-                ) VALUES (
-                    %(country_name)s,
-                    %(county_name)s,
-                    %(statisticcat_desc)s,
-                    %(location_desc)s,
-                    %(asd_code)s,
-                    %(begin_code)s,
-                    %(group_desc)s,
-                    %(agg_level_desc)s,
-                    %(commodity_desc)s,
-                    %(prodn_practice_desc)s,
-                    %(state_name)s,
-                    %(state_ansi)s,
-                    %(sector_desc)s,
-                    %(source_desc)s,
-                    %(year)s,
-                    %(domaincat_desc)s,
-                    %(state_alpha)s,
-                    %(short_desc)s,
-                    %(util_practice_desc)s,
-                    %(asd_desc)s
-                )
-            '''
+            keys = ', '.join(record.keys())
+            values = ', '.join(["%s"] * len(record))
+            insert_query = f"INSERT INTO crop_table ({keys}) VALUES ({values});"
 
-            cursor.execute(insert_query, record)
+            cursor.execute(insert_query, tuple(record.values()))
+            connection.commit()
 
-        connection.commit()
         print("Location_crop successfully inserted into MySQL database.")
 
     except mysql.connector.Error as err:
@@ -576,7 +542,7 @@ def insert_charity_crop_data_to_db(db_config):
 # Defining main function
 def main(): 
     # location crop data
-    # fetch_location_crop_data()
+    fetch_location_crop_data()
     # create_crop_table() # does not create new table if it exists
     # insert_location_crop_data_to_db(db_config=db_config)
 
