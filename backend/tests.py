@@ -2,12 +2,12 @@ import unittest
 from app import app
 from flask import Flask, jsonify
 from schema import LocationSchema, FMSchema, NPSchema
-from models import Locations, NPs, FMs
+from models import Locations, NPs, FMs, app
 from sqlalchemy import create_engine, Column, Integer, String, Text, Double, Float
 from sqlalchemy.engine import URL
 from sqlalchemy.orm import sessionmaker, declarative_base
-
-test = Flask(__name__)
+from sqlalchemy.dialects.postgresql import JSON
+import json
 
 Base = declarative_base()
 engine = create_engine("sqlite:///:memory:")
@@ -16,27 +16,29 @@ Session = sessionmaker(bind=engine)
 class mockLocationsTable(Base):
     __tablename__ = "location_table"
     
-    id = Column(Integer, primary_key=True, autoincrement=True)
-    country_name         = Column(String(255))
-    county_name          = Column(String(255))
-    statisticcat_desc    = Column(String(255))
-    location_desc        = Column(String(255))
-    asd_code             = Column(String(10))
-    begin_code           = Column(String(10))
-    group_desc           = Column(String(255))
-    agg_level_desc       = Column(String(255))
-    commodity_desc       = Column(String(255))
-    prodn_practice_desc  = Column(String(255))
-    state_name           = Column(String(255))
-    state_ansi           = Column(String(10))
-    sector_desc          = Column(String(255))
-    source_desc          = Column(String(255))
-    year                 = Column(Integer)
-    domaincat_desc       = Column(String(255))
-    state_alpha          = Column(String(2))
-    short_desc           = Column(String(255))
-    util_practice_desc   = Column(String(255))
-    asd_desc             = Column(String(255))
+    location = Column(String(255), primary_key=True, nullable=False)
+    crops = Column(JSON, nullable=True)
+    
+    # country_name         = Column(String(255))
+    # county_name          = Column(String(255))
+    # statisticcat_desc    = Column(String(255))
+    # location_desc        = Column(String(255))
+    # asd_code             = Column(String(10))
+    # begin_code           = Column(String(10))
+    # group_desc           = Column(String(255))
+    # agg_level_desc       = Column(String(255))
+    # commodity_desc       = Column(String(255))
+    # prodn_practice_desc  = Column(String(255))
+    # state_name           = Column(String(255))
+    # state_ansi           = Column(String(10))
+    # sector_desc          = Column(String(255))
+    # source_desc          = Column(String(255))
+    # year                 = Column(Integer)
+    # domaincat_desc       = Column(String(255))
+    # state_alpha          = Column(String(2))
+    # short_desc           = Column(String(255))
+    # util_practice_desc   = Column(String(255))
+    # asd_desc             = Column(String(255))
 
 class mockNPsTable(Base):
     __tablename__ = "charity_table"
@@ -116,31 +118,56 @@ def get_all_markets(query):
 class Tests(unittest.TestCase):
     
     def setUp(self):
-        test.config["TESTING"] = True
-        self.client = test.test_client()
+        app.config["TESTING"] = True
+        self.client = app.test_client()
+        engine.dispose() 
         Base.metadata.create_all(engine)
         self.session = Session()
+        # self.valid_location = Locations(
+        #     country_name = "usa",
+        #     county_name = "fresno",
+        #     statisticcat_desc = "desc",
+        #     location_desc = "hi",
+        #     asd_code = "code",
+        #     begin_code = "begin",
+        #     group_desc = "group",
+        #     agg_level_desc = "agg",
+        #     commodity_desc = "comm",
+        #     prodn_practice_desc = "prodn",
+        #     state_name = "state",
+        #     state_ansi = "ansi",
+        #     sector_desc = "sector",
+        #     source_desc = "source",
+        #     year = 1000,
+        #     domaincat_desc = "domain",
+        #     state_alpha = "alpha",
+        #     short_desc = "short",
+        #     util_practice_desc = "util",
+        #     asd_desc = "asd"
+        # )
+        crops_data = {
+            "crops": {
+                "crops": [
+                "CABBAGE",
+                "GARLIC",
+                "BEANS",
+                "CUCUMBERS",
+                "MELONS",
+                "ONIONS",
+                "CARROTS",
+                "PUMPKINS",
+                "BROCCOLI",
+                "LETTUCE",
+                "ASPARAGUS",
+                "TOMATOES",
+                "SWEET CORN",
+                "PEPPERS"
+                ]
+            }
+        }
         self.valid_location = Locations(
-            country_name = "usa",
-            county_name = "fresno",
-            statisticcat_desc = "desc",
-            location_desc = "hi",
-            asd_code = "code",
-            begin_code = "begin",
-            group_desc = "group",
-            agg_level_desc = "agg",
-            commodity_desc = "comm",
-            prodn_practice_desc = "prodn",
-            state_name = "state",
-            state_ansi = "ansi",
-            sector_desc = "sector",
-            source_desc = "source",
-            year = 1000,
-            domaincat_desc = "domain",
-            state_alpha = "alpha",
-            short_desc = "short",
-            util_practice_desc = "util",
-            asd_desc = "asd"
+            location = "fresno",
+            crops = crops_data 
         )
         self.valid_NP = NPs(
             ein = "ein",
@@ -175,20 +202,40 @@ class Tests(unittest.TestCase):
             fnap = "WIC;SNAP;Accept EBT at a central location;;"
         )
 
-    # def test_home(self):
-    #     with self.client:
-    #         response = self.client.get("/")
-    #         self.assertEqual(response.status_code, 200)
-    #         self.assertEqual(response.data, "Welcome to Central Valley Farm Aid!")
+    def test_home(self):
+        with self.client:
+            response = self.client.get("/api")
+            self.assertEqual(response.status_code, 200)
+            self.assertEqual(response.data.decode("utf-8"), "Welcome to Central Valley Farm Aid!")
 
     def test_query_location(self):
         self.session.add(self.valid_location)
         self.session.commit()
         query = self.session.query(mockLocationsTable)
         self.assertIsNotNone(query)
-        assert query.first().county_name == "fresno"
-        assert query.first().source_desc == "source"
-        assert query.first().asd_desc == "asd"
+        assert query.first().location == "fresno"
+        crops_data = {
+                "crops": {
+                    "crops": [
+                    "CABBAGE",
+                    "GARLIC",
+                    "BEANS",
+                    "CUCUMBERS",
+                    "MELONS",
+                    "ONIONS",
+                    "CARROTS",
+                    "PUMPKINS",
+                    "BROCCOLI",
+                    "LETTUCE",
+                    "ASPARAGUS",
+                    "TOMATOES",
+                    "SWEET CORN",
+                    "PEPPERS"
+                    ]
+                }
+            }
+        crops_str = crops_data
+        assert query.first().crops == crops_str
         
     def test_query_NPs(self):
         self.session.add(self.valid_NP)
@@ -241,14 +288,14 @@ class Tests(unittest.TestCase):
     # def test_get_location(self):
     #     pass
 
-    # def test_get_all_locations(self):
-    #     with self.client:
-    #         response = self.client.get("/api/GetAllLocations")
-    #         self.assertEqual(response.status_code, 200)
-    #         data = response.json["data"]
-    #         self.assertIsNotNone(data)
-    #         # TODO ~ change assert value to actual expected instance count
-    #         self.assertEqual(response.json["instance_count"], len(data))
+    def test_get_all_locations(self):
+        with self.client:
+            response = self.client.get("/api/GetAllLocations")
+            self.assertEqual(response.status_code, 200)
+            data = response.json["data"]
+            self.assertIsNotNone(data)
+            # TODO ~ change assert value to actual expected instance count
+            self.assertEqual(response.json["instance_count"], len(data))
 
     # def test_get_location_by_id(self):
     #     response = self.app.get("/api/GetLocation/x")
@@ -257,17 +304,17 @@ class Tests(unittest.TestCase):
     #     self.assertIsNotNone(data)
     #     self.assertEqual(data["id"], "x")
 
-    # def test_get_NP(self):
-    #     pass   
+    def test_get_NP(self):
+        pass   
 
-    # def test_get_all_NPs(self):
-    #     with self.client:
-    #         response = self.client.get("/api/GetAllNonprofit")
-    #         self.assertEqual(response.status_code, 200)
-    #         data = response.json["data"]
-    #         self.assertIsNotNone(data)
-    #         # TODO ~ change assert value to actual expected instance count
-    #         self.assertEqual(response.json["instance_count"], len(data))
+    def test_get_all_NPs(self):
+        with self.client:
+            response = self.client.get("/api/GetAllNonProfit")
+            self.assertEqual(response.status_code, 200)
+            data = response.json["data"]
+            self.assertIsNotNone(data)
+            # TODO ~ change assert value to actual expected instance count
+            self.assertEqual(response.json["instance_count"], len(data))
     
     # def test_get_NP_by_id(self):
     #     response = self.app.get("/api/GetNonProfit/x")
@@ -276,17 +323,17 @@ class Tests(unittest.TestCase):
     #     self.assertIsNotNone(data)
     #     self.assertEqual(data["id"], "x")
         
-    # def test_get_FM(self):
-    #     pass
+    def test_get_FM(self):
+        pass
     
-    # def test_get_all_FMs(self):
-    #     with self.client:
-    #         response = self.client.get("/api/GetAllMarkets")
-    #         self.assertEqual(response.status_code, 200)
-    #         data = response.json["data"]
-    #         self.assertIsNotNone(data)
-    #         # TODO ~ change assert value to actual expected instance count
-    #         self.assertEqual(response.json["instance_count"], len(data))
+    def test_get_all_FMs(self):
+        with self.client:
+            response = self.client.get("/api/GetAllMarkets")
+            self.assertEqual(response.status_code, 200)
+            data = response.json["data"]
+            self.assertIsNotNone(data)
+            # TODO ~ change assert value to actual expected instance count
+            self.assertEqual(response.json["instance_count"], len(data))
 
     # def test_get_FM_by_id(self):
     #     response = self.app.get("/api/GetMarket/x")
@@ -296,6 +343,9 @@ class Tests(unittest.TestCase):
     #     self.assertEqual(data["id"], "x")
     
     def teardown_class(self):
+        Base.metadata.drop_all(engine)
+        # engine.execute('DROP TABLE IF EXISTS location_table')
+        # engine.execute('COMMIT')
         self.session.rollback()
         self.session.close()
 
