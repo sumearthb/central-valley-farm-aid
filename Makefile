@@ -41,8 +41,8 @@ build-frontend :
 run-frontend:
 	docker run -dp 80:3000 idb-frontend
 
-# build-backend:
-# 	docker build ...
+build-backend :
+	docker build -t idb-backend backend/
 
-# run-backend:
-# 	docker ...
+run-backend:
+	docker run idb-backend

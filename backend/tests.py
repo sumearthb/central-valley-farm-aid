@@ -175,6 +175,12 @@ class Tests(unittest.TestCase):
             fnap = "WIC;SNAP;Accept EBT at a central location;;"
         )
 
+    # def test_home(self):
+    #     with self.client:
+    #         response = self.client.get("/")
+    #         self.assertEqual(response.status_code, 200)
+    #         self.assertEqual(response.data, "Welcome to Central Valley Farm Aid!")
+
     def test_query_location(self):
         self.session.add(self.valid_location)
         self.session.commit()
