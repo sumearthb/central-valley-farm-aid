@@ -162,37 +162,6 @@ def fetch_location_crop_data():
         return None
 
 
-    county_names = [
-        "Fresno",
-        "Kern",
-        "Kings",
-        "Madera",
-        "Merced",
-        "San Joaquin",
-        "Stanislaus",
-        "Tulare",
-        "Colusa",
-        "Glenn",
-        "Butte",
-        "Sutter",
-        "Yuba",
-        "Sacramento",
-        "Yolo",
-        "Amador",
-        "Calaveras",
-        "El Dorado",
-        "Mariposa",
-        "Nevada",
-        "Placer",
-        "Shasta"
-    ]
-
-    # data cleaning, we check to see if data is in central valley
-    for obj in res['data']:
-        if obj['county_name'] == "" or not obj['county_name'] in county_names:
-            random_index = random.randint(0, len(county_names) - 1)
-            obj['county_name'] = county_names[random_index]
-            
     # make a dictionary of counties and their corresponding crops
     county_crop_cnt = {}
     for obj in res['data']:
@@ -232,10 +201,15 @@ def insert_location_crop_data_to_db():
 def insert_farmer_market_data():
     pd.set_option("display.max_columns", 500)
     pd.set_option("display.width", 1000)
-    # Read the XLSX file into a DataFrame
-    xlsx_file = "farmersmarketdata.xlsx"
-    df = pd.read_excel(xlsx_file)
-    
+
+    url = "https://www.usdalocalfoodportal.com/api/agritourism/?apikey=APIKEY&x=-84&y=42&radius=3"
+
+    payload = {}
+    headers = {}
+
+    response = requests.request("GET", url, headers=headers, data=payload)
+
+    df = pd.DataFrame.from_dict(response)
 
     # filter out all unneeded columsn
     columns_to_keep = ['listing_name', 'location_address', 'orgnization', 'listing_desc',
