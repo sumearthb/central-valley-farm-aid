@@ -1,6 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
+from sqlalchemy.dialects.postgresql import JSON
 
 app = Flask(__name__)
 CORS(app)
@@ -12,27 +13,30 @@ db = SQLAlchemy(app)
 class Locations(db.Model):
     __tablename__ = "location_table"
     
-    id = db.Column(db.Integer, primary_key=True, autoincrement=True)
-    country_name         = db.Column(db.String(255))
-    county_name          = db.Column(db.String(255))
-    statisticcat_desc    = db.Column(db.String(255))
-    location_desc        = db.Column(db.String(255))
-    asd_code             = db.Column(db.String(10))
-    begin_code           = db.Column(db.String(10))
-    group_desc           = db.Column(db.String(255))
-    agg_level_desc       = db.Column(db.String(255))
-    commodity_desc       = db.Column(db.String(255))
-    prodn_practice_desc  = db.Column(db.String(255))
-    state_name           = db.Column(db.String(255))
-    state_ansi           = db.Column(db.String(10))
-    sector_desc          = db.Column(db.String(255))
-    source_desc          = db.Column(db.String(255))
-    year                 = db.Column(db.Integer)
-    domaincat_desc       = db.Column(db.String(255))
-    state_alpha          = db.Column(db.String(2))
-    short_desc           = db.Column(db.String(255))
-    util_practice_desc   = db.Column(db.String(255))
-    asd_desc             = db.Column(db.String(255))
+    location = db.Column(db.String(255), primary_key=True, nullable=False)
+    crops = db.Column(JSON, nullable=True)
+    
+    # id = db.Column(db.Integer, primary_key=True, autoincrement=True)
+    # country_name         = db.Column(db.String(255))
+    # county_name          = db.Column(db.String(255))
+    # statisticcat_desc    = db.Column(db.String(255))
+    # location_desc        = db.Column(db.String(255))
+    # asd_code             = db.Column(db.String(10))
+    # begin_code           = db.Column(db.String(10))
+    # group_desc           = db.Column(db.String(255))
+    # agg_level_desc       = db.Column(db.String(255))
+    # commodity_desc       = db.Column(db.String(255))
+    # prodn_practice_desc  = db.Column(db.String(255))
+    # state_name           = db.Column(db.String(255))
+    # state_ansi           = db.Column(db.String(10))
+    # sector_desc          = db.Column(db.String(255))
+    # source_desc          = db.Column(db.String(255))
+    # year                 = db.Column(db.Integer)
+    # domaincat_desc       = db.Column(db.String(255))
+    # state_alpha          = db.Column(db.String(2))
+    # short_desc           = db.Column(db.String(255))
+    # util_practice_desc   = db.Column(db.String(255))
+    # asd_desc             = db.Column(db.String(255))
     
     # def __repr__(self):
     #     return f"Location: ('{self.county_name}')"

@@ -15,7 +15,7 @@ from sqlalchemy.sql.expression import asc, desc
 PAGE_SIZE = 20
 
 # Route for seeing a data
-@app.route('/')
+@app.route('/api')
 def home():
 	return "Welcome to Central Valley Farm Aid!" 
     
@@ -123,5 +123,5 @@ def paginate(query, page_num, page_size=PAGE_SIZE):
 
 # Running app
 if __name__ == '__main__':
-	app.run(host="0.0.0.0", port=8080, debug = True)
+	app.run(host="0.0.0.0", port=5000, debug = True)
 
