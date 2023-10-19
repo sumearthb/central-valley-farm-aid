@@ -26,28 +26,10 @@ db_config = {
 def create_crop_table():
     # The SQL query to create a new table
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS crop_table (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        country_name VARCHAR(255),
-        county_name VARCHAR(255),
-        statisticcat_desc VARCHAR(255),
-        location_desc VARCHAR(255),
-        asd_code VARCHAR(10),
-        begin_code VARCHAR(10),
-        group_desc VARCHAR(255),
-        agg_level_desc VARCHAR(255),
-        commodity_desc VARCHAR(255),
-        prodn_practice_desc VARCHAR(255),
-        state_name VARCHAR(255),
-        state_ansi VARCHAR(10),
-        sector_desc VARCHAR(255),
-        source_desc VARCHAR(255),
-        year INT,
-        domaincat_desc VARCHAR(255),
-        state_alpha VARCHAR(2),
-        short_desc VARCHAR(255),
-        util_practice_desc VARCHAR(255),
-        asd_desc VARCHAR(255)
+    CREATE TABLE IF NOT EXISTS location_data (
+        location VARCHAR(255) NOT NULL,
+        data JSON,
+        PRIMARY KEY (location)
     );
     """
 
@@ -246,7 +228,7 @@ def insert_location_crop_data_to_db(db_config):
 
 #------------------------------------------------------------------------
 # FARMERS MARKET DATA
-def fetch_and_insert_farmer_market_data():
+def insert_farmer_market_data():
     pd.set_option("display.max_columns", 500)
     pd.set_option("display.width", 1000)
     # Read the XLSX file into a DataFrame
@@ -542,17 +524,16 @@ def insert_charity_crop_data_to_db(db_config):
 # Defining main function
 def main(): 
     # location crop data
-    fetch_location_crop_data()
-    # create_crop_table() # does not create new table if it exists
-    # insert_location_crop_data_to_db(db_config=db_config)
+    create_crop_table() # does not create new table if it exists
+    insert_location_crop_data_to_db(db_config=db_config)
 
-    # # charities data
-    # create_charity_table()
-    #fetch_charity_data()
+    # charities data
+    create_charity_table()
+    insert_charity_crop_data_to_db
 
     ## Farmer Market data 
-    # create_farmers_market_table()
-    fetch_and_insert_farmer_market_data()
+    create_farmers_market_table()
+    insert_farmer_market_data()
   
 
 if __name__=="__main__": 
