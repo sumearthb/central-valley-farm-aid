@@ -4,7 +4,6 @@ import pandas as pd
 import random
 import numpy as np
 
-
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
 
 '''
@@ -305,41 +304,27 @@ def fetch_and_insert_farmer_market_data():
     # Farmers market data lat/ lon columns: location_x/ location_y (floats)
     
     # returns long list of charity objects, with fields longitude and latitude
-    #charity_data = fetch_charity_data()
+    charity_data = fetch_charity_data()
     #print(charity_data[0])
     # Convert to PANDAS DATAFRAME HERE ****
     # Charity data lat/ lon columns: latitudue/ longitude (floats)
-    # df['closest_charities'] = ''
-    # all_closest_charities = []
-    # threshold = 100
-    # for index_fm, row_fm in df.iterrows():
-    #     charities = []
-    #     for charity in charity_data:
-    #         fm_point = np.asarray([float(row_fm['location_y']), float(row_fm['location_x'])])
-    #         charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
-    #         if np.linalg.norm(fm_point - charity_point) <= threshold:
-    #             charities.append(charity['charityName'])
-    #     all_closest_charities.append(charities)
+    # Dont know what to do with this yet:
+    all_closest_charities = []
+    threshold = 100
+    for index_fm, row_fm in df.iterrows():
+        charities = []
+        for charity in charity_data:
+            # location_y is latitude and location_x is longitude (idk y)
+            fm_point = np.asarray([float(row_fm['location_y']), float(row_fm['location_x'])])
+            charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
+            if np.linalg.norm(fm_point - charity_point) <= threshold:
+                charities.append(charity['charityName'])
+        all_closest_charities.append(charities)
     
+    # [[charity1, charity2], [], []]; each inner list will represent a single farmer's market closest charities
+    df['closest_charities'] = all_closest_charities
     # for i in range(5):
     #     print(all_closest_charities[i])
-    
-    made_into_json = '''
-    {
-    'listing_name': 'Colorado Farm and Art Market',
-    'location_address': '7350 Pine Creek Road, Colorado Springs, Colorado',
-    'orgnization': None,
-    'listing_desc': None,
-    'location_x': -104.81468,
-    'location_y': 38.9377160,
-    'location_desc': 'Behind the patio of the Margarita at Pine Creek',
-    'location_site': 'Private business parking lot; A restaurant--The Margarita at Pine Creek',
-    'location_site_otherdesc': 'No Indoor; Organic (USDA Certified); SNAP;Accept EBT at a central location;',
-    'location_indoor': 'No',
-    'specialproductionmethods': 'Organic (USDA Certified)',
-    'FNAP': 'SNAP;Accept EBT at a central location;'
-}
-    '''
 
     try:
         # Establish a database connection
@@ -600,7 +585,7 @@ def main():
     #fetch_charity_data()
 
     ## Farmer Market data 
-    create_farmers_market_table()
+    # create_farmers_market_table()
     fetch_and_insert_farmer_market_data()
   
 
