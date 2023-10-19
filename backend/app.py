@@ -45,7 +45,7 @@ def query_FMs():
 
 @app.route("/api/GetLocations/<name>", methods = ['GET'])
 def get_locations(name):
-    query = db.session.query(Locations).filter_by(county_name=name)
+    query = db.session.query(Locations).filter_by(location=name)
     location_list = []
     for location in query:
         location_schema = LocationSchema()

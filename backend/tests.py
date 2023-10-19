@@ -18,27 +18,6 @@ class mockLocationsTable(Base):
     
     location = Column(String(255), primary_key=True, nullable=False)
     crops = Column(JSON, nullable=True)
-    
-    # country_name         = Column(String(255))
-    # county_name          = Column(String(255))
-    # statisticcat_desc    = Column(String(255))
-    # location_desc        = Column(String(255))
-    # asd_code             = Column(String(10))
-    # begin_code           = Column(String(10))
-    # group_desc           = Column(String(255))
-    # agg_level_desc       = Column(String(255))
-    # commodity_desc       = Column(String(255))
-    # prodn_practice_desc  = Column(String(255))
-    # state_name           = Column(String(255))
-    # state_ansi           = Column(String(10))
-    # sector_desc          = Column(String(255))
-    # source_desc          = Column(String(255))
-    # year                 = Column(Integer)
-    # domaincat_desc       = Column(String(255))
-    # state_alpha          = Column(String(2))
-    # short_desc           = Column(String(255))
-    # util_practice_desc   = Column(String(255))
-    # asd_desc             = Column(String(255))
 
 class mockNPsTable(Base):
     __tablename__ = "charity_table"
@@ -123,28 +102,6 @@ class Tests(unittest.TestCase):
         engine.dispose() 
         Base.metadata.create_all(engine)
         self.session = Session()
-        # self.valid_location = Locations(
-        #     country_name = "usa",
-        #     county_name = "fresno",
-        #     statisticcat_desc = "desc",
-        #     location_desc = "hi",
-        #     asd_code = "code",
-        #     begin_code = "begin",
-        #     group_desc = "group",
-        #     agg_level_desc = "agg",
-        #     commodity_desc = "comm",
-        #     prodn_practice_desc = "prodn",
-        #     state_name = "state",
-        #     state_ansi = "ansi",
-        #     sector_desc = "sector",
-        #     source_desc = "source",
-        #     year = 1000,
-        #     domaincat_desc = "domain",
-        #     state_alpha = "alpha",
-        #     short_desc = "short",
-        #     util_practice_desc = "util",
-        #     asd_desc = "asd"
-        # )
         crops_data = {
             "crops": {
                 "crops": [
@@ -282,11 +239,9 @@ class Tests(unittest.TestCase):
         self.assertIsNotNone(response)
         assert response.json["instance_count"] == 1    
         
-    # def test_search_all(self):
-    #     pass
-        
-    # def test_get_location(self):
-    #     pass
+    # TODO ~ phase 3
+    def test_search_all(self):
+        pass
 
     def test_get_all_locations(self):
         with self.client:
@@ -294,15 +249,15 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertIsNotNone(data)
-            # TODO ~ change assert value to actual expected instance count
-            self.assertEqual(response.json["instance_count"], len(data))
+            self.assertEqual(response.json["instance_count"], 22)
 
-    # def test_get_location_by_id(self):
-    #     response = self.app.get("/api/GetLocation/x")
-    #     self.assertEqual(response.status_code, 200)
-    #     data = response.json
-    #     self.assertIsNotNone(data)
-    #     self.assertEqual(data["id"], "x")
+    def test_get_location_by_name(self):
+        with self.client:
+            response = self.client.get("/api/GetLocations/Yolo")
+            self.assertEqual(response.status_code, 200)
+            data = response.json
+            self.assertIsNotNone(data)
+            self.assertEqual(data["data"][0]["location"], "Yolo")
 
     def test_get_NP(self):
         pass   
@@ -313,18 +268,16 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertIsNotNone(data)
-            # TODO ~ change assert value to actual expected instance count
-            self.assertEqual(response.json["instance_count"], len(data))
+            self.assertEqual(response.json["instance_count"], 129)
     
-    # def test_get_NP_by_id(self):
-    #     response = self.app.get("/api/GetNonProfit/x")
-    #     self.assertEqual(response.status_code, 200)
-    #     data = response.json
-    #     self.assertIsNotNone(data)
-    #     self.assertEqual(data["id"], "x")
+    def test_get_NP_by_name(self):
+        with self.client:
+            response = self.client.get("/api/GetNonProfit/DEL MAR FARMERS MARKET")
+            self.assertEqual(response.status_code, 200)
+            data = response.json
+            self.assertIsNotNone(data)
+            self.assertEqual(data["data"][0]["charityName"], "DEL MAR FARMERS MARKET")
         
-    def test_get_FM(self):
-        pass
     
     def test_get_all_FMs(self):
         with self.client:
@@ -332,20 +285,18 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertIsNotNone(data)
-            # TODO ~ change assert value to actual expected instance count
-            self.assertEqual(response.json["instance_count"], len(data))
+            self.assertEqual(response.json["instance_count"], 107)
 
-    # def test_get_FM_by_id(self):
-    #     response = self.app.get("/api/GetMarket/x")
-    #     self.assertEqual(response.status_code, 200)
-    #     data = response.json
-    #     self.assertIsNotNone(data)
-    #     self.assertEqual(data["id"], "x")
+    def test_get_FM_by_id(self):
+        with self.client:
+            response = self.client.get("/api/GetMarket/Claremont Farmers & Artisans Market")
+            self.assertEqual(response.status_code, 200)
+            data = response.json
+            self.assertIsNotNone(data)
+            self.assertEqual(data["data"][0]["listing_name"], "Claremont Farmers & Artisans Market")
     
     def teardown_class(self):
         Base.metadata.drop_all(engine)
-        # engine.execute('DROP TABLE IF EXISTS location_table')
-        # engine.execute('COMMIT')
         self.session.rollback()
         self.session.close()
 
