@@ -8,3 +8,13 @@ build:
     - cd frontend
     - npm install
     - npm run build
+
+acceptance_tests:
+  image: python:3.10
+  script:
+    - cd frontend
+    - pip install --upgrade pip
+    - pip install --no-cache-dir -r ./acceptance_tests/requirements.txt
+    - docker pull selenium/standalone-chrome
+    - docker run -dp 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome
+    - python ./acceptance_tests/runTests.py

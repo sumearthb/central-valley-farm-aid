@@ -11,6 +11,7 @@ import NPCard from "../../components/NPCard/NPCard";
 import californiafresh from "../../card-pics/np-pics/californiafresh.png";
 import FMCard from "../../components/FMCard/FMCard";
 import fairfax from "../../card-pics/fm-pics/fairfaxcommunity.png";
+import { Link } from "react-router-dom";
 
 const locationsData = [
   { title: "Fresno", image: fresno, crops: "Crops: Corn, Cotton", prod: "Agricultural Production: $8.0 Billion", population: "Population: 1.014 million", unemployment: "Unemployment Rate: 7.10%", labor_force: "Labor Force: 458,361", image2: fresno2 },
@@ -21,6 +22,11 @@ const locationsData = [
 function LocationInstance() {
   const { id } = useParams();
 
+
+  const redirect = (lat, long) => {
+    window.location.href = `https://maps.google.com/?ll=${lat},${long}`
+  }
+
   // Replace the following with actual location data retrieval logic
   const instanceData = locationsData.find((location) => location.title === id);
 
@@ -28,6 +34,9 @@ function LocationInstance() {
     <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <h1 style={{ marginBottom: "15px", marginTop: "10px" }}>{instanceData.title}</h1>
       <img src={instanceData.image} alt={instanceData.title} className="location-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
+      <Link to="https://www.google.com/maps/search/?api=1&query=40.714728,-73.998672">
+      <img src="https://maps.googleapis.com/maps/api/staticmap?size=512x512&maptype=roadmap\&markers=size:mid|color:red|Fresno+County,CA&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs"/>
+      </Link>
       <p style={{ marginBottom: "10px", marginTop: "8px" }}>{instanceData.population}</p>
       <p>{instanceData.crops}</p>
       <p>{instanceData.prod}</p>
