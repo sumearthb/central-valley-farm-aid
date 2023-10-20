@@ -249,7 +249,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertIsNotNone(data)
-            self.assertEqual(response.json["instance_count"], 22)
+            self.assertEqual(response.json["instance_count"], 59)
 
     def test_get_location_by_name(self):
         with self.client:
@@ -257,7 +257,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json
             self.assertIsNotNone(data)
-            self.assertEqual(data["data"][0]["location"], "Yolo")
+            self.assertEqual(data["data"][0]["location"], str.upper("Yolo"))
 
     def test_get_NP(self):
         pass   

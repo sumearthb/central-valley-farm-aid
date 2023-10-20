@@ -12,7 +12,7 @@ from sqlalchemy.sql.expression import asc, desc
 # marshmallow schemas to format data before sending it as json response to clients
 
 # size for each page -- pagination
-PAGE_SIZE = 20
+PER_PAGE = 9
 
 # Route for seeing a data
 @app.route('/api')
@@ -57,9 +57,10 @@ def get_locations(name):
 @app.route("/api/GetAllLocations", methods = ['GET'])
 def get_all_locations():
     page = request.args.get("page") 
+    per_page = request.args.get("per_page")
     query = query_locations()
     if page is not None:
-        query = paginate(query, int(page))
+        query = paginate(query, int(page), int(per_page))
     location_list = []
     for location in query:
         location_schema = LocationSchema()
@@ -82,9 +83,10 @@ def get_nonprofit(name):
 @app.route("/api/GetAllNonProfit", methods = ['GET'])
 def get_all_nonprofits():
     page = request.args.get("page")
+    per_page = request.args.get("per_page")
     query = query_NPs()
     if page is not None:
-        query = paginate(query, int(page))
+        query = paginate(query, int(page), int(per_page))
     NP_list = []
     for NP in query:
         NP_schema = NPSchema()
@@ -107,9 +109,10 @@ def get_market(name):
 @app.route("/api/GetAllMarkets", methods = ['GET'])
 def get_all_markets():
     page = request.args.get("page")
+    per_page = request.args.get("per_page")
     query = query_FMs()
     if page is not None:
-        query = paginate(query, int(page))
+        query = paginate(query, int(page), int(per_page))
     FM_list = []
     for FM in query:
         FM_schema = FMSchema()
@@ -118,7 +121,7 @@ def get_all_markets():
     response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
     return response
 
-def paginate(query, page_num, page_size=PAGE_SIZE):
+def paginate(query, page_num, page_size=PER_PAGE):
     return query.paginate(page=page_num, per_page=page_size, error_out=False).items
 
 # Running app
