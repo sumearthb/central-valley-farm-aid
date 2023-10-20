@@ -12,7 +12,7 @@ const LocationCard = ({ title, crops }) => {
         <Card.Img src={`https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&center=${title} County, CA&zoom=8&size=300x400`} alt={title} className="location-card-image" />
         <Card.Body className="location-card-body">
           <Card.Title className="location-card-title">
-            {title}
+            {title + " County"}
           </Card.Title>
           <Card.Text className="location-card-crop">
             # of Crops: {crops.length}

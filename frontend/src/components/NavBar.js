@@ -5,7 +5,7 @@ import {Container, Nav, Navbar, Form, Button} from "react-bootstrap";
 
 function NavBar() {
   return (
-    <Navbar expand="lg" className="navbar">h
+    <Navbar expand="lg" className="navbar">
       <Container>
         <Navbar.Brand>
           <Link className="navbar-link"
