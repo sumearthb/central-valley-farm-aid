@@ -295,6 +295,16 @@ class Tests(unittest.TestCase):
             self.assertIsNotNone(data)
             self.assertEqual(data["data"][0]["listing_name"], "Claremont Farmers & Artisans Market")
     
+    # TODO ~ phase 3
+    def test_get_all_locations_pagination(self):
+        pass
+    
+    def test_get_all_NPs_pagination(self):
+        pass
+    
+    def test_get_all_FMs_pagination(self):
+        pass
+    
     def teardown_class(self):
         Base.metadata.drop_all(engine)
         self.session.rollback()
