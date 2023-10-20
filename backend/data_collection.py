@@ -4,6 +4,7 @@ import pandas as pd
 import random
 import json
 import numpy as np
+import string
 
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
 
@@ -222,8 +223,6 @@ def fetch_location_crop_data():
         "Yuba"
     ]
 
-    county_names = [county.upper() for county in county_names]
-
 
     # data cleaning, we check to see if data is in central valley
     for obj in res['data']:
@@ -236,9 +235,10 @@ def fetch_location_crop_data():
     # make a dictionary of counties and their corresponding crops
     county_crop_cnt = {}
     for obj in res['data']:
-        if obj['county_name'] not in county_crop_cnt:
-            county_crop_cnt[obj['county_name']] = set()
-        county_crop_cnt[obj['county_name']].add(obj['commodity_desc'])
+        formatted_loc_name = string.capwords(obj['county_name'])
+        if formatted_loc_name not in county_crop_cnt:
+            county_crop_cnt[formatted_loc_name] = set()
+        county_crop_cnt[formatted_loc_name].add(obj['commodity_desc'])
 
     return county_crop_cnt
 
@@ -251,12 +251,13 @@ def insert_location_crop_data_to_db():
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
         for location, crops in data.items():
-            crop_data_json = json.dumps({"crops" : tuple(crops)})
-            record = {'location': location, 'crops': crop_data_json}
-            
-            insert_query = 'INSERT INTO location_table (location, crops) VALUES (%(location)s, %(crops)s );'
-            cursor.execute(insert_query, record)
-            connection.commit()
+            if location != 'Other (combined) Counties':
+                crop_data_json = json.dumps({"crops" : tuple(crops)})
+                record = {'location': location, 'crops': crop_data_json}
+                
+                insert_query = 'INSERT INTO location_table (location, crops) VALUES (%(location)s, %(crops)s );'
+                cursor.execute(insert_query, record)
+                connection.commit()
 
         print("Location_crop successfully inserted into MySQL database.")
 
