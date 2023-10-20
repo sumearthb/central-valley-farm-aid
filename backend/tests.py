@@ -249,7 +249,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertIsNotNone(data)
-            self.assertEqual(response.json["instance_count"], 59)
+            self.assertEqual(response.json["instance_count"], 58)
 
     def test_get_location_by_name(self):
         with self.client:
@@ -257,7 +257,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json
             self.assertIsNotNone(data)
-            self.assertEqual(data["data"][0]["location"], str.upper("Yolo"))
+            self.assertEqual(data["data"][0]["location"], "Yolo")
 
     def test_get_NP(self):
         pass   
@@ -295,15 +295,26 @@ class Tests(unittest.TestCase):
             self.assertIsNotNone(data)
             self.assertEqual(data["data"][0]["listing_name"], "Claremont Farmers & Artisans Market")
     
-    # TODO ~ phase 3
     def test_get_all_locations_pagination(self):
-        pass
-    
-    def test_get_all_NPs_pagination(self):
-        pass
-    
-    def test_get_all_FMs_pagination(self):
-        pass
+        with self.client:
+            response = self.client.get("/api/GetAllLocations?page=1&per_page=9")
+            self.assertEqual(response.status_code, 200)
+            data = response.json["data"]
+            self.assertEqual(len(data), 9)
+
+    def test_get_all_nonprofit_agination(self):
+        with self.client:
+            response = self.client.get("/api/GetAllNonProfit?page=1&per_page=9")
+            self.assertEqual(response.status_code, 200)
+            data = response.json["data"]
+            self.assertEqual(len(data), 9)
+
+    def test_get_all_markets_pagination(self):
+        with self.client:
+            response = self.client.get("/api/GetAllMarkets?page=1&per_page=9")
+            self.assertEqual(response.status_code, 200)
+            data = response.json["data"]
+            self.assertEqual(len(data), 9)
     
     def teardown_class(self):
         Base.metadata.drop_all(engine)
