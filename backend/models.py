@@ -3,6 +3,10 @@ from flask_cors import CORS
 from flask_sqlalchemy import SQLAlchemy
 from sqlalchemy.dialects.postgresql import JSON
 
+# python app.py to run dev server
+# Flask handles incoming HTTP req, uses SQLAlch to interact with database, then
+# marshmallow schemas to format data before sending it as json response to clients
+
 app = Flask(__name__)
 CORS(app)
 app.config[
@@ -13,7 +17,8 @@ db = SQLAlchemy(app)
 class Locations(db.Model):
     __tablename__ = "location_table"
     
-    location = db.Column(db.String(255), primary_key=True, nullable=False)
+    id = db.Column(db.Integer, primary_key=True, nullable=False)
+    location = db.Column(db.String(255), nullable=False)
     crops = db.Column(JSON, nullable=True)
     
 class FMs(db.Model):  

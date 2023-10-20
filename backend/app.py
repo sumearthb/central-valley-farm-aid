@@ -6,15 +6,9 @@ from flask_cors import CORS
 from sqlalchemy import or_, func, and_, Integer
 from sqlalchemy.sql.expression import asc, desc
 
-
-# python app.py to run dev server
-# Flask handles incoming HTTP req, uses SQLAlch to interact with database, then
-# marshmallow schemas to format data before sending it as json response to clients
-
 # size for each page -- pagination
 PER_PAGE = 9
 
-# Route for seeing a data
 @app.route('/api')
 def home():
 	return "Welcome to Central Valley Farm Aid!" 
@@ -22,26 +16,12 @@ def home():
 """
 Implementation for search and filtering-specific 
 endpoints will be completed in phase 3
-
-Phase 2 will see the implementation of the GetAll__ endpoints
 """
 
 # TODO ~ phase 3
 @app.route('/api/SearchAll')
 def search_all():
     return 0
-
-def query_locations():
-    query = db.session.query(Locations)
-    return query
-
-def query_NPs():
-    query = db.session.query(NPs)
-    return query
-
-def query_FMs():
-    query = db.session.query(FMs)
-    return query
 
 @app.route("/api/GetLocations/<name>", methods = ['GET'])
 def get_locations(name):
@@ -58,7 +38,7 @@ def get_locations(name):
 def get_all_locations():
     page = request.args.get("page") 
     per_page = request.args.get("per_page")
-    query = query_locations()
+    query = db.session.query(Locations)
     if page is not None:
         query = paginate(query, int(page), int(per_page))
     location_list = []
@@ -84,7 +64,7 @@ def get_nonprofit(name):
 def get_all_nonprofits():
     page = request.args.get("page")
     per_page = request.args.get("per_page")
-    query = query_NPs()
+    query = db.session.query(NPs)
     if page is not None:
         query = paginate(query, int(page), int(per_page))
     NP_list = []
@@ -110,7 +90,7 @@ def get_market(name):
 def get_all_markets():
     page = request.args.get("page")
     per_page = request.args.get("per_page")
-    query = query_FMs()
+    query = db.session.query(FMs)
     if page is not None:
         query = paginate(query, int(page), int(per_page))
     FM_list = []

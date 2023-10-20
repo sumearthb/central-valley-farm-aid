@@ -16,7 +16,8 @@ Session = sessionmaker(bind=engine)
 class mockLocationsTable(Base):
     __tablename__ = "location_table"
     
-    location = Column(String(255), primary_key=True, nullable=False)
+    id = Column(Integer, primary_key=True, nullable=False)
+    location = Column(String(255), nullable=False)
     crops = Column(JSON, nullable=True)
 
 class mockNPsTable(Base):
@@ -302,7 +303,7 @@ class Tests(unittest.TestCase):
             data = response.json["data"]
             self.assertEqual(len(data), 9)
 
-    def test_get_all_nonprofit_agination(self):
+    def test_get_all_nonprofit_pagination(self):
         with self.client:
             response = self.client.get("/api/GetAllNonProfit?page=1&per_page=9")
             self.assertEqual(response.status_code, 200)
