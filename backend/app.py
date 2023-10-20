@@ -189,6 +189,24 @@ def get_all_markets():
     response = jsonify({"instance_count" : len(FM_list), "data" : FM_list})
     return response
 
+@app.route("/api/GetNumLocations")
+def get_num_locations():
+    query = db.session.query(Locations)
+    count = query.count()
+    return jsonify({"count": count})
+
+@app.route("/api/GetNumNonProfits")
+def get_num_nonprofits():
+    query = db.session.query(NPs)
+    count = query.count()
+    return jsonify({"count": count})
+
+@app.route("/api/GetNumMarkets")
+def get_num_markets():
+    query = db.session.query(FMs)
+    count = query.count()
+    return jsonify({"count": count})
+
 def paginate(query, page_num, page_size=PER_PAGE):
     return query.paginate(page=page_num, per_page=page_size, error_out=False).items
 
