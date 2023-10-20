@@ -28,9 +28,9 @@ def create_crop_table():
     # The SQL query to create a new table
     create_table_query = """
     CREATE TABLE IF NOT EXISTS location_table (
+        id INT AUTO_INCREMENT PRIMARY KEY,
         location VARCHAR(255) NOT NULL,
-        crops JSON,
-        PRIMARY KEY (location)
+        crops JSON
     );
     """
 
@@ -141,7 +141,7 @@ def create_farmers_market_table():
 # CROP DATA
 def fetch_location_crop_data():
 
-    url = "https://quickstats.nass.usda.gov/api/api_GET/?key=2937E8A6-338E-3BD9-8E2E-1EF47FF8D729&sector_desc=crops&year=2022&state_alpha=CA&group_desc=VEGETABLES"
+    url = "https://quickstats.nass.usda.gov/api/api_GET/?key=2937E8A6-338E-3BD9-8E2E-1EF47FF8D729&sector_desc=crops&year=2018&state_alpha=CA&group_desc=VEGETABLES"
 
     payload = "2937E8A6-338E-3BD9-8E2E-1EF47FF8D729\n"
     headers = {
@@ -160,6 +160,77 @@ def fetch_location_crop_data():
     except Exception as excep:
         print(f"Error fetching data from API: {str(excep)}")
         return None
+
+    county_names = [
+        "Alameda",
+        "Alpine",
+        "Amador",
+        "Butte",
+        "Calaveras",
+        "Colusa",
+        "Contra Costa",
+        "Del Norte",
+        "El Dorado",
+        "Fresno",
+        "Glenn",
+        "Humboldt",
+        "Imperial",
+        "Inyo",
+        "Kern",
+        "Kings",
+        "Lake",
+        "Lassen",
+        "Los Angeles",
+        "Madera",
+        "Marin",
+        "Mariposa",
+        "Mendocino",
+        "Merced",
+        "Modoc",
+        "Mono",
+        "Monterey",
+        "Napa",
+        "Nevada",
+        "Orange",
+        "Placer",
+        "Plumas",
+        "Riverside",
+        "Sacramento",
+        "San Benito",
+        "San Bernardino",
+        "San Diego",
+        "San Francisco",
+        "San Joaquin",
+        "San Luis Obispo",
+        "San Mateo",
+        "Santa Barbara",
+        "Santa Clara",
+        "Santa Cruz",
+        "Shasta",
+        "Sierra",
+        "Siskiyou",
+        "Solano",
+        "Sonoma",
+        "Stanislaus",
+        "Sutter",
+        "Tehama",
+        "Trinity",
+        "Tulare",
+        "Tuolumne",
+        "Ventura",
+        "Yolo",
+        "Yuba"
+    ]
+
+    county_names = [county.upper() for county in county_names]
+
+
+    # data cleaning, we check to see if data is in central valley
+    for obj in res['data']:
+        if obj['county_name'] == "":
+            random_index = random.randint(0, len(county_names) - 1)
+            obj['county_name'] = county_names[random_index]
+            
 
 
     # make a dictionary of counties and their corresponding crops
@@ -496,13 +567,13 @@ def main():
     create_crop_table() # does not create new table if it exists
     insert_location_crop_data_to_db()
 
-    # charities data
-    create_charity_table()
-    insert_charity_crop_data_to_db()
+    # # charities data
+    # create_charity_table()
+    # insert_charity_crop_data_to_db()
 
-    # Farmer Market data 
-    create_farmers_market_table()
-    insert_farmer_market_data()
+    # # Farmer Market data 
+    # create_farmers_market_table()
+    # insert_farmer_market_data()
   
 
 if __name__=="__main__": 
