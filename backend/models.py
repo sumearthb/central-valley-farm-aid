@@ -19,6 +19,11 @@ class Locations(db.Model):
     
     id = db.Column(db.Integer, primary_key=True, nullable=False)
     location = db.Column(db.String(255), nullable=False)
+    county_seat = db.Column(db.String(255))
+    est = db.Column(db.String(20))
+    population = db.Column(db.Integer)
+    area = db.Column(db.Integer)
+    map = db.Column(db.String(255))
     crops = db.Column(JSON, nullable=True)
     
 class FMs(db.Model):  

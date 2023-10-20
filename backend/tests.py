@@ -18,6 +18,11 @@ class mockLocationsTable(Base):
     
     id = Column(Integer, primary_key=True, nullable=False)
     location = Column(String(255), nullable=False)
+    county_seat = Column(String(255))
+    est = Column(String(20))
+    population = Column(Integer)
+    area = Column(Integer)
+    map = Column(String(255))
     crops = Column(JSON, nullable=True)
 
 class mockNPsTable(Base):
@@ -125,6 +130,11 @@ class Tests(unittest.TestCase):
         }
         self.valid_location = Locations(
             location = "fresno",
+            county_seat = "fresno",
+            est = "1990",
+            population = 1,
+            area = 0,
+            map = "idejdiek",
             crops = crops_data 
         )
         self.valid_NP = NPs(
@@ -194,6 +204,7 @@ class Tests(unittest.TestCase):
             }
         crops_str = crops_data
         assert query.first().crops == crops_str
+        assert query.first().map == "idejdiek"
         
     def test_query_NPs(self):
         self.session.add(self.valid_NP)
@@ -250,7 +261,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertIsNotNone(data)
-            self.assertEqual(response.json["instance_count"], 58)
+            self.assertEqual(response.json["instance_count"], 57)
 
     def test_get_location_by_name(self):
         with self.client:
@@ -316,6 +327,30 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertEqual(len(data), 9)
+    
+    def test_get_num_locations(self):
+        with self.client:
+            response = self.client.get("/api/GetNumLocations")
+            self.assertEqual(response.status_code, 200)
+            resp = response.json
+            count = resp["count"]
+            self.assertEqual(count, 57)
+
+    def test_get_num_nonprofits(self):
+        with self.client:
+            response = self.client.get("/api/GetNumNonProfits")
+            self.assertEqual(response.status_code, 200)
+            resp = response.json
+            count = resp["count"]
+            self.assertEqual(count, 129)
+
+    def test_get_num_markets(self):
+        with self.client:
+            response = self.client.get("/api/GetNumMarkets")
+            self.assertEqual(response.status_code, 200)
+            resp = response.json
+            count = resp["count"]
+            self.assertEqual(count, 107)
     
     def teardown_class(self):
         Base.metadata.drop_all(engine)
