@@ -2,28 +2,37 @@ import React from "react";
 import "./LocationCard.css";
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import { useEffect, useState } from "react";
+import { fetchLocations, fetchLocationsLength} from "../../utils/ApiUtils";
 
-// may have to import proptypes later?
 
-const LocationCard = ({ title, image, crops, population, unemployment, labor_force }) => {
+const LocationCard = ({ name, crops, population, est, img}) => {
     return (
       // specifies CSS class used
-      <Card className="location-card d-flex flex-column">
-        <img src={image} alt={title} className="location-card-image" />
-        <div className="location-card-details">
-          <h2 className="location-card-title">{title}</h2>
-          <p className="location-card-crop">{crops}</p>
-          <p className="location-card-population">{population}</p>
-          <p className="location-card-unemployment">{unemployment}</p>
-          <p className="location-card-labor_force">{labor_force}</p>
+      <Card className="location-card">
+        {/* <Card.Img src={`https://maps.googleapis.com/maps/api/staticmap?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&center=${title} County, CA&zoom=8&size=300x400`} alt={title} className="location-card-image" /> */}
+        <Card.Img className="location-card-image" src={img.replace("100px", "400px")}/>
+        <Card.Body className="location-card-body">
+          <Card.Title className="location-card-title">
+            {name + " County"}
+          </Card.Title>
+          <Card.Text className="location-card-crop">
+            # of Crops: {crops.length}
+          </Card.Text>
+          <Card.Text className="location-card-population">
+            Population: {population}
+          </Card.Text>
+          <Card.Text className="location-card-established">
+            Established: {est}
+          </Card.Text>
           <Link
-            to={`/location/${title}`}
+            to={`/locations/${name}`}
             style={{ textDecoration: "none" }}
           >
             <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="align-self-end border-white">More info</Button>
           </Link>
           {/* Add more details if needed */}
-        </div>
+        </Card.Body>
       </Card>
     );
   };
