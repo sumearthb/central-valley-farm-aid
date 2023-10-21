@@ -8,7 +8,8 @@ const memberInfo = [
   {
     id: 15724436,
     bio: "Hi, my name is Martin and I'm a senior majoring in Computer Science at UT. I like lifting weights, bouldering, and watching anime.",
-    role: "Full-Stack"
+    role: "Full-Stack",
+    tests: 10
   },
   {
     id: 11371618,
@@ -63,6 +64,7 @@ export const fetchGitLabInfo = async() => {
                 username: item.username, 
                 commits: 0,
                 issues: 0,
+                tests: 0
             }
             members.push(member);
         });
@@ -112,6 +114,7 @@ export const fetchGitLabInfo = async() => {
           if (member.id === memberInfo[i].id) {
             member.bio = memberInfo[i].bio;
             member.role = memberInfo[i].role;
+            member.tests = (memberInfo[i].tests === undefined) ? 0 : memberInfo[i].tests;
             break;
           }
         }

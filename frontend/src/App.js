@@ -24,7 +24,7 @@ function App() {
             <Route path="/locations" element={<Locations/>} />
             <Route path="/nonprofits" element={<NonProfits/>} />
             <Route path="/farmersmarkets" element={<FarmersMarkets/>} />
-            <Route path="/location/:id" element={<LocationInstance />} />
+            <Route path="/locations/:id" element={<LocationInstance />} />
             <Route path="/farmersmarkets/:id" element={<FMInstance/>} />
             <Route path="/nonprofits/:id" element={<NPInstance />} />
           </Routes>

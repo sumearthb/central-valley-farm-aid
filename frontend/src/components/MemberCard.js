@@ -11,6 +11,7 @@ function MemberCard(props) {
     role,
     commits,
     issues,
+    tests,
   } = props;
 
   return (
@@ -35,6 +36,7 @@ function MemberCard(props) {
         <ListGroup horizontal id="member-card-stats">
           <ListGroup.Item>{`${commits} Commits`}</ListGroup.Item>
           <ListGroup.Item>{`${issues} Issues`}</ListGroup.Item>
+          <ListGroup.Item>{`${tests} Unit Tests`}</ListGroup.Item>
         </ListGroup>
       </Card.Body>
     </Card>
@@ -48,6 +50,7 @@ MemberCard.propTypes = {
   role: PropTypes.string.isRequired,
   commits: PropTypes.number.isRequired,
   issues: PropTypes.number.isRequired,
+  tests: PropTypes.number.isRequired
 };
 
 export default MemberCard;
