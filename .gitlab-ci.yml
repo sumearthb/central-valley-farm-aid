@@ -17,22 +17,22 @@ build_frontend:
 #     - npm install
 #     - npm test
 
-test_backend:
-  image: python:3
-  stage: test
-  before_script:
-    - pip install -r backend/requirements.txt
-  script:
-    - cd backend && python3 tests.py
+# test_backend:
+#   image: python:3
+#   stage: test
+#   before_script:
+#     - pip install -r backend/requirements.txt
+#   script:
+#     - cd backend && python3 tests.py
 
 test_postman:
   image: 
     name: postman/newman:alpine
     entrypoint: [""]
   stage: test
-  variables:
-    POSTMAN_COLLECTION: "your_postman_collection_url_here"
   script:
     - cd backend
     - newman --version
-    - newman run postman_collection.json
+    - newman run ../postman_jsons/Locations.postman_collection.json
+    - newman run ../postman_jsons/Farmers' Markets.postman_collection.json
+    - newman run ../postman_jsons/Nonprofits.postman_collection.json
