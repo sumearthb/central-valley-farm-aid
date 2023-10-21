@@ -1,7 +1,7 @@
 stages:          
   - build
 
-build:
+build_frontend:
   image: node
   stage: build
   script:
@@ -9,8 +9,17 @@ build:
     - npm install
     - npm run build
 
+# test_frontend:
+#   image: node
+#   stage: test
+#   script:
+#     - cd frontend
+#     - npm install
+#     - npm test
+
 acceptance_tests:
   image: python:3.10
+  stage: test
   script:
     - cd frontend
     - pip install --upgrade pip
@@ -18,3 +27,11 @@ acceptance_tests:
     - docker pull selenium/standalone-chrome
     - docker run -dp 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome
     - python ./acceptance_tests/runTests.py
+
+# test_backend:
+#   image: python:3
+#   stage: test
+#   before_script:
+#     - pip install -r backend/requirements.txt
+#   script:
+#     - cd backend && python3 tests.py

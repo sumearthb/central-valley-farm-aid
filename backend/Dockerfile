@@ -26,9 +26,16 @@ COPY . .
 
 CMD ["gunicorn", "wsgi:app", "-w 2", "-b 0.0.0.0:8080", "-t 30"]
 
+# ENTRYPOINT ["python3"]
+# CMD ["app.py"]
+
+# EXPOSE 80
+
+# CMD ["python3", "waitress_server.py"]
+
+
 # # CMD bash
 # # docker compose 
 # ENTRYPOINT ["python3"]
 # CMD ["app.py"]
 # CMD ["python3", "waitress_server.py"]
-
