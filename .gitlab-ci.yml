@@ -1,5 +1,8 @@
 stages:          
+  - pre
   - build
+  - post
+  - test
 
 build_frontend:
   image: node
@@ -17,13 +20,13 @@ build_frontend:
 #     - npm install
 #     - npm test
 
-# test_backend:
-#   image: python:3
-#   stage: test
-#   before_script:
-#     - pip install -r backend/requirements.txt
-#   script:
-#     - cd backend && python3 tests.py
+test_backend:
+  image: python:3
+  stage: test
+  before_script:
+    - pip install -r backend/requirements.txt
+  script:
+    - cd backend && python3 tests.py
 
 test_postman:
   image: 
