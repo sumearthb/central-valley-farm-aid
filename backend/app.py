@@ -52,15 +52,15 @@ def get_all_locations():
         location_dict = location_schema.dump(location)
 
         # Default Value
-        # photo_references = []
+        #photo_references = []
 
-        # # Call Google API
+        # Call Google API
         # find_place = gmaps.find_place(
-        #     location_dict["location"] + " County, CA",
+        #     location_dict["name"] + " County, CA",
         #     "textquery",
         #     fields=["photos"]) # This is the different fields u can get from a place, for locations we only want photos
         
-        # # Add data if exists
+        # Add data if exists
         # if (len(find_place["candidates"]) > 0):
         #     print("", find_place["candidates"])
         #     photo_references = []
@@ -69,7 +69,7 @@ def get_all_locations():
         #         photo_references.append(photo["photo_reference"])
         # location_dict["photo_references"] = photo_references
 
-        #location_dict["county_scraped"] = get_all_counties_in_california()
+        # location_dict["county_scraped"] = get_all_counties_in_california()
 
         location_list.append(location_dict)
     response = jsonify({"instance_count" : len(location_list), "data" : location_list})

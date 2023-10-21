@@ -15,16 +15,17 @@ app.config[
 db = SQLAlchemy(app)
 
 class Locations(db.Model):
-    __tablename__ = "location_table"
+    __tablename__ = "location_data"
     
     id = db.Column(db.Integer, primary_key=True, nullable=False)
-    location = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255))
+    est = db.Column(db.Integer)
+    area = db.Column(db.String(255))
     county_seat = db.Column(db.String(255))
-    est = db.Column(db.String(20))
-    population = db.Column(db.Integer)
-    area = db.Column(db.Integer)
     map = db.Column(db.String(255))
-    crops = db.Column(JSON, nullable=True)
+    population = db.Column(db.Integer)
+    crops = db.Column(JSON)
+    photo_references = db.Column(JSON)
     
 class FMs(db.Model):  
     __tablename__ = "farmers_market_table"
@@ -42,6 +43,12 @@ class FMs(db.Model):
     location_indoor      = db.Column(db.String(255))
     specialproductionmethods         = db.Column(db.String(255))
     fnap                 = db.Column(db.String(255))
+    phone                = db.Column(db.String(20))
+    photo_references     = db.Column(db.JSON)
+    closest_charities    = db.Column(db.JSON)
+    wheelchair_accessible = db.Column(db.String(20))
+    rating               = db.Column(db.Float)
+    website              = db.Column(db.String(255))
 
 class NPs(db.Model):   
     __tablename__ = "charity_table"
@@ -62,4 +69,6 @@ class NPs(db.Model):
     website              = db.Column(db.String(255))
     missionStatement     = db.Column(db.Text)
     latitude             = db.Column(db.Double)
-    longitude            = db.Column(db.Double)     
+    longitude            = db.Column(db.Double)  
+    photo_references     = db.Column(db.JSON)
+       
