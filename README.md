@@ -26,7 +26,7 @@ Group 14
 
 **Git SHA**
 Phase 1: 536b3ac36e7b49fcdfe3f897c5928c912134c84b
-Phase 2: 
+Phase 2: 66cef773793aed0430418bafcdcb4eebbf1f528a
 
 **Gitlab Pipeline**
 <https://gitlab.com/cs373-group-14/idb/-/pipelines>
