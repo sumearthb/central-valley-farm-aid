@@ -1,0 +1,323 @@
+{
+	"info": {
+		"_postman_id": "d139f836-7903-464f-ae34-776859dff2ba",
+		"name": "Farmers' Markets",
+		"description": "These endpoints give information on the farmers' markets we display on our website. If the user utilizes the GetAllMarkets endpoint, they will receive a response containing all of the data. If they utilize the GetMarket endpoint, they will receive a response containing the target.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24011705",
+		"_collection_link": "https://www.postman.com/gold-moon-138414/workspace/group14-cvfa/collection/24011705-d139f836-7903-464f-ae34-776859dff2ba?action=share&source=collection_link&creator=24011705"
+	},
+	"item": [
+		{
+			"name": "GetAllMarkets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "closest_charities",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "FNAP",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "listing_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "listing_name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_address",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_indoor",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site_otherdesc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_x",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_y",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "orgnization",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "specialproductionmethods",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{url}}/api/GetAllMarkets?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}",
+					"host": [
+						"{{url}}"
+					],
+					"path": [
+						"api",
+						"GetAllMarkets"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{page_number}}",
+							"description": "Desired page to access"
+						},
+						{
+							"key": "per_page",
+							"value": "{{per_page}}",
+							"description": "Number of instances to show per page"
+						},
+						{
+							"key": "sort_by",
+							"value": "{{sort_requirment}}",
+							"description": "Sort by criteria"
+						},
+						{
+							"key": "sort_order",
+							"value": "{{sort_order}}",
+							"description": "Sort by ascending or descending"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMarket",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "closest_charities",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "FNAP",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "listing_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "listing_name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_address",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_indoor",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site_otherdesc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_x",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_y",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "orgnization",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "specialproductionmethods",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/GetMarket/:instance",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"GetMarket",
+						":instance"
+					],
+					"variable": [
+						{
+							"key": "instance",
+							"value": "",
+							"description": "Farmers' market name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNumMarkets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "count",
+							"value": "Number of instances",
+							"description": "Returns number of instances for the model",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{base_url}}/api/GetNumMarkets",
+					"host": [
+						"{{base_url}}"
+					],
+					"path": [
+						"api",
+						"GetNumMarkets"
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
