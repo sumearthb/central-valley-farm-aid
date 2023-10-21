@@ -14,15 +14,21 @@ engine = create_engine("sqlite:///:memory:")
 Session = sessionmaker(bind=engine)
 
 class mockLocationsTable(Base):
-    __tablename__ = "location_table"
+    __tablename__ = "location_data"
     
     id = Column(Integer, primary_key=True, nullable=False)
-    location = Column(String(255), nullable=False)
-    crops = Column(JSON, nullable=True)
+    name = Column(String(255))
+    est = Column(Integer)
+    area = Column(String(255))
+    county_seat = Column(String(255))
+    map = Column(String(255))
+    population = Column(Integer)
+    crops = Column(JSON)
+    photo_references = Column(JSON)
 
 class mockNPsTable(Base):
     __tablename__ = "charity_table"
-    
+      
     id                   = Column(Integer, primary_key=True, autoincrement=True)
     ein                  = Column(String(20), nullable=False)
     charityName          = Column(String(255), nullable=False)
@@ -32,23 +38,19 @@ class mockNPsTable(Base):
     state                = Column(String(50))
     zipCode              = Column(String(20))
     start                = Column(Integer)
-    rows                 = Column(Integer)
-    recordCount          = Column(Integer)
-    score                = Column(Integer)
-    acceptingDonations   = Column(Integer)
     category             = Column(String(255))
     eligibleCd           = Column(Integer)
     deductibilityCd      = Column(Integer)
     statusCd             = Column(Integer)
     website              = Column(String(255))
     missionStatement     = Column(Text)
-    parent_ein           = Column(String(20))
     latitude             = Column(Double)
-    longitude            = Column(Double)
+    longitude            = Column(Double)  
+    photo_references     = Column(JSON)
     
 class mockFMsTable(Base):
     __tablename__ = "farmers_market_table"
-
+    
     id = Column(Integer, primary_key=True, autoincrement=True)
     listing_name         = Column(String(255))
     location_address     = Column(String(255))
@@ -62,6 +64,12 @@ class mockFMsTable(Base):
     location_indoor      = Column(String(255))
     specialproductionmethods         = Column(String(255))
     fnap                 = Column(String(255))
+    phone                = Column(String(20))
+    photo_references     = Column(JSON)
+    closest_charities    = Column(JSON)
+    wheelchair_accessible = Column(String(20))
+    rating               = Column(Float)
+    website              = Column(String(255))
     
 
 def get_all_locations(query):
@@ -103,6 +111,12 @@ class Tests(unittest.TestCase):
         engine.dispose() 
         Base.metadata.create_all(engine)
         self.session = Session()
+        photo_ref = {
+            "photos": ["deidm"]
+        }
+        closest_char = {
+            "char":["dijokde"]
+        }
         crops_data = {
             "crops": {
                 "crops": [
@@ -124,8 +138,14 @@ class Tests(unittest.TestCase):
             }
         }
         self.valid_location = Locations(
-            location = "fresno",
-            crops = crops_data 
+            name = "fresno",
+            county_seat = "fresno",
+            est = "1990",
+            population = 1,
+            area = 0,
+            map = "idejdiek",
+            crops = crops_data,
+            photo_references = photo_ref
         )
         self.valid_NP = NPs(
             ein = "ein",
@@ -143,7 +163,8 @@ class Tests(unittest.TestCase):
             website = "https://hello",
             missionStatement = "We work",
             latitude = "-100.991",
-            longitude = "1.9987"
+            longitude = "1.9987",
+            photo_references = photo_ref
         )
         self.valid_FM = FMs(
             listing_name = "Benica Certified Farmers Market",       
@@ -157,7 +178,11 @@ class Tests(unittest.TestCase):
             location_site_otherdesc = "",
             location_indoor = "No Indoor;",
             specialproductionmethods = "Organic (USDA Certified);",          
-            fnap = "WIC;SNAP;Accept EBT at a central location;;"
+            fnap = "WIC;SNAP;Accept EBT at a central location;;",
+            closest_charities = closest_char,
+            wheelchair_accessible = "Sure",
+            rating = 3.2,
+            website = "dei"
         )
 
     def test_home(self):
@@ -171,7 +196,7 @@ class Tests(unittest.TestCase):
         self.session.commit()
         query = self.session.query(mockLocationsTable)
         self.assertIsNotNone(query)
-        assert query.first().location == "fresno"
+        assert query.first().name == "fresno"
         crops_data = {
                 "crops": {
                     "crops": [
@@ -194,6 +219,7 @@ class Tests(unittest.TestCase):
             }
         crops_str = crops_data
         assert query.first().crops == crops_str
+        assert query.first().map == "idejdiek"
         
     def test_query_NPs(self):
         self.session.add(self.valid_NP)
@@ -258,10 +284,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json
             self.assertIsNotNone(data)
-            self.assertEqual(data["data"][0]["location"], "Yolo")
-
-    def test_get_NP(self):
-        pass   
+            self.assertEqual(data["data"][0]["name"], "Yolo")
 
     def test_get_all_NPs(self):
         with self.client:
@@ -316,6 +339,30 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertEqual(len(data), 9)
+    
+    def test_get_num_locations(self):
+        with self.client:
+            response = self.client.get("/api/GetNumLocations")
+            self.assertEqual(response.status_code, 200)
+            resp = response.json
+            count = resp["count"]
+            self.assertEqual(count, 58)
+
+    def test_get_num_nonprofits(self):
+        with self.client:
+            response = self.client.get("/api/GetNumNonProfits")
+            self.assertEqual(response.status_code, 200)
+            resp = response.json
+            count = resp["count"]
+            self.assertEqual(count, 129)
+
+    def test_get_num_markets(self):
+        with self.client:
+            response = self.client.get("/api/GetNumMarkets")
+            self.assertEqual(response.status_code, 200)
+            resp = response.json
+            count = resp["count"]
+            self.assertEqual(count, 107)
     
     def teardown_class(self):
         Base.metadata.drop_all(engine)

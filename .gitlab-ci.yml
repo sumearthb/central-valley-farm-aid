@@ -1,5 +1,8 @@
 stages:          
+  - pre
   - build
+  - post
+  - test
 
 build_frontend:
   image: node
@@ -16,6 +19,26 @@ build_frontend:
 #     - cd frontend
 #     - npm install
 #     - npm test
+
+test_backend:
+  image: python:3
+  stage: test
+  before_script:
+    - pip install -r backend/requirements.txt
+  script:
+    - cd backend && python3 tests.py
+
+# test_postman:
+#   image: 
+#     name: postman/newman:alpine
+#     entrypoint: [""]
+#   stage: test
+#   script:
+#     - cd backend
+#     - newman --version
+#     - newman run ../postman_jsons/Locations.postman_collection.json
+#     - newman run ../postman_jsons/Farmers' Markets.postman_collection.json
+#     - newman run ../postman_jsons/Nonprofits.postman_collection.json
 
 acceptance_tests:
   image: python:3.10
