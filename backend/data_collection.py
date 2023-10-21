@@ -5,7 +5,8 @@ import random
 import json
 import numpy as np
 import string
-
+from more_data import googleAPIFarmersMarkets, googleAPILocation, googleAPINonProfit
+from bs4 import BeautifulSoup
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
 
 '''
@@ -25,14 +26,20 @@ db_config = {
 
 
 # Create SQL Data tables
-def create_crop_table():
+def create_location_table():
     # The SQL query to create a new table
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS location_table (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        location VARCHAR(255) NOT NULL,
-        crops JSON
-    );
+        CREATE TABLE IF NOT EXISTS location_data (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            name VARCHAR(255),
+            est INT,
+            area VARCHAR(255),
+            county_seat VARCHAR(255),
+            map VARCHAR(255),
+            population INT,
+            crops JSON,
+            photo_references JSON
+        );
     """
 
     try:
@@ -59,24 +66,25 @@ def create_charity_table():
     create_table_query = """
     CREATE TABLE IF NOT EXISTS charity_table (
         id INT AUTO_INCREMENT PRIMARY KEY,
-        ein VARCHAR(20) NOT NULL,
-        charityName VARCHAR(255) NOT NULL,
-        url VARCHAR(255),
-        donationUrl VARCHAR(255),
-        city VARCHAR(100),
-        state VARCHAR(50),
-        zipCode VARCHAR(20),
-        start INT,
         category VARCHAR(255),
-        eligibleCd INT,
+        charityName VARCHAR(255),
+        city VARCHAR(255),
         deductibilityCd INT,
-        statusCd INT,
-        website VARCHAR(255),
-        missionStatement TEXT,
+        donationUrl VARCHAR(255),
+        ein VARCHAR(10),
+        eligibleCd INT,
         latitude DECIMAL(10, 6),
-        longitude DECIMAL(10, 6)
+        longitude DECIMAL(10, 6),
+        missionStatement TEXT,
+        photo_references JSON,
+        start INT,
+        state VARCHAR(255),
+        statusCd INT,
+        url VARCHAR(255),
+        website VARCHAR(255),
+        zipCode VARCHAR(10)
     );
-    """
+    """    
 
     try:
         # Establish a database connection
@@ -99,44 +107,45 @@ def create_charity_table():
         connection.close()
 
 def create_farmers_market_table():
-    create_table_query = """
-    CREATE TABLE IF NOT EXISTS farmers_market_table (
-        id INT AUTO_INCREMENT PRIMARY KEY,
-        listing_name VARCHAR(255),
-        location_address VARCHAR(255),
-        orgnization VARCHAR(255),
-        listing_desc VARCHAR(255),
-        location_x FLOAT,
-        location_y FLOAT,
-        location_desc VARCHAR(255),
-        location_site VARCHAR(255),
-        location_site_otherdesc VARCHAR(255),
-        location_indoor VARCHAR(255),
-        specialproductionmethods VARCHAR(255),
-        FNAP VARCHAR(255),
-        closest_charities JSON
-    );
-    """
-
     try:
         # Establish a database connection
         connection = mysql.connector.connect(**db_config)
-
-        # Create a cursor object to interact with the database
         cursor = connection.cursor()
 
-        # Execute the table creation SQL statement
+        # Create the farmers_market_table if it doesn't exist
+        create_table_query = """
+        CREATE TABLE IF NOT EXISTS farmers_market_table (
+            id INT AUTO_INCREMENT PRIMARY KEY,
+            fnap VARCHAR(255),
+            listing_desc VARCHAR(255),
+            listing_name VARCHAR(255),
+            location_address VARCHAR(255),
+            location_desc VARCHAR(255),
+            location_indoor VARCHAR(255),
+            location_site VARCHAR(255),
+            location_site_otherdesc VARCHAR(255),
+            location_x DECIMAL(10, 6),
+            location_y DECIMAL(10, 6),
+            orgnization VARCHAR(255),
+            phone VARCHAR(20),
+            photo_references JSON,
+            rating DECIMAL(3, 1),
+            website VARCHAR(255),
+            closest_charities JSON,
+            specialproductionmethods VARCHAR(255),
+            wheelchair_accessible VARCHAR(20)
+        );
+        """
         cursor.execute(create_table_query)
-
+        connection.commit()
         print("Table 'farmers_market_table' created successfully.")
 
     except mysql.connector.Error as err:
-        print("Error creating table:", err)
-
+        print(f"Error creating table: {err}")
     finally:
-        # Close the cursor and connection
-        cursor.close()
-        connection.close()
+        if connection.is_connected():
+            cursor.close()
+            connection.close()
 
 #------------------------------------------------------------------------
 # CROP DATA
@@ -229,37 +238,58 @@ def fetch_location_crop_data():
         if obj['county_name'] == "":
             random_index = random.randint(0, len(county_names) - 1)
             obj['county_name'] = county_names[random_index]
-            
-
-
-    # make a dictionary of counties and their corresponding crops
-    county_crop_cnt = {}
+    
+    # Update the JSON to add more information about each county
+    googleAPILocation(res['data'])
+    
+    # External API call to get initial county data
+    complete_data = get_county_data()
+    # {countyName: {countyData}, countyName: {countyData}}
+    
+    # Time to combine JSON and initial county data: iterate through each JSON 
+    # object
     for obj in res['data']:
+        # Format to match county name in dictionary
         formatted_loc_name = string.capwords(obj['county_name'])
-        if formatted_loc_name not in county_crop_cnt:
-            county_crop_cnt[formatted_loc_name] = set()
-        county_crop_cnt[formatted_loc_name].add(obj['commodity_desc'])
+        # Check if the county name exists (only for keeping out 'Other Counties')
+        if formatted_loc_name in complete_data:
+            # Get the county data for this county
+            county_data = complete_data[formatted_loc_name]
+            # Have we come across this county before in the JSON(no crops field
+            # or photo_references field)
+            if 'crops' not in county_data:
+                # NOPE! Create a set and also create a photo_references field
+                county_data['crops'] = set()
+                county_data['photo_references'] = obj['photo_references']
+            # Add the crop to the crops' county data field
+            county_data['crops'].add(obj['commodity_desc'])
 
-    return county_crop_cnt
+    return complete_data
 
 # Function to insert data into the MySQL database
-def insert_location_crop_data_to_db():
+def insert_location_data_to_db():
     # Query data from API
-    data = fetch_location_crop_data()    
+    data = fetch_location_crop_data()
 
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
-        for location, crops in data.items():
+        for location, vals in data.items():
             if location != 'Other (combined) Counties':
-                crop_data_json = json.dumps({"crops" : tuple(crops)})
-                record = {'location': location, 'crops': crop_data_json}
-                
-                insert_query = 'INSERT INTO location_table (location, crops) VALUES (%(location)s, %(crops)s );'
+                crop_data_json = json.dumps({"crops" : tuple(vals['crops'])})
+                record = {'name': location, 
+                          'crops': crop_data_json, 
+                          'photo_references': vals['photo_references'], 
+                          'est': vals['est'],
+                          'map': vals['map'],
+                          'population': vals['population'],
+                          'area': vals['area'],
+                          'county_seat': vals['county_seat']}
+                insert_query = 'INSERT INTO location_data (name, crops, photo_references, est, map, population, area, county_seat) VALUES (%(name)s, %(crops)s, %(photo_references)s, %(est)s, %(map)s, %(population)s, %(area)s, %(county_seat)s);'
                 cursor.execute(insert_query, record)
                 connection.commit()
 
-        print("Location_crop successfully inserted into MySQL database.")
+        print("Location data successfully inserted into MySQL database.")
 
     except mysql.connector.Error as err:
         print(f"Error inserting data into MySQL: {err}")
@@ -271,35 +301,40 @@ def insert_location_crop_data_to_db():
 #------------------------------------------------------------------------
 # FARMERS MARKET DATA
 def insert_farmer_market_data():
-    pd.set_option("display.max_columns", 500)
-    pd.set_option("display.width", 1000)
+    # UNCOMMENT
+    # pd.set_option("display.max_columns", 500)
+    # pd.set_option("display.width", 1000)
 
-    url = "https://www.usdalocalfoodportal.com/api/agritourism/?apikey=APIKEY&x=-84&y=42&radius=3"
+    # url = "https://www.usdalocalfoodportal.com/api/agritourism/?apikey=APIKEY&x=-84&y=42&radius=3"
 
-    payload = {}
-    headers = {}
+    # payload = {}
+    # headers = {}
 
-    response = requests.request("GET", url, headers=headers, data=payload)
+    # response = requests.request("GET", url, headers=headers, data=payload)
+    # df = pd.DataFrame.from_dict(response)
+    # Read the XLSX file into a DataFrame
 
-    df = pd.DataFrame.from_dict(response)
+    xlsx_file = "farmersmarketdata.xlsx"
+    df = pd.read_excel(xlsx_file)
 
     # filter out all unneeded columsn
     columns_to_keep = ['listing_name', 'location_address', 'orgnization', 'listing_desc',
        'location_x', 'location_y', 'location_desc', 'location_site',
        'location_site_otherdesc', 'location_indoor',
        'specialproductionmethods', 'FNAP']
+    
 
     # trim down to only cali locations and useful columns
     df = df[columns_to_keep]
     df = df[df['location_address'].str.contains('California')]
     df.fillna(0, inplace=True)
     
-    
     # Use latitute/ longitude to find closest charities to farmers' markets
     # Farmers market data lat/ lon columns: location_x/ location_y (floats)
     
     # returns long list of charity objects, with fields longitude and latitude
     charity_data = fetch_charity_data()
+    
     # Charity data lat/ lon columns: latitudue/ longitude (floats)
     all_closest_charities = []
     threshold = 0.45
@@ -313,9 +348,18 @@ def insert_farmer_market_data():
                 charities.append(charity['charityName'])
         all_closest_charities.append(json.dumps({"nearby_charities": tuple(charities)}))
     
-    
     # [{'nearby_charities': [charity1, charity2, ...]}, {'nearby_charities': []}, {}]
+    
+    # adding website, phone, rating, wheelchair_accessible, and photo data and more via Google
+    more_fm_data = googleAPIFarmersMarkets(df) # This is a dict
     df['closest_charities'] = all_closest_charities
+    df['photo_references'] = more_fm_data['photo_references']
+    df['website'] = more_fm_data['website']
+    df['phone'] = more_fm_data['phone']
+    df['rating'] = more_fm_data['rating']
+    df['wheelchair_accessible'] = more_fm_data['wheelchair_accessible']
+    
+    df.fillna(0, inplace=True)
     try:
         # Establish a database connection
         connection = mysql.connector.connect(**db_config)
@@ -325,11 +369,8 @@ def insert_farmer_market_data():
         
         # Define the SQL INSERT statement
         insert_query = f"""
-        INSERT INTO farmers_market_table (
-            listing_name, location_address, orgnization, listing_desc,
-            location_x, location_y, location_desc, location_site,
-            location_site_otherdesc, location_indoor, specialproductionmethods, FNAP, closest_charities
-        ) VALUES ({', '.join(['%s'] * len(df.columns))})
+        INSERT INTO farmers_market_table (listing_name, location_address, orgnization, listing_desc, location_x, location_y, location_desc, location_site, location_site_otherdesc, location_indoor, specialproductionmethods, FNAP, closest_charities, photo_references, website, phone, rating, wheelchair_accessible) 
+        VALUES ({', '.join(['%s'] * len(df.columns))})
         """
 
         values = [tuple(row) for _, row in df.iterrows()]
@@ -495,10 +536,13 @@ def fetch_charity_data():
     res.extend(res3["data"])
     res.extend(res4['data'])
     res.extend(res5['data'])
+    
+    googleAPINonProfit(res)
     return res
 
 def insert_charity_crop_data_to_db():
     data = fetch_charity_data()
+    
     try:
         connection = mysql.connector.connect(**db_config)
         cursor = connection.cursor()
@@ -522,7 +566,9 @@ def insert_charity_crop_data_to_db():
                     website,
                     missionStatement,
                     latitude,
-                    longitude
+                    longitude,
+                    photo_references
+
                 ) VALUES (
                     %(ein)s,
                     %(charityName)s,
@@ -539,7 +585,8 @@ def insert_charity_crop_data_to_db():
                     %(website)s,
                     %(missionStatement)s,
                     %(latitude)s,
-                    %(longitude)s
+                    %(longitude)s,
+                    %(photo_references)s
                 )
             '''
         
@@ -561,18 +608,52 @@ def insert_charity_crop_data_to_db():
             connection.close()
 
 
+def get_county_data():
+
+    county_names = []
+    county_url = "https://en.wikipedia.org/wiki/List_of_counties_in_California"
+    county_page = requests.get(county_url)
+    county_soup = BeautifulSoup(county_page.content, "html.parser")
+
+    county_tables = county_soup.findAll('table')
+
+    rows = county_tables[1].findAll('tr')
+    rows = rows[1:]
+    for row in rows:
+        name = row.find('th').find('a').text
+        # get all columns for this row
+        cols = row.findAll('td')
+        if(len(cols) >= 8):
+            county_seat = cols[1].text
+            est = int(cols[2].text)
+            population = int(cols[6].find('span').text.replace(",", ""))
+            area = int(cols[7].find('span').text.replace(",", ""))
+            map = "https:" + cols[8].find('span').find('a').find('img')['src']
+            county_names.append({
+                "name": name, "county_seat": county_seat, "est": est, "population": population, "area": area, "map": map
+            })
+    response_dict = {}
+    for feature in county_names:
+        if feature['name'] != 'San Francisco':
+            response_dict[" ".join(feature["name"].split()[:-1])] = feature
+        else:
+            response_dict[(feature["name"])] = feature
+    
+    # {countyName: {countyData}, countyName: {countyData}}
+    return response_dict
+
 
 # Defining main function
 def main(): 
-    # location crop data
-    create_crop_table() # does not create new table if it exists
-    insert_location_crop_data_to_db()
+    # location crop data DONE
+    # create_location_table()
+    # insert_location_data_to_db()
 
-    # # charities data
+    # charities data DONE
     # create_charity_table()
     # insert_charity_crop_data_to_db()
 
-    # # Farmer Market data 
+    # Farmer Market data DONE
     # create_farmers_market_table()
     # insert_farmer_market_data()
   
