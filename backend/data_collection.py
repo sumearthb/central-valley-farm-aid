@@ -11,7 +11,7 @@ from bs4 import BeautifulSoup
 
 '''
 1. Fetch API calls, decode to json. Every object is a unordered (jumbled) list of keypairs, but 
-    all objeects have commodity, county and short desc. 
+    all objects have commodity, county and short desc.
 2. send relevant info to DB
 
 '''
@@ -256,7 +256,7 @@ def fetch_location_crop_data():
             # Get the county data for this county
             county_data = complete_data[formatted_loc_name]
             # Have we come across this county before in the JSON(no crops field
-            # or photo_references field)
+            # or photo_references field)?
             if 'crops' not in county_data:
                 # NOPE! Create a set and also create a photo_references field
                 county_data['crops'] = set()
@@ -285,7 +285,24 @@ def insert_location_data_to_db():
                           'population': vals['population'],
                           'area': vals['area'],
                           'county_seat': vals['county_seat']}
-                insert_query = 'INSERT INTO location_data (name, crops, photo_references, est, map, population, area, county_seat) VALUES (%(name)s, %(crops)s, %(photo_references)s, %(est)s, %(map)s, %(population)s, %(area)s, %(county_seat)s);'
+                insert_query = '''INSERT INTO location_data (
+                name, 
+                crops, 
+                photo_references, 
+                est, 
+                map, 
+                population, 
+                area, 
+                county_seat) 
+                VALUES (
+                    %(name)s, 
+                    %(crops)s, 
+                    %(photo_references)s, 
+                    %(est)s, 
+                    %(map)s, 
+                    %(population)s, 
+                    %(area)s, 
+                    %(county_seat)s);'''
                 cursor.execute(insert_query, record)
                 connection.commit()
 
@@ -654,8 +671,8 @@ def main():
     # insert_charity_crop_data_to_db()
 
     # Farmer Market data DONE
-    # create_farmers_market_table()
-    # insert_farmer_market_data()
+    create_farmers_market_table()
+    insert_farmer_market_data()
   
 
 if __name__=="__main__": 
