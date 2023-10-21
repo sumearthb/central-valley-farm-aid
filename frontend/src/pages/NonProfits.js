@@ -1,42 +1,71 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import NPCard from "../components/NPCard/NPCard";
-import californiafresh from "../card-pics/np-pics/californiafresh.png";
-import cfe from "../card-pics/np-pics/cfe.jpg";
-import pfl from "../card-pics/np-pics/pfl.png";
 import { Container, Col, Row } from "react-bootstrap/";
+import PageSelector from "../components/PageSelector";
+import { fetchNonProfits, fetchNonProfitsLength } from "../utils/ApiUtils";
 
 const NPGrid = () => {
-  const NPData = [
-    { title: "California Fresh Farmers' Markets Association", image: californiafresh, county: "County: Fresno", year: "Est: 2019", NTEE_code: "NTEE Code: K03", phone: "Phone: (559) 417-7970", employees: "Num. Employees: 16"},
-    { title: "California Food Expo", image: cfe, county: "County: Fresno", year: "Est: 2015", NTEE_code: "NTEE Code: K31", phone: "Phone: (559) 227-9999", employees: "Num. Employees: 0" },
-    { title: "People Land and Food Foundation", image: pfl, county: "County: Fresno", year: "Est: 1975", NTEE_code: "NTEE Code: K20", phone: "Phone: (559) 855-3710", employees: "Num. Employees: 1" },
-  ];
+
+  const [nonprofits, setNonProfits] = useState([]);
+  const [curPage, setCurPage] = useState(1);
+  const [numPages, setNumPages] = useState(0);
+  const [totalNonProfits, setTotalNonProfits] = useState(0);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const initPages = async () => {
+      setLoading(true);
+      const numNonProfits = await fetchNonProfitsLength();
+      setTotalNonProfits(numNonProfits);
+      setNumPages(Math.ceil(numNonProfits / 9));
+      setLoading(false);
+    };
+    initPages();
+  }, []);
+
+  useEffect(() => {
+    const loadNonProfits = async () => {
+      setLoading(true);
+      const fetchedNonProfits = await fetchNonProfits(curPage, 9);
+      setNonProfits(fetchedNonProfits.data);
+      setLoading(false);
+    };
+    loadNonProfits();
+    
+  }, [curPage]);
 
   return (
     <Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <Container className="container text-center mt-5 mb-4">
-        <h1>Non-Profit Organizations</h1>
-        <h3 style={{ marginBottom: "30px" }}>Displaying 3 out of 3 results</h3>
+        <h1>NonProfits</h1>
       </Container>
 
-      <Container className="px-4">
-  <Row className="gx-3 justify-content-center">
-    {NPData.map((np, index) => (
-      <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
-        <NPCard
-          title={np.title}
-          image={np.image}
-          county={np.county}
-          NTEE_code={np.NTEE_code}
-          phone={np.phone}
-          employees={np.employees}
-          year={np.year}
-        />
-      </Col>
-    ))}
-  </Row>
-</Container>
+      <Container>
+        <h3 style={{ marginBottom: "30px"}}>{`Displaying ${nonprofits.length} out of ${totalNonProfits} results`}</h3>
+      </Container>
+      {!loading && <div className="pageselector">
+        <PageSelector
+        numPages={numPages}
+        curPage={curPage}
+        setCurPage={setCurPage}/>
+        </div> }
 
+      <Container className="px-4">
+        <Container className="row gx-3">
+          {(nonprofits.map((nonprofit, index) => (
+            <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
+              <NPCard
+                charityName={nonprofit.charityName}
+                category={nonprofit.category}
+                city={nonprofit.city}
+                phone={nonprofit.phone}
+                url={nonprofit.url}
+                img={nonprofit.photo_references.photos[0]}
+              />
+            </Col>
+          )))}
+        </Container>
+      </Container>
     </Container>
   );
 };

@@ -8,18 +8,18 @@ const About = () => {
     const [memberInfo, setMemberInfo] = useState([]);
     const [totalStats, setTotalStats] = useState({});
     useEffect(() => {
+        const fetchData = async () => {
+            fetchGitLabInfo()
+            .then(info => {
+                setMemberInfo(info.members);
+                setTotalStats(info.stats);
+            });
+        };
+
         fetchData();
         // Need empty array so that the function doesnt call infinitely but eslint gives a warning for some reason.
         // eslint-disable-next-line
     }, []);
-
-    const fetchData = async () => {
-        fetchGitLabInfo()
-        .then(info => {
-            setMemberInfo(info.members);
-            setTotalStats(info.stats);
-        });
-    };
 
     return (
     <div className="about">

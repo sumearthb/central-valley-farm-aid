@@ -7,25 +7,21 @@
   /* Class that applies to each card */
   .np-card {
     border: 1px solid #ccc;
-    padding: 8px;
-    margin: 8px;
+    margin: 1rem;
     text-align: start;
     box-shadow: 0px 0px 4px rgba(0, 0, 0, 0.2);
     background-color: #fff;
     transition: transform 0.2s ease-in-out;
-    width: 300px;
-    height: 600px;
+    width: 21rem;
   }
-  
 
   /* Affects image */
   .np-card img {
     display: block;
-    width: 30vh;
-    height: 30vh;
+    width: 100%;
+    height: auto;
     border: 1px solid #ddd;
     border-radius: 4px;
-    margin-bottom: 12px;
     align-self: center;
   }
   

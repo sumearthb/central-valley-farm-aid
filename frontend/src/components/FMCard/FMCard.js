@@ -3,27 +3,34 @@ import "./FMCard.css";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 
-// may have to import proptypes later?
-
-const FMCard = ({ title, image, location, site, hours, seasons, vendors }) => {
+const FMCard = ({ market_name, address, indoor, special_prod, fnap, img}) => {
   return (
     // specifies CSS class used
-    <Card className="location-card d-flex flex-column">
-      <img src={image} alt={title} className="fm-card-image" />
-      <div className="fm-card-details">
-        <h2 className="fm-card-title" style={{ marginBottom: "10px" }}>{title}</h2>
-        <p className="fm-card-location">{location}</p>
-        <p className="fm-card-site">{site}</p>
-        <p className="fm-card-hours">{hours}</p>
-        <p className="fm-card-seasons">{seasons}</p>
-        <p className="fm-card-vendors">{vendors}</p>
+    <Card className="fm-card">
+      <Card.Img className="fm-card-image" src={img}/>
+      <Card.Body className="fm-card-body">
+        <Card.Title className="fm-card-title">
+          {market_name}
+        </Card.Title>
+        <Card.Text className="fm-card-address">
+          Address: {address}
+        </Card.Text>
+        <Card.Text className="fm-card-population">
+          Indoor Status: {indoor}
+        </Card.Text>
+        <Card.Text className="fm-card-established">
+          Crop Production: {special_prod}
+        </Card.Text>
+        <Card.Text className="fm-card-established">
+          FNAP Status: {fnap}
+        </Card.Text>
         <Link
-          to={`/farmersmarkets/${title}`} // Specify the URL for the farmers market
+          to={`/farmersmarkets/${market_name}`}
           style={{ textDecoration: "none" }}
         >
-          <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="border-white">More info</Button>
+          <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="align-self-end border-white">More info</Button>
         </Link>
-      </div>
+      </Card.Body>
     </Card>
   );
 };

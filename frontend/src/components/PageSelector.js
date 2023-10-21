@@ -9,7 +9,6 @@ function PageSelector(props) {
         setCurPage,
     } = props;
     const pages = [];
-    console.log(numPages);
     if (numPages <= 9) {
         for(let i = 1; i <= numPages; ++i) {
             pages.push(i);
