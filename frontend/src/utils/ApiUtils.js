@@ -33,7 +33,7 @@ export const fetchNonProfitsLength = async() => {
 }
 
 export const fetchSpecMarket = async(market_name) => {
-    let response = await axios.get(`${URL}GetLocations/${market_name}`);
+    let response = await axios.get(`${URL}GetMarket/${market_name}`);
     return response.data;
 }
 
