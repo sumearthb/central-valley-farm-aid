@@ -19,7 +19,8 @@ const memberInfo = [
   {
     id: 13515351,
     bio: "Hi! I'm a junior at the University of Texas at Austin, studying computer science and mathematics. I like playing volleyball, listening to music, and learning new recipes in my free time. ",
-    role: "Frontend Developer"
+    role: "Full-stack Developer",
+    tests: 19
   },
   {
     id: 15632576,

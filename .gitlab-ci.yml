@@ -1,7 +1,7 @@
 stages:          
   - pre
   - build
-  - post
+  # - post
   - test
 
 build_frontend:
