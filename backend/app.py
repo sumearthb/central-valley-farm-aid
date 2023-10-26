@@ -42,10 +42,28 @@ def get_all_locations():
     page = request.args.get("page") 
     per_page = request.args.get("per_page")
     query = db.session.query(Locations)
+    
+    sort_by = request.args.get("sort_by", type=str, default="name")
+    sort_order = request.args.get("sort_order", type=str, default="asc")
+    if sort_by == "name":
+        if sort_order == "asc":
+            query = query.order_by(asc(Locations.name))
+        elif sort_order == "desc":
+            query = query.order_by(desc(Locations.name))
+    # elif sort_by == "crops":
+    #     if sort_order == "asc":
+    #         query = query.order_by(asc(func.jsonb_array_length(Locations.crops)))
+    #     elif sort_order == "desc":
+    #         query = query.order_by(desc(func.jsonb_array_length(Locations.crops)))
+    elif sort_by == "population":
+        if sort_order == "asc":
+            query = query.order_by(Locations.population.asc())
+        elif sort_order == "desc":
+            query = query.order_by(Locations.population.desc())
+    
     if page is not None:
         query = paginate(query, int(page), int(per_page))
     location_list = []
-    int
     for location in query:
         location_schema = LocationSchema()
         location_dict = location_schema.dump(location)
@@ -69,6 +87,32 @@ def get_all_nonprofits():
     page = request.args.get("page")
     per_page = request.args.get("per_page")
     query = db.session.query(NPs)
+
+    city = request.args.get("city", type=str, default=None)
+    if city:
+        query = query.filter(NPs.city == city)
+        city = request.args.get("city", type=str, default=None)
+    category = request.args.get("category", type=str, default=None)
+    if category:
+        query = query.filter(NPs.category == category)  
+    has_mission = request.args.get("mission", type=str, default=None)
+    if category:
+        query = query.filter(NPs.missionStatement == has_mission)  
+    
+
+    sort_by = request.args.get("sort_by", type=str, default="asc")
+    sort_order = request.args.get("sort_order", type=str, default="asc")
+    if sort_by == "name":
+        if sort_order == "asc":
+            query = query.order_by(asc(NPs.charityName))
+        elif sort_order == "desc":
+            query = query.order_by(desc(NPs.charityName))
+    elif sort_by == "statusCd":
+        if sort_order == "asc":
+            query = query.order_by(asc(NPs.statusCd))
+        elif sort_order == "desc":
+            query = query.order_by(desc(NPs.statusCd))
+
     if page is not None:
         query = paginate(query, int(page), int(per_page))
     NP_list = []
@@ -95,6 +139,32 @@ def get_all_markets():
     page = request.args.get("page")
     per_page = request.args.get("per_page")
     query = db.session.query(FMs)
+
+    wheelchair_accessible = request.args.get("wheelchair_accessible", type=str, default=None)
+    if wheelchair_accessible:
+        query = query.filter(FMs.wheelchair_accessible == wheelchair_accessible)
+    indoor = request.args.get("indoor_status", type=str, default=None)
+    if indoor:
+        query = query.filter(FMs.location_indoor != "No Indoor;")
+        query = query.filter(FMs.location_indoor != "No;")
+        query = query.filter(FMs.location_indoor != "0")
+    fnap_access = request.args.get("fnap", type=str, default=None)
+    if fnap_access:
+        query = query.filter(FMs.fnap != "None")
+
+    sort_by = request.args.get("sort_by", type=str, default="asc")
+    sort_order = request.args.get("sort_order", type=str, default="asc")
+    if sort_by == "name":
+        if sort_order == "asc":
+            query = query.order_by(asc(FMs.listing_name))
+        elif sort_order == "desc":
+            query = query.order_by(desc(FMs.listing_name))
+    elif sort_by == "rating":
+        if sort_order == "asc":
+            query = query.order_by(asc(FMs.rating))
+        elif sort_order == "desc":
+            query = query.order_by(desc(FMs.rating))
+    
     if page is not None:
         query = paginate(query, int(page), int(per_page))
     FM_list = []
