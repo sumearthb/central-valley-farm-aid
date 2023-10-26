@@ -26,7 +26,7 @@ const FMGrid = () => {
   useEffect(() => {
     const loadMarkets = async () => {
       setLoading(true);
-      const fetchedMarkets = await fetchMarkets(curPage);
+      const fetchedMarkets = await fetchMarkets(curPage, 9);
       setMarkets(fetchedMarkets.data);
       setLoading(false);
     };
