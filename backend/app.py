@@ -43,7 +43,21 @@ def get_all_locations():
     page = request.args.get("page") 
     per_page = request.args.get("per_page")
     query = db.session.query(Locations)
+
+    # Searching for locations
+    search = request.args.get("search")
+    search_terms = search.split()
+    search_conditions = [
+        or_(
+            Locations.name.ilike(f"%{term}%"),
+            Locations.county_seat.ilike(f"%{term}%"),
+            Locations.crops.ilike(f"%{term}%")
+        )
+        for term in search_terms
+    ]
+    query = query.filter(or_(*search_conditions))
     
+    # Sorting for locations
     sort_by = request.args.get("sort_by", type=str, default="name")
     sort_order = request.args.get("sort_order", type=str, default="asc")
     
@@ -64,10 +78,8 @@ def get_all_locations():
             query = query.order_by(desc(Locations.crops['crops']))
     elif sort_by == "area":
         if sort_order == "asc":
-            # Sorting by 'area' field in ascending order, treating it as an integer
             query = query.order_by(cast(Locations.area, Integer))
         elif sort_order == "desc":
-            # Sorting by 'area' field in descending order, treating it as an integer
             query = query.order_by(desc(cast(Locations.area, Integer)))
     elif sort_by == "population":
         if sort_order == "asc":
@@ -101,6 +113,22 @@ def get_all_nonprofits():
     page = request.args.get("page")
     per_page = request.args.get("per_page")
     query = db.session.query(NPs)
+
+    # Searching for NPs
+    search = request.args.get('search')
+    search_terms = search.split()
+    search_conditions = [
+        or_(
+            NPs.charityName.ilike(f"%{term}%"),
+            NPs.state.ilike(f"%{term}%"),
+            NPs.city.ilike(f"%{term}%"),
+            NPs.zipCode.ilike(f"%{term}%"),
+            NPs.category.ilike(f"%{term}%"),
+            NPs.missionStatement.ilike(f"%{term}%")
+        )
+        for term in search_terms
+    ]
+    query = query.filter(or_(*search_conditions))
 
     # Filtering for NPs
     city = request.args.get("city", type=str, default=None)
@@ -154,6 +182,22 @@ def get_all_markets():
     page = request.args.get("page")
     per_page = request.args.get("per_page")
     query = db.session.query(FMs)
+
+    # Searching for FMs
+    search = request.args.get("search")
+    search_terms = search.split()
+    search_conditions = [
+        or_(
+            FMs.listing_name.ilike(f"%{term}%"),
+            FMs.listing_desc.ilike(f"%{term}%"),
+            FMs.location_address.ilike(f"%{term}%"),
+            FMs.location_desc.ilike(f"%{term}%"),
+            FMs.specialproductionmethods.ilike(f"%{term}%"),
+            FMs.fnap.ilike(f"%{term}%")
+        )
+        for term in search_terms
+    ]
+    query = query.filter(or_(*search_conditions))
 
     # Filtering for FMs
     wheelchair_accessible = request.args.get("wheelchair_accessible", type=str, default=None)
