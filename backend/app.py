@@ -3,9 +3,10 @@ from flask import Flask, request, jsonify, Response
 from models import Locations, NPs, FMs, app, db
 from schema import LocationSchema, NPSchema, FMSchema
 from flask_cors import CORS
-from sqlalchemy import or_, func, and_, Integer
+from sqlalchemy import or_, func, cast, and_, Integer
 from sqlalchemy.sql.expression import asc, desc
 import googlemaps
+import json
 
 gmaps = googlemaps.Client(key='AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs')
 
@@ -45,16 +46,29 @@ def get_all_locations():
     
     sort_by = request.args.get("sort_by", type=str, default="name")
     sort_order = request.args.get("sort_order", type=str, default="asc")
+    
     if sort_by == "name":
         if sort_order == "asc":
             query = query.order_by(asc(Locations.name))
         elif sort_order == "desc":
             query = query.order_by(desc(Locations.name))
-    # elif sort_by == "crops":
-    #     if sort_order == "asc":
-    #         query = query.order_by(asc(func.jsonb_array_length(Locations.crops)))
-    #     elif sort_order == "desc":
-    #         query = query.order_by(desc(func.jsonb_array_length(Locations.crops)))
+    elif sort_by == "county_seat":
+        if sort_order == "asc":
+            query = query.order_by(asc(Locations.county_seat))
+        elif sort_order == "desc":
+            query = query.order_by(desc(Locations.county_seat))
+    elif sort_by == "crops":
+        if sort_order == "asc":
+            query = query.order_by(asc(Locations.crops['crops']))
+        elif sort_order == "desc":
+            query = query.order_by(desc(Locations.crops['crops']))
+    elif sort_by == "area":
+        if sort_order == "asc":
+            # Sorting by 'area' field in ascending order, treating it as an integer
+            query = query.order_by(cast(Locations.area, Integer))
+        elif sort_order == "desc":
+            # Sorting by 'area' field in descending order, treating it as an integer
+            query = query.order_by(desc(cast(Locations.area, Integer)))
     elif sort_by == "population":
         if sort_order == "asc":
             query = query.order_by(Locations.population.asc())
@@ -88,6 +102,7 @@ def get_all_nonprofits():
     per_page = request.args.get("per_page")
     query = db.session.query(NPs)
 
+    # Filtering for NPs
     city = request.args.get("city", type=str, default=None)
     if city:
         query = query.filter(NPs.city == city)
@@ -99,7 +114,7 @@ def get_all_nonprofits():
     if category:
         query = query.filter(NPs.missionStatement == has_mission)  
     
-
+    # Sorting for NPs
     sort_by = request.args.get("sort_by", type=str, default="asc")
     sort_order = request.args.get("sort_order", type=str, default="asc")
     if sort_by == "name":
@@ -140,6 +155,7 @@ def get_all_markets():
     per_page = request.args.get("per_page")
     query = db.session.query(FMs)
 
+    # Filtering for FMs
     wheelchair_accessible = request.args.get("wheelchair_accessible", type=str, default=None)
     if wheelchair_accessible:
         query = query.filter(FMs.wheelchair_accessible == wheelchair_accessible)
@@ -152,6 +168,7 @@ def get_all_markets():
     if fnap_access:
         query = query.filter(FMs.fnap != "None")
 
+    # Sorting for FMs
     sort_by = request.args.get("sort_by", type=str, default="asc")
     sort_order = request.args.get("sort_order", type=str, default="asc")
     if sort_by == "name":
