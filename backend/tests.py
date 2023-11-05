@@ -239,7 +239,7 @@ class Tests(unittest.TestCase):
         assert query.first().location_address == "First Street between B & D Streets, Benicia, California 94510"
         assert query.first().orgnization == ""
 
-    def test_get_all_locations(self):
+    def test_mock_get_all_locations(self):
         self.session.add(self.valid_location)
         self.session.commit()
         query = self.session.query(mockLocationsTable)
@@ -248,7 +248,7 @@ class Tests(unittest.TestCase):
         self.assertIsNotNone(response)
         assert response.json["instance_count"] == 1
         
-    def test_get_all_nonprofits(self):
+    def test_mock_get_all_nonprofits(self):
         self.session.add(self.valid_NP)
         self.session.commit()
         query = self.session.query(mockNPsTable)
@@ -257,7 +257,7 @@ class Tests(unittest.TestCase):
         self.assertIsNotNone(response)
         assert response.json["instance_count"] == 1
         
-    def test_get_all_markets(self):
+    def test_mock_get_all_markets(self):
         self.session.add(self.valid_FM)
         self.session.commit()
         query = self.session.query(mockFMsTable)
@@ -265,10 +265,6 @@ class Tests(unittest.TestCase):
         response = get_all_markets(query)
         self.assertIsNotNone(response)
         assert response.json["instance_count"] == 1    
-        
-    # TODO ~ phase 3
-    def test_search_all(self):
-        pass
 
     def test_get_all_locations(self):
         with self.client:
@@ -301,7 +297,6 @@ class Tests(unittest.TestCase):
             data = response.json
             self.assertIsNotNone(data)
             self.assertEqual(data["data"][0]["charityName"], "DEL MAR FARMERS MARKET")
-        
     
     def test_get_all_FMs(self):
         with self.client:
