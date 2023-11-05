@@ -3,7 +3,7 @@ from flask import Flask, request, jsonify, Response
 from models import Locations, NPs, FMs, app, db
 from schema import LocationSchema, NPSchema, FMSchema
 from flask_cors import CORS
-from sqlalchemy import or_, func, cast, and_, Integer
+from sqlalchemy import or_, func, cast, and_, Integer, case, literal, select, text
 from sqlalchemy.sql.expression import asc, desc
 import googlemaps
 import json
@@ -16,86 +16,72 @@ PER_PAGE = 9
 @app.route('/api')
 def home():
 	return "Welcome to Central Valley Farm Aid!" 
-    
-"""
-Implementation for search and filtering-specific 
-endpoints will be completed in phase 3
-"""
 
-@app.route('/api/SearchAll', methods = ['GET'])
-def search_all():
-    search = request.args.get("search", type=str, default=None)
-    if not search:
-        return jsonify({"error": "A search query is required."}), 400
+# @app.route('/api/SearchAll', methods = ['GET'])
+# def search_all():
+#     search = request.args.get("search", type=str, default=None)
+#     if not search:
+#         return jsonify({"error": "A search query is required."}), 400
 
-    search_terms = search.split()
-    query_locations = search_locations(search_terms)
-    query_NPs = search_NPs(search_terms)
-    query_FMs = search_FMs(search_terms)
-    location_list = []
-    for location in query_locations:
-        location_Schema = LocationSchema()
-        location_dict = location_Schema.dump(location)
-        location_list.append(location_dict)
-    NP_list = []
-    for NP in query_NPs:
-        NP_Schema = NPSchema()
-        NP_dict = NP_Schema.dump(NP)
-        NP_list.append(NP_dict)
-    FM_list = []
-    for FM in query_FMs:
-        FM_Schema = FMSchema()
-        FM_dict = FM_Schema.dump(FM)
-        FM_list.append(FM_dict)
-    response = jsonify({"locations" : location_list, "NPs" : NP_list, "FMs" : FM_list})
-    return response
+#     search_terms = search.split()
+#     query_locations = search_locations(search_terms)
+#     query_NPs = search_NPs(search_terms)
+#     query_FMs = search_FMs(search_terms)
+#     location_list = []
+#     for location in query_locations:
+#         location_Schema = LocationSchema()
+#         location_dict = location_Schema.dump(location)
+#         location_list.append(location_dict)
+#     NP_list = []
+#     for NP in query_NPs:
+#         NP_Schema = NPSchema()
+#         NP_dict = NP_Schema.dump(NP)
+#         NP_list.append(NP_dict)
+#     FM_list = []
+#     for FM in query_FMs:
+#         FM_Schema = FMSchema()
+#         FM_dict = FM_Schema.dump(FM)
+#         FM_list.append(FM_dict)
+#     response = jsonify({"locations" : location_list, "NPs" : NP_list, "FMs" : FM_list})
+#     return response
     
 # Search for locations using the provided search terms
 def search_locations(search_terms):
     query = db.session.query(Locations)
-    search_conditions = [
-        or_(
-            Locations.name.ilike(f"%{term}%"),
-            Locations.county_seat.ilike(f"%{term}%"),
-            Locations.crops.ilike(f"%{term}%")
-        )
-        for term in search_terms
-    ]
+    
+    search_conditions = [Locations.name.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [Locations.county_seat.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [Locations.crops.ilike(f"%{term}%") for term in search_terms]
     query = query.filter(or_(*search_conditions))
+
     return query
 
 # Search for NPs using the provided search terms
 def search_NPs(search_terms):
     query = db.session.query(NPs)
-    search_conditions = [
-        or_(
-            NPs.charityName.ilike(f"%{term}%"),
-            NPs.state.ilike(f"%{term}%"),
-            NPs.city.ilike(f"%{term}%"),
-            NPs.zipCode.ilike(f"%{term}%"),
-            NPs.category.ilike(f"%{term}%"),
-            NPs.missionStatement.ilike(f"%{term}%")
-        )
-        for term in search_terms
-    ]
+    
+    search_conditions = [NPs.charityName.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [NPs.state.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [NPs.city.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [NPs.zipCode.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [NPs.category.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [NPs.missionStatement.ilike(f"%{term}%") for term in search_terms]
     query = query.filter(or_(*search_conditions))
+    
     return query
 
 # Search for FMs using the provided search terms
 def search_FMs(search_terms):
     query = db.session.query(FMs)
-    search_conditions = [
-        or_(
-            FMs.listing_name.ilike(f"%{term}%"),
-            FMs.listing_desc.ilike(f"%{term}%"),
-            FMs.location_address.ilike(f"%{term}%"),
-            FMs.location_desc.ilike(f"%{term}%"),
-            FMs.specialproductionmethods.ilike(f"%{term}%"),
-            FMs.fnap.ilike(f"%{term}%")
-        )
-        for term in search_terms
-    ]
+    
+    search_conditions = [FMs.listing_name.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [FMs.listing_desc.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [FMs.location_address.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [FMs.location_desc.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [FMs.specialproductionmethods.ilike(f"%{term}%") for term in search_terms]
+    search_conditions += [FMs.fnap.ilike(f"%{term}%") for term in search_terms]
     query = query.filter(or_(*search_conditions))
+    
     return query
 
 @app.route("/api/GetLocations/<name>", methods = ['GET'])
