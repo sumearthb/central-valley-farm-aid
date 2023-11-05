@@ -191,7 +191,7 @@ def get_all_nonprofits():
     if category:
         query = query.filter(NPs.category == category)  
     has_mission = request.args.get("mission", type=str, default=None)
-    if category:
+    if has_mission:
         query = query.filter(NPs.missionStatement == has_mission)  
     
     # Sorting for NPs
