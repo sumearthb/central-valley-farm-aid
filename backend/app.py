@@ -43,10 +43,10 @@ def get_all_locations():
     page = request.args.get("page") 
     per_page = request.args.get("per_page")
     query = db.session.query(Locations)
-
+    
     # Searching for locations
     search = request.args.get("search")
-    search_terms = search.split()
+    search_terms = search.split() if search else []
     search_conditions = [
         or_(
             Locations.name.ilike(f"%{term}%"),
@@ -55,7 +55,8 @@ def get_all_locations():
         )
         for term in search_terms
     ]
-    query = query.filter(or_(*search_conditions))
+    if search_conditions:
+        query = query.filter(or_(*search_conditions))
     
     # Sorting for locations
     sort_by = request.args.get("sort_by", type=str, default="name")
@@ -116,7 +117,7 @@ def get_all_nonprofits():
 
     # Searching for NPs
     search = request.args.get('search')
-    search_terms = search.split()
+    search_terms = search.split() if search else []
     search_conditions = [
         or_(
             NPs.charityName.ilike(f"%{term}%"),
@@ -128,7 +129,8 @@ def get_all_nonprofits():
         )
         for term in search_terms
     ]
-    query = query.filter(or_(*search_conditions))
+    if search_conditions:
+        query = query.filter(or_(*search_conditions))
 
     # Filtering for NPs
     city = request.args.get("city", type=str, default=None)
@@ -185,7 +187,7 @@ def get_all_markets():
 
     # Searching for FMs
     search = request.args.get("search")
-    search_terms = search.split()
+    search_terms = search.split() if search else []
     search_conditions = [
         or_(
             FMs.listing_name.ilike(f"%{term}%"),
@@ -197,7 +199,8 @@ def get_all_markets():
         )
         for term in search_terms
     ]
-    query = query.filter(or_(*search_conditions))
+    if search_conditions:
+        query = query.filter(or_(*search_conditions))
 
     # Filtering for FMs
     wheelchair_accessible = request.args.get("wheelchair_accessible", type=str, default=None)
