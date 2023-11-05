@@ -22,10 +22,81 @@ Implementation for search and filtering-specific
 endpoints will be completed in phase 3
 """
 
-# TODO ~ phase 3
-@app.route('/api/SearchAll')
+@app.route('/api/SearchAll', methods = ['GET'])
 def search_all():
-    return 0
+    search = request.args.get("search", type=str, default=None)
+    if not search:
+        return jsonify({"error": "A search query is required."}), 400
+
+    search_terms = search.split()
+    query_locations = search_locations(search_terms)
+    query_NPs = search_NPs(search_terms)
+    query_FMs = search_FMs(search_terms)
+    location_list = []
+    for location in query_locations:
+        location_Schema = LocationSchema()
+        location_dict = location_Schema.dump(location)
+        location_list.append(location_dict)
+    NP_list = []
+    for NP in query_NPs:
+        NP_Schema = NPSchema()
+        NP_dict = NP_Schema.dump(NP)
+        NP_list.append(NP_dict)
+    FM_list = []
+    for FM in query_FMs:
+        FM_Schema = FMSchema()
+        FM_dict = FM_Schema.dump(FM)
+        FM_list.append(FM_dict)
+    response = jsonify({"locations" : location_list, "NPs" : NP_list, "FMs" : FM_list})
+    return response
+    
+# Search for locations using the provided search terms
+def search_locations(search_terms):
+    query = db.session.query(Locations)
+    search_conditions = [
+        or_(
+            Locations.name.ilike(f"%{term}%"),
+            Locations.county_seat.ilike(f"%{term}%"),
+            Locations.crops.ilike(f"%{term}%")
+        )
+        for term in search_terms
+    ]
+    query = query.filter(or_(*search_conditions))
+    return query
+
+# Search for NPs using the provided search terms
+def search_NPs(search_terms):
+    query = db.session.query(NPs)
+    search_conditions = [
+        or_(
+            NPs.charityName.ilike(f"%{term}%"),
+            NPs.state.ilike(f"%{term}%"),
+            NPs.city.ilike(f"%{term}%"),
+            NPs.zipCode.ilike(f"%{term}%"),
+            NPs.category.ilike(f"%{term}%"),
+            NPs.missionStatement.ilike(f"%{term}%")
+        )
+        for term in search_terms
+    ]
+    query = query.filter(or_(*search_conditions))
+    return query
+
+# Search for FMs using the provided search terms
+def search_FMs(search_terms):
+    query = db.session.query(FMs)
+    search_conditions = [
+        or_(
+            FMs.listing_name.ilike(f"%{term}%"),
+            FMs.listing_desc.ilike(f"%{term}%"),
+            FMs.location_address.ilike(f"%{term}%"),
+            FMs.location_desc.ilike(f"%{term}%"),
+            FMs.specialproductionmethods.ilike(f"%{term}%"),
+            FMs.fnap.ilike(f"%{term}%")
+        )
+        for term in search_terms
+    ]
+    query = query.filter(or_(*search_conditions))
+    return query
 
 @app.route("/api/GetLocations/<name>", methods = ['GET'])
 def get_locations(name):
@@ -47,16 +118,7 @@ def get_all_locations():
     # Searching for locations
     search = request.args.get("search")
     search_terms = search.split() if search else []
-    search_conditions = [
-        or_(
-            Locations.name.ilike(f"%{term}%"),
-            Locations.county_seat.ilike(f"%{term}%"),
-            Locations.crops.ilike(f"%{term}%")
-        )
-        for term in search_terms
-    ]
-    if search_conditions:
-        query = query.filter(or_(*search_conditions))
+    query = search_locations(search_terms)
     
     # Sorting for locations
     sort_by = request.args.get("sort_by", type=str, default="name")
@@ -118,19 +180,7 @@ def get_all_nonprofits():
     # Searching for NPs
     search = request.args.get('search')
     search_terms = search.split() if search else []
-    search_conditions = [
-        or_(
-            NPs.charityName.ilike(f"%{term}%"),
-            NPs.state.ilike(f"%{term}%"),
-            NPs.city.ilike(f"%{term}%"),
-            NPs.zipCode.ilike(f"%{term}%"),
-            NPs.category.ilike(f"%{term}%"),
-            NPs.missionStatement.ilike(f"%{term}%")
-        )
-        for term in search_terms
-    ]
-    if search_conditions:
-        query = query.filter(or_(*search_conditions))
+    query = search_NPs(search_terms)
 
     # Filtering for NPs
     city = request.args.get("city", type=str, default=None)
@@ -188,19 +238,7 @@ def get_all_markets():
     # Searching for FMs
     search = request.args.get("search")
     search_terms = search.split() if search else []
-    search_conditions = [
-        or_(
-            FMs.listing_name.ilike(f"%{term}%"),
-            FMs.listing_desc.ilike(f"%{term}%"),
-            FMs.location_address.ilike(f"%{term}%"),
-            FMs.location_desc.ilike(f"%{term}%"),
-            FMs.specialproductionmethods.ilike(f"%{term}%"),
-            FMs.fnap.ilike(f"%{term}%")
-        )
-        for term in search_terms
-    ]
-    if search_conditions:
-        query = query.filter(or_(*search_conditions))
+    query = search_FMs(search_terms)
 
     # Filtering for FMs
     wheelchair_accessible = request.args.get("wheelchair_accessible", type=str, default=None)
