@@ -7,6 +7,7 @@ import numpy as np
 import string
 from more_data import googleAPIFarmersMarkets, googleAPILocation, googleAPINonProfit
 from bs4 import BeautifulSoup
+from california_counties import california_counties
 # ssh -i /Users/akifa/Desktop/UT_Austin/SWE/cs373-ruralFarmAid/akif_key_main.pem ec2-user@ec2-54-144-39-129.compute-1.amazonaws.com
 
 '''
@@ -29,7 +30,7 @@ db_config = {
 def create_location_table():
     # The SQL query to create a new table
     create_table_query = """
-        CREATE TABLE IF NOT EXISTS location_data (
+        CREATE TABLE IF NOT EXISTS final_location_data (
             id INT AUTO_INCREMENT PRIMARY KEY,
             name VARCHAR(255),
             est INT,
@@ -38,6 +39,8 @@ def create_location_table():
             map VARCHAR(255),
             population INT,
             crops JSON,
+            closest_farmers_markets JSON,
+            closest_charities JSON,
             photo_references JSON
         );
     """
@@ -64,7 +67,7 @@ def create_location_table():
 
 def create_charity_table():
     create_table_query = """
-    CREATE TABLE IF NOT EXISTS charity_table (
+    CREATE TABLE IF NOT EXISTS final_charity_table (
         id INT AUTO_INCREMENT PRIMARY KEY,
         category VARCHAR(255),
         charityName VARCHAR(255),
@@ -78,6 +81,8 @@ def create_charity_table():
         missionStatement TEXT,
         photo_references JSON,
         start INT,
+        closest_farmers_markets JSON,
+        closest_locations JSON,
         state VARCHAR(255),
         statusCd INT,
         url VARCHAR(255),
@@ -114,7 +119,7 @@ def create_farmers_market_table():
 
         # Create the farmers_market_table if it doesn't exist
         create_table_query = """
-        CREATE TABLE IF NOT EXISTS farmers_market_table (
+        CREATE TABLE IF NOT EXISTS final_farmers_market_table (
             id INT AUTO_INCREMENT PRIMARY KEY,
             fnap VARCHAR(255),
             listing_desc VARCHAR(255),
@@ -132,6 +137,7 @@ def create_farmers_market_table():
             rating DECIMAL(3, 1),
             website VARCHAR(255),
             closest_charities JSON,
+            closest_locations JSON,
             specialproductionmethods VARCHAR(255),
             wheelchair_accessible VARCHAR(20)
         );
@@ -264,6 +270,39 @@ def fetch_location_crop_data():
             # Add the crop to the crops' county data field
             county_data['crops'].add(obj['commodity_desc'])
 
+    fm_data = query_fm_data()
+    charity_data = fetch_charity_data()
+    longest_fm_list = -1
+    smallest_fm_list = 5000
+    smallest_ch_list = 5000
+    longest_ch_list = -1
+    fm_threshold = 3
+    ch_threshold = 3
+    for county in complete_data:
+        fm_list = []
+        loc_point = np.asarray([float(california_counties[county]['latitude']), float(california_counties[county]['longitude'])])
+        for fm in fm_data:
+            # location_y is latitude and location_x is longitude (idk y)
+            fm_point = np.asarray([float(fm[2]), float(fm[1])])
+            if np.linalg.norm(fm_point - loc_point) <= fm_threshold:
+                fm_list.append(fm[0])
+        charities = []
+        for charity in charity_data:
+            charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
+            if np.linalg.norm(charity_point - loc_point) <= ch_threshold:
+                charities.append(charity['charityName'])
+        complete_data[county]['closest_farmers_markets'] = json.dumps({"closest_farmers_markets": tuple(fm_list)})
+        complete_data[county]['closest_charities'] = json.dumps({"closest_charities": tuple(charities)})
+        
+        longest_fm_list = max(longest_fm_list, len(fm_list))
+        longest_ch_list = max(longest_ch_list, len(charities))
+        smallest_ch_list = min(smallest_ch_list, len(charities))
+        smallest_fm_list = min(smallest_fm_list, len(fm_list))
+    
+    print(longest_ch_list)
+    print(longest_fm_list)
+    print(smallest_ch_list)
+    print(smallest_fm_list)
     return complete_data
 
 # Function to insert data into the MySQL database
@@ -283,6 +322,8 @@ def insert_location_data_to_db():
                           'est': vals['est'],
                           'map': vals['map'],
                           'population': vals['population'],
+                          'closest_farmers_markets': vals['closest_farmers_markets'],
+                          'closest_charities': vals['closest_charities'],
                           'area': vals['area'],
                           'county_seat': vals['county_seat']}
                 insert_query = '''INSERT INTO location_data (
@@ -291,7 +332,9 @@ def insert_location_data_to_db():
                 photo_references, 
                 est, 
                 map, 
-                population, 
+                population,
+                closest_farmers_markets,
+                closest_charities,
                 area, 
                 county_seat) 
                 VALUES (
@@ -301,6 +344,8 @@ def insert_location_data_to_db():
                     %(est)s, 
                     %(map)s, 
                     %(population)s, 
+                    %(closest_farmers_markets)s,
+                    %(closest_charities)s,
                     %(area)s, 
                     %(county_seat)s);'''
                 cursor.execute(insert_query, record)
@@ -354,22 +399,30 @@ def insert_farmer_market_data():
     
     # Charity data lat/ lon columns: latitudue/ longitude (floats)
     all_closest_charities = []
-    threshold = 0.45
+    all_closest_locations = []
+    ch_threshold = 0.45
+    loc_threshold = 0.5
     for index_fm, row_fm in df.iterrows():
         charities = []
+        # location_y is latitude and location_x is longitude (idk y)
+        fm_point = np.asarray([float(row_fm['location_y']), float(row_fm['location_x'])])
         for charity in charity_data:
-            # location_y is latitude and location_x is longitude (idk y)
-            fm_point = np.asarray([float(row_fm['location_y']), float(row_fm['location_x'])])
             charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
-            if np.linalg.norm(fm_point - charity_point) <= threshold:
+            if np.linalg.norm(fm_point - charity_point) <= ch_threshold:
                 charities.append(charity['charityName'])
+        loc_list = []
+        for loc in california_counties.items():
+            loc_point = np.asarray([float(loc[1]['latitude']), float(loc[1]['longitude'])])
+            if np.linalg.norm(loc_point - fm_point) <= loc_threshold:
+                loc_list.append(loc[0])
         all_closest_charities.append(json.dumps({"nearby_charities": tuple(charities)}))
-    
+        all_closest_locations.append(json.dumps({"nearby_locations": tuple(loc_list)}))
     # [{'nearby_charities': [charity1, charity2, ...]}, {'nearby_charities': []}, {}]
     
     # adding website, phone, rating, wheelchair_accessible, and photo data and more via Google
     more_fm_data = googleAPIFarmersMarkets(df) # This is a dict
     df['closest_charities'] = all_closest_charities
+    df['closest_locations'] = all_closest_locations
     df['photo_references'] = more_fm_data['photo_references']
     df['website'] = more_fm_data['website']
     df['phone'] = more_fm_data['phone']
@@ -386,7 +439,7 @@ def insert_farmer_market_data():
         
         # Define the SQL INSERT statement
         insert_query = f"""
-        INSERT INTO farmers_market_table (listing_name, location_address, orgnization, listing_desc, location_x, location_y, location_desc, location_site, location_site_otherdesc, location_indoor, specialproductionmethods, FNAP, closest_charities, photo_references, website, phone, rating, wheelchair_accessible) 
+        INSERT INTO farmers_market_table (listing_name, location_address, orgnization, listing_desc, location_x, location_y, location_desc, location_site, location_site_otherdesc, location_indoor, specialproductionmethods, FNAP, closest_charities, closest_locations, photo_references, website, phone, rating, wheelchair_accessible) 
         VALUES ({', '.join(['%s'] * len(df.columns))})
         """
 
@@ -555,7 +608,35 @@ def fetch_charity_data():
     res.extend(res5['data'])
     
     googleAPINonProfit(res)
+    
+    fm_data = query_fm_data()
+    # List of farmers' markets tuples: (name, location_x, location_y)
+    
+    fm_threshold = 0.02
+    loc_threshold = 0.5
+    for charity in res:
+        fm_list = []
+        charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
+        for fm in fm_data:
+            # location_y is latitude and location_x is longitude (idk y)
+            fm_point = np.asarray([float(fm[2]), float(fm[1])])
+            if np.linalg.norm(fm_point - charity_point) <= fm_threshold:
+                fm_list.append(fm[0])
+        loc_list = []
+        for loc in california_counties.items():
+            loc_point = np.asarray([float(loc[1]['latitude']), float(loc[1]['longitude'])])
+            if np.linalg.norm(loc_point - charity_point) <= loc_threshold:
+                loc_list.append(loc[0])
+        charity['closest_farmers_markets'] = json.dumps({"closest_farmers_markets": tuple(fm_list)})
+        charity['closest_locations'] = json.dumps({"closest_locations": tuple(loc_list)})
     return res
+
+def query_fm_data():
+    connection = mysql.connector.connect(**db_config)
+    cursor = connection.cursor()
+    cursor.execute("SELECT listing_name, location_x, location_y FROM farmers_market_table")
+    return cursor.fetchall()
+
 
 def insert_charity_crop_data_to_db():
     data = fetch_charity_data()
@@ -576,6 +657,8 @@ def insert_charity_crop_data_to_db():
                     state,
                     zipCode,
                     start,
+                    closest_farmers_markets,
+                    closest_locations,
                     category,
                     eligibleCd,
                     deductibilityCd,
@@ -595,6 +678,8 @@ def insert_charity_crop_data_to_db():
                     %(state)s,
                     %(zipCode)s,
                     %(start)s,
+                    %(closest_farmers_markets)s,
+                    %(closest_locations)s,
                     %(category)s,
                     %(eligibleCd)s,
                     %(deductibilityCd)s,
@@ -671,9 +756,9 @@ def main():
     # insert_charity_crop_data_to_db()
 
     # Farmer Market data DONE
-    create_farmers_market_table()
-    insert_farmer_market_data()
-  
+    # create_farmers_market_table()
+    # insert_farmer_market_data()
+    fetch_location_crop_data()
 
 if __name__=="__main__": 
     main() 
