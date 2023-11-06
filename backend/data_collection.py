@@ -272,10 +272,6 @@ def fetch_location_crop_data():
 
     fm_data = query_fm_data()
     charity_data = fetch_charity_data()
-    longest_fm_list = -1
-    smallest_fm_list = 5000
-    smallest_ch_list = 5000
-    longest_ch_list = -1
     fm_threshold = 3
     ch_threshold = 3
     for county in complete_data:
@@ -293,16 +289,6 @@ def fetch_location_crop_data():
                 charities.append(charity['charityName'])
         complete_data[county]['closest_farmers_markets'] = json.dumps({"closest_farmers_markets": tuple(fm_list)})
         complete_data[county]['closest_charities'] = json.dumps({"closest_charities": tuple(charities)})
-        
-        longest_fm_list = max(longest_fm_list, len(fm_list))
-        longest_ch_list = max(longest_ch_list, len(charities))
-        smallest_ch_list = min(smallest_ch_list, len(charities))
-        smallest_fm_list = min(smallest_fm_list, len(fm_list))
-    
-    print(longest_ch_list)
-    print(longest_fm_list)
-    print(smallest_ch_list)
-    print(smallest_fm_list)
     return complete_data
 
 # Function to insert data into the MySQL database
@@ -326,7 +312,7 @@ def insert_location_data_to_db():
                           'closest_charities': vals['closest_charities'],
                           'area': vals['area'],
                           'county_seat': vals['county_seat']}
-                insert_query = '''INSERT INTO location_data (
+                insert_query = '''INSERT INTO final_location_data (
                 name, 
                 crops, 
                 photo_references, 
@@ -391,6 +377,9 @@ def insert_farmer_market_data():
     df = df[df['location_address'].str.contains('California')]
     df.fillna(0, inplace=True)
     
+    # Drop farmers markets that are not in california by location (should only drop 2)
+    df = df.loc[df["location_x"] < -105]
+    
     # Use latitute/ longitude to find closest charities to farmers' markets
     # Farmers market data lat/ lon columns: location_x/ location_y (floats)
     
@@ -400,9 +389,9 @@ def insert_farmer_market_data():
     # Charity data lat/ lon columns: latitudue/ longitude (floats)
     all_closest_charities = []
     all_closest_locations = []
-    ch_threshold = 0.45
-    loc_threshold = 0.5
-    for index_fm, row_fm in df.iterrows():
+    ch_threshold = 2.5
+    loc_threshold = 2
+    for _, row_fm in df.iterrows():
         charities = []
         # location_y is latitude and location_x is longitude (idk y)
         fm_point = np.asarray([float(row_fm['location_y']), float(row_fm['location_x'])])
@@ -418,7 +407,6 @@ def insert_farmer_market_data():
         all_closest_charities.append(json.dumps({"nearby_charities": tuple(charities)}))
         all_closest_locations.append(json.dumps({"nearby_locations": tuple(loc_list)}))
     # [{'nearby_charities': [charity1, charity2, ...]}, {'nearby_charities': []}, {}]
-    
     # adding website, phone, rating, wheelchair_accessible, and photo data and more via Google
     more_fm_data = googleAPIFarmersMarkets(df) # This is a dict
     df['closest_charities'] = all_closest_charities
@@ -439,7 +427,7 @@ def insert_farmer_market_data():
         
         # Define the SQL INSERT statement
         insert_query = f"""
-        INSERT INTO farmers_market_table (listing_name, location_address, orgnization, listing_desc, location_x, location_y, location_desc, location_site, location_site_otherdesc, location_indoor, specialproductionmethods, FNAP, closest_charities, closest_locations, photo_references, website, phone, rating, wheelchair_accessible) 
+        INSERT INTO final_farmers_market_table (listing_name, location_address, orgnization, listing_desc, location_x, location_y, location_desc, location_site, location_site_otherdesc, location_indoor, specialproductionmethods, FNAP, closest_charities, closest_locations, photo_references, website, phone, rating, wheelchair_accessible) 
         VALUES ({', '.join(['%s'] * len(df.columns))})
         """
 
@@ -609,14 +597,22 @@ def fetch_charity_data():
     
     googleAPINonProfit(res)
     
+    # Quick filter to only keep charities that have appropriate latitude/ longitude
+    # values
+    final_res = []
+    for charity in res:
+        charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
+        if np.linalg.norm(charity_point) != 0:
+            final_res.append(charity)
+    
     fm_data = query_fm_data()
     # List of farmers' markets tuples: (name, location_x, location_y)
     
-    fm_threshold = 0.02
+    fm_threshold = 2.5
     loc_threshold = 0.5
-    for charity in res:
-        fm_list = []
+    for charity in final_res:
         charity_point = np.asarray([float(charity['latitude']), float(charity['longitude'])])
+        fm_list = []
         for fm in fm_data:
             # location_y is latitude and location_x is longitude (idk y)
             fm_point = np.asarray([float(fm[2]), float(fm[1])])
@@ -629,7 +625,7 @@ def fetch_charity_data():
                 loc_list.append(loc[0])
         charity['closest_farmers_markets'] = json.dumps({"closest_farmers_markets": tuple(fm_list)})
         charity['closest_locations'] = json.dumps({"closest_locations": tuple(loc_list)})
-    return res
+    return final_res
 
 def query_fm_data():
     connection = mysql.connector.connect(**db_config)
@@ -648,7 +644,7 @@ def insert_charity_crop_data_to_db():
         for record in data:
             # Define the SQL INSERT statement
             insert_query = '''
-                INSERT INTO charity_table (
+                INSERT INTO final_charity_table (
                     ein,
                     charityName,
                     url,
@@ -758,7 +754,6 @@ def main():
     # Farmer Market data DONE
     # create_farmers_market_table()
     # insert_farmer_market_data()
-    fetch_location_crop_data()
 
 if __name__=="__main__": 
     main() 
