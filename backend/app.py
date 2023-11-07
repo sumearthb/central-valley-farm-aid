@@ -3,8 +3,9 @@ from flask import Flask, request, jsonify, Response
 from models import Locations, NPs, FMs, app, db
 from schema import LocationSchema, NPSchema, FMSchema
 from flask_cors import CORS
-from sqlalchemy import or_, func, cast, and_, Integer, case, literal, select, text
+from sqlalchemy import or_, func, cast, and_, Integer, case, literal, select, text, desc, func
 from sqlalchemy.sql.expression import asc, desc
+from sqlalchemy.orm import aliased
 import googlemaps
 import json
 
@@ -49,10 +50,35 @@ def home():
 def search_locations(search_terms):
     query = db.session.query(Locations)
     
+    # Set up search conditions 
     search_conditions = [Locations.name.ilike(f"%{term}%") for term in search_terms]
     search_conditions += [Locations.county_seat.ilike(f"%{term}%") for term in search_terms]
     search_conditions += [Locations.crops.ilike(f"%{term}%") for term in search_terms]
+   
     query = query.filter(or_(*search_conditions))
+
+    # Calculate relevance score: 
+    # calculates the relevance score for each search term. The relevance score is determined 
+    # by counting how many times each term matches in the columns
+    relevance_order_conditions = [
+        case(
+            (Locations.name.ilike(f"%{term}%"), 1),
+            (Locations.county_seat.ilike(f"%{term}%"), 1),
+            (Locations.crops.ilike(f"%{term}%"), 1),
+            else_=0
+        ).label(f"relevance_{i}")
+        for i, term in enumerate(search_terms)
+    ]
+    
+    # Add the relevance conditions as a column in the result set
+    query = query.add_columns(*relevance_order_conditions)
+
+    # Group the results by the primary key of the 'Locations' table (assuming it's 'id')
+    query = query.group_by(Locations.id)
+    
+    # calculates the sum of the relevance scores for each search term.
+    # orders the results based on the total relevance score as we yuse desc()
+    query = query.order_by(desc(func.sum(*relevance_order_conditions)))
 
     return query
 
@@ -104,7 +130,8 @@ def get_all_locations():
     # Searching for locations
     search = request.args.get("search")
     search_terms = search.split() if search else []
-    query = search_locations(search_terms)
+    if search_terms:    # search_locations triggered only if search_terms isn't empty
+        query = search_locations(search_terms)
     
     # Sorting for locations
     sort_by = request.args.get("sort_by", type=str, default="name")
@@ -138,11 +165,16 @@ def get_all_locations():
     
     if page is not None:
         query = paginate(query, int(page), int(per_page))
+        
     location_list = []
+    
+    print(query)
+
     for location in query:
         location_schema = LocationSchema()
         location_dict = location_schema.dump(location)
         location_list.append(location_dict)
+
     response = jsonify({"instance_count" : len(location_list), "data" : location_list})
     return response
 
@@ -286,5 +318,5 @@ def paginate(query, page_num, page_size=PER_PAGE):
 
 # Running app
 if __name__ == '__main__':
-	app.run(host="0.0.0.0", port=5000, debug = True)
+	app.run(host="0.0.0.0", port=4998, debug = True)
 
