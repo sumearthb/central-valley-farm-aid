@@ -1,6 +1,7 @@
-import React, { useState, useEffect } from "react";
+import "../styles/FarmersMarkets.css";
+import React, { useState, useEffect, Fragment } from "react";
 import FMCard from "../components/FMCard/FMCard";
-import { Container, Col } from "react-bootstrap";
+import { Button, Container, Col, Row, Form, Dropdown, DropdownButton } from "react-bootstrap";
 import PageSelector from "../components/PageSelector";
 import { fetchMarkets, fetchMarketsLength } from "../utils/ApiUtils";
 
@@ -11,6 +12,11 @@ const FMGrid = () => {
   const [numPages, setNumPages] = useState(0);
   const [totalMarkets, setTotalMarkets] = useState(0);
   const [loading, setLoading] = useState(true);
+  const [sortBy, setSortBy] = useState("");
+  const [orderBy, setOrderBy] = useState("asc");
+  const [wheelchairAccessible, setWheelchairAccessible] = useState("");
+  const [indoors, setIndoors] = useState("");
+  const [search, setSearch] = useState("");
 
   useEffect(() => {
     const initPages = async () => {
@@ -26,19 +32,77 @@ const FMGrid = () => {
   useEffect(() => {
     const loadMarkets = async () => {
       setLoading(true);
-      const fetchedMarkets = await fetchMarkets(curPage);
+      const fetchedMarkets = await fetchMarkets(curPage, 9);
       setMarkets(fetchedMarkets.data);
       setLoading(false);
     };
     loadMarkets();
-    
-  }, [curPage]);
+  }, [curPage, sortBy, orderBy, wheelchairAccessible, indoors]);
+
+  const handleSearch = async () => {
+    setLoading(true);
+    const fetchedMarkets = await fetchMarkets(1, 999, sortBy, orderBy, search);
+    setTotalMarkets(fetchedMarkets.instance_count);
+    setNumPages(Math.ceil(fetchedMarkets.instance_count / 9));
+    setCurPage(1);
+    setLoading(false);
+  };
 
   return (
-    <>
-    <Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
+<Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <Container className="container text-center mt-5 mb-4">
         <h1>Farmers' Markets</h1>
+      </Container>
+
+      <Container>
+        <Row className="p-3">
+        <Form className="d-flex justify-content-end">
+            <Form.Control type="search" id="searchText" placeholder="Search..." 
+                className="mx-2" aria-label="Search" onChange={(e) => setSearch(e.target.value)}></Form.Control>
+            <Button variant="dark" onClick={() => handleSearch()}>Search</Button>
+          </Form>
+        </Row>
+        <Row>
+          <Col>
+            <DropdownButton id="dropdown-basic-button" title={`Sort By: ${sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}`}>
+              {sortBy &&
+              <Fragment>
+                <Dropdown.Item onClick={() => setSortBy("")}>None</Dropdown.Item>
+                <Dropdown.Divider />
+              </Fragment>}
+              <Dropdown.Item onClick={() => setSortBy("name")}>Name</Dropdown.Item>
+              <Dropdown.Item onClick={() => setSortBy("rating")}>Number of Crops</Dropdown.Item>
+            </DropdownButton>
+          </Col>
+          <Col>
+            <DropdownButton id="dropdown-basic-button" title={`Order By: ${orderBy.charAt(0).toUpperCase() + orderBy.slice(1)}ending`}>
+              <Dropdown.Item onClick={() => setOrderBy("asc")}>Ascending</Dropdown.Item>
+              <Dropdown.Item onClick={() => setOrderBy("desc")}>Descending</Dropdown.Item>
+            </DropdownButton>
+          </Col>
+          <Col>
+            <DropdownButton id="dropdown-basic-button" title={`Wheelchair Accessible: ${wheelchairAccessible.charAt(0).toUpperCase() + wheelchairAccessible.slice(1)}`}>
+              {wheelchairAccessible &&
+              <Fragment>
+                <Dropdown.Item onClick={() => setWheelchairAccessible("")}>None</Dropdown.Item>
+                <Dropdown.Divider />
+              </Fragment>}
+              <Dropdown.Item onClick={() => setWheelchairAccessible("True")}>True</Dropdown.Item>
+              <Dropdown.Item onClick={() => setWheelchairAccessible("False")}>False</Dropdown.Item>
+            </DropdownButton>
+          </Col>
+          <Col>
+            <DropdownButton id="dropdown-basic-button" title={`Indoors: ${indoors.charAt(0).toUpperCase() + indoors.slice(1)}`}>
+              {indoors && 
+              <Fragment>
+                <Dropdown.Item onClick={() => setIndoors("")}>None</Dropdown.Item>
+                <Dropdown.Divider />
+              </Fragment>}
+              <Dropdown.Item onClick={() => setIndoors("True")}>True</Dropdown.Item>
+              <Dropdown.Item onClick={() => setIndoors("False")}>False</Dropdown.Item>
+            </DropdownButton>
+          </Col>
+        </Row>
       </Container>
 
       <Container>
@@ -52,18 +116,17 @@ const FMGrid = () => {
         </div> }
 
       <Container className="px-4">
-        <Container className="row gx-3">
+        <Row className="row gx-3">
           {( markets.map((market, index) => (
             <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
               <FMCard
-                title={market.listing_name}
+              market={market}
               />
             </Col>
           )))}
-        </Container>
+        </Row>
       </Container>
     </Container>
-    </>
   );
 };
 

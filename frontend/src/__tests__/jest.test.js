@@ -1,38 +1,94 @@
+/**
+ * @jest-environment jsdom
+ */
+
 import React from "react";
-import { render } from '@testing-library/react';
-import About from "../pages/About";
-import Home from "../pages/Home";
-import Locations from "../pages/Locations"
-import NonProfits from "../pages/NonProfits"
-import FarmersMarkets from "../pages/FarmersMarkets"
 
-test("Render Home Page", () => {
-    render(<Home/>);
-    const titleElem = screen.getByText("Welcome to Central Valley Farm Aid");
-    expect(titleElem).toBeInTheDocument();
+import renderer from "react-test-renderer";
+import { render, screen } from "@testing-library/react";
+import "@testing-library/jest-dom/extend-expect";
+
+import {BrowserRouter as Router, Route, Routes} from "react-router-dom"
+import NavBar from "../components/NavBar.js"
+import LocationCard from "../components/LocationCard/LocationCard.js";
+import NPCard from "../components/NPCard/NPCard.js";
+import FMCard from "../components/FMCard/FMCard.js";
+import MemberCard from "../components/MemberCard.js";
+import test_location from "./location.json";
+import test_nonprofit from "./nonprofit.json";
+import test_farmersmarket from "./farmersmarket.json";
+import test_member from "./test_member.json";
+
+test("test location card snapshot", () => {
+  const location = test_location;
+  const tree = renderer
+    .create(
+      <Router>
+        <LocationCard
+        location={location} />
+      </Router>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+  
+test("test nonprofit card snapshot", () => {
+  const nonprofit = test_nonprofit;
+  const tree = renderer
+    .create(
+      <Router>
+        <NPCard nonprofit={nonprofit} />
+      </Router>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+  
+test("test farmers market card snapshot", () => {
+  const market = test_farmersmarket;
+  const tree = renderer
+    .create(
+      <Router>
+        <FMCard market={market} />
+      </Router>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
+});
+  
+test("test member card snapshot", () => {
+  const member = test_member;
+  const tree = renderer
+    .create(
+      <Router>
+        <MemberCard member={member} />
+      </Router>
+    )
+    .toJSON();
+  expect(tree).toMatchSnapshot();
 });
 
-test("Render About Page", () => {
-    render(<About/>);
-    const titleElem = screen.getByText("About");
-    expect(titleElem).toBeInTheDocument();
+test("Test whether the Navbar works", () => {
+    const tree = renderer.create(
+      <Router>
+        <NavBar />
+      </Router>
+    );
+    expect(tree).toMatchSnapshot();
 });
-
-test("Render Location Model Page", () => {
-    render(<Locations/>);
-    const titleElem = screen.getByText("Locations");
-    expect(titleElem).toBeInTheDocument();
+  
+  test("Test whether the Navbar contains links to About, Home, Parks, Animals, and States", async () => {
+    render(
+      <Router>
+        <NavBar />
+      </Router>
+    );
+    const navbar = screen.getByTestId("navbar");
+    expect(navbar).toHaveTextContent("Home");
+    expect(navbar).toHaveTextContent("About");
+    expect(navbar).toHaveTextContent("Locations");
+    expect(navbar).toHaveTextContent("Nonprofits");
+    expect(navbar).toHaveTextContent("Farmers' Markets");
 });
-
-test("Render NonProfit Model Page", () => {
-    render(<NonProfits/>);
-    const titleElem = screen.getByText("Non-Profit Organizations");
-    expect(titleElem).toBeInTheDocument();
-});
-
-test("Render FarmersMarkets Model Page", () => {
-    render(<FarmersMarkets/>);
-    const titleElem = screen.getByText("Farmers' Markets");
-    expect(titleElem).toBeInTheDocument();
-});
+  
 

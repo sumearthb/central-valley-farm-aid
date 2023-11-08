@@ -1,0 +1,26 @@
+{
+    "area": "738",
+    "county_seat": "Oakland",
+    "crops": {
+      "crops": [
+        "GARLIC",
+        "TOMATOES",
+        "LETTUCE",
+        "PUMPKINS",
+        "POTATOES",
+        "BEANS",
+        "BROCCOLI",
+        "VEGETABLE TOTALS"
+      ]
+    },
+    "est": 1853,
+    "id": 1,
+    "map": "https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Map_of_California_highlighting_Alameda_County.svg/100px-Map_of_California_highlighting_Alameda_County.svg.png",
+    "name": "Alameda",
+    "photo_references": {
+      "photos": [
+        "AcJnMuEMidcnhNfp7A04WeLfwdQlx1qdbVt7EvNXTWSXyqJ-Hc2fZr2dSCtxldQuc-UYHcZRgInABA1rKq9rJE2u573dKLXJ0zvKezXbK0P1FGcWiR3ErTkJxsSFimcfhTO4bCWMcnmi9CY0iBEFoLbkU3-OR_udUgzbYEUGKr8SWV3ZxO46"
+      ]
+    },
+    "population": 1628997
+  }

@@ -51,20 +51,15 @@ const NPGrid = () => {
         </div> }
 
       <Container className="px-4">
-        <Container className="row gx-3">
+        <Row className="row gx-3">
           {(nonprofits.map((nonprofit, index) => (
             <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
               <NPCard
-                charityName={nonprofit.charityName}
-                category={nonprofit.category}
-                city={nonprofit.city}
-                phone={nonprofit.phone}
-                url={nonprofit.url}
-                img={nonprofit.photo_references.photos[0]}
+                nonprofit={nonprofit}
               />
             </Col>
           )))}
-        </Container>
+        </Row>
       </Container>
     </Container>
   );

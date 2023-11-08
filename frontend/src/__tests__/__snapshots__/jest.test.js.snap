@@ -1,0 +1,396 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`Test whether the Navbar works 1`] = `
+<nav
+  className="navbar navbar navbar-expand-lg navbar-light"
+  data-testid="navbar"
+>
+  <div
+    className="container"
+  >
+    <span
+      className="navbar-brand"
+    >
+      <a
+        className="navbar-link"
+        href="/"
+        onClick={[Function]}
+      >
+        Central Valley Farm Aid
+      </a>
+    </span>
+    <button
+      aria-controls="basic-navbar-nav"
+      aria-label="Toggle navigation"
+      className="navbar-toggler collapsed"
+      onClick={[Function]}
+      type="button"
+    >
+      <span
+        className="navbar-toggler-icon"
+      />
+    </button>
+    <div
+      aria-expanded={null}
+      className="navbar-collapse collapse"
+      id="basic-navbar-nav"
+    >
+      <div
+        className="ms-auto navbar-nav"
+        onKeyDown={[Function]}
+      >
+        <a
+          className="nav-link"
+          data-rr-ui-event-key="/"
+          disabled={false}
+          href="/"
+          onClick={[Function]}
+        >
+          Home
+        </a>
+        <a
+          className="nav-link"
+          data-rr-ui-event-key="/about"
+          disabled={false}
+          href="/about"
+          onClick={[Function]}
+        >
+          About
+        </a>
+        <a
+          className="nav-link"
+          data-rr-ui-event-key="/locations"
+          disabled={false}
+          href="/locations"
+          onClick={[Function]}
+        >
+          Locations
+        </a>
+        <a
+          className="nav-link"
+          data-rr-ui-event-key="/nonprofits"
+          disabled={false}
+          href="/nonprofits"
+          onClick={[Function]}
+        >
+          Nonprofits
+        </a>
+        <a
+          className="nav-link"
+          data-rr-ui-event-key="/farmersmarkets"
+          disabled={false}
+          href="/farmersmarkets"
+          onClick={[Function]}
+        >
+          Farmers' Markets
+        </a>
+      </div>
+      <form
+        className="d-flex justify-content-end"
+      >
+        <input
+          aria-label="Search"
+          className="mx-2 form-control"
+          id="searchText"
+          placeholder="Search..."
+          type="search"
+        />
+        <button
+          className="btn btn-dark"
+          disabled={false}
+          type="submit"
+        >
+          Search
+        </button>
+      </form>
+    </div>
+  </div>
+</nav>
+`;
+
+exports[`test farmers market card snapshot 1`] = `
+<div
+  className="fm-card card"
+>
+  <img
+    className="card-img fm-card-image"
+    src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=AcJnMuGiiYANDybm3GbGbxaGeqtXp94WoDNUXBamATFrNeBWsZ4zauNb2jiFGJk3Oh6xzAxn37UdV9LVFtX6tUM7RaiZWiexTxJ16WYQ4fbTNvHjUD-mclqGR6zJtYAXK1cl4va4rEOPusfW3vRaoH7oNreXQDcvh4_kE9VHIZpTJ4FLrfwo&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs"
+  />
+  <div
+    className="fm-card-body card-body"
+  >
+    <div
+      className="fm-card-title card-title h5"
+    >
+      Benica Certified Farmers Market
+    </div>
+    <p
+      className="fm-card-rating card-text"
+    >
+      Rating: 
+      4.4
+    </p>
+    <p
+      className="fm-card-indoor card-text"
+    >
+      Indoor Status: 
+      No Indoor;
+    </p>
+    <p
+      className="fm-card-production card-text"
+    >
+      Crop Production: 
+      Organic (USDA Certified);
+    </p>
+    <p
+      className="fm-card-fnap card-text"
+    >
+      FNAP Status: 
+      WIC;SNAP;Accept EBT at a central location;;
+    </p>
+    <p
+      className="fm-card-wheelchair card-text"
+    >
+      Wheelchair Accessible: 
+      True
+    </p>
+    <a
+      href="/farmersmarkets/undefined"
+      onClick={[Function]}
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <button
+        className="align-self-end border-white btn btn-primary"
+        disabled={false}
+        style={
+          Object {
+            "backgroundColor": "#69A765",
+          }
+        }
+        type="button"
+      >
+        More info
+      </button>
+    </a>
+  </div>
+</div>
+`;
+
+exports[`test location card snapshot 1`] = `
+<div
+  className="location-card card"
+>
+  <img
+    className="card-img location-card-image"
+    src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/d9/Map_of_California_highlighting_Alameda_County.svg/400px-Map_of_California_highlighting_Alameda_County.svg.png"
+  />
+  <div
+    className="location-card-body card-body"
+  >
+    <div
+      className="location-card-title card-title h5"
+    >
+      Alameda County
+    </div>
+    <p
+      className="location-card-countyseat card-text"
+    >
+      County Seat: 
+      Oakland
+    </p>
+    <p
+      className="location-card-crop card-text"
+    >
+      # of Crops: 
+      8
+    </p>
+    <p
+      className="location-card-population card-text"
+    >
+      Population: 
+      1628997
+    </p>
+    <p
+      className="location-card-established card-text"
+    >
+      Established: 
+      1853
+    </p>
+    <p
+      className="location-card-area card-text"
+    >
+      Area: 
+      738
+       sq mi
+    </p>
+    <a
+      href="/locations/Alameda"
+      onClick={[Function]}
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <button
+        className="align-self-end border-white btn btn-primary"
+        disabled={false}
+        style={
+          Object {
+            "backgroundColor": "#69A765",
+          }
+        }
+        type="button"
+      >
+        More info
+      </button>
+    </a>
+  </div>
+</div>
+`;
+
+exports[`test member card snapshot 1`] = `
+<div
+  className="member-card card"
+>
+  <img
+    className="card-img-top member-card-image"
+    src="undefined/member-pics/martinmurtiono.jpg"
+  />
+  <div
+    className="member-card-body card-body"
+  >
+    <div
+      className="member-card-name card-title h5"
+    >
+      Martin Murtiono
+    </div>
+    <p
+      className="member-card-gitlab card-text"
+    >
+      <a
+        href="https://gitlab.com/martinmurtiono"
+      >
+        martinmurtiono
+      </a>
+    </p>
+    <p
+      className="member-card-role card-text"
+    >
+      Full Stack
+    </p>
+    <p
+      className="member-card-bio card-text"
+    >
+      bio
+    </p>
+    <div
+      className="list-group list-group-horizontal"
+      id="member-card-stats"
+      onKeyDown={[Function]}
+    >
+      <div
+        className="list-group-item"
+        data-rr-ui-event-key={null}
+        onClick={[Function]}
+      >
+        123 Commits
+      </div>
+      <div
+        className="list-group-item"
+        data-rr-ui-event-key={null}
+        onClick={[Function]}
+      >
+        123 Issues
+      </div>
+      <div
+        className="list-group-item"
+        data-rr-ui-event-key={null}
+        onClick={[Function]}
+      >
+        123 Unit Tests
+      </div>
+    </div>
+  </div>
+</div>
+`;
+
+exports[`test nonprofit card snapshot 1`] = `
+<div
+  className="np-card card"
+>
+  <img
+    className="card-img np-card-image"
+    src="https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=AcJnMuEdoMCokENWhhAG_lPj8GznGzxvezJqdyvJdaQAP36o3cZlH8qKqvu45jAQBM2YO4SlYPaITSvvngRKxYEkDhws91_fyIJgXEMnWH6PXTYYPLS3BqeHt9_flA5_Eqd9Yq39JckzTHkbEC-4B6DFAkOvbnJ4C90ErcS0qcVSp4JOUmi2&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs"
+  />
+  <div
+    className="np-card-body card-body"
+  >
+    <div
+      className="np-card-name card-title h5"
+    >
+      R & S FARMERS MARKET R & S GILROY FARMERS MARKET
+    </div>
+    <p
+      className="np-card-category card-text"
+    >
+      Category: 
+      Food, Agriculture and Nutrition
+    </p>
+    <p
+      className="np-card-city card-text"
+    >
+      City: 
+      SALINAS
+    </p>
+    <p
+      className="np-card-zip card-text"
+    >
+      Zip Code: 
+      93907-9016
+    </p>
+    <p
+      className="np-card-ein card-text"
+    >
+      Employee Identification Number: 
+      881734546
+    </p>
+    <a
+      href="http://www.orghunter.com/organization/881734546"
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      http://www.orghunter.com/organization/881734546
+    </a>
+    <a
+      href="/nonprofits/R & S FARMERS MARKET R & S GILROY FARMERS MARKET"
+      onClick={[Function]}
+      style={
+        Object {
+          "textDecoration": "none",
+        }
+      }
+    >
+      <button
+        className="align-self-end border-white btn btn-primary"
+        disabled={false}
+        style={
+          Object {
+            "backgroundColor": "#69A765",
+          }
+        }
+        type="button"
+      >
+        More info
+      </button>
+    </a>
+  </div>
+</div>
+`;

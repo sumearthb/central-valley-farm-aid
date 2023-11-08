@@ -1,0 +1,31 @@
+.fm-instance {
+    background-color: white;
+}
+
+.fm-header {
+    padding-block: 1rem;
+    margin-bottom: 2rem;
+}
+
+.fm-attributes {
+    text-align: left;
+}
+
+.fm-carousel {
+    background-color: dimgray;
+}
+
+.carousel-inner {
+    height: 600px;
+    padding-bottom: 25%; /* this sets carousel aspect ratio (4:1 here) */
+  }
+  
+.carousel-item {
+    height: 600px;
+}
+  
+.carousel-item img {
+    max-width: 100% !important;
+    height: 100%; /* Bootstrap handles width already */
+    object-fit: cover; /* or 'contain' if you want stretch instead of crop */
+}

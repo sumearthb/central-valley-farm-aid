@@ -1,69 +1,157 @@
+import "../../styles/FMInstance.css"
 import React from "react";
 import { useParams } from 'react-router-dom';
-import fairfax from "../../card-pics/fm-pics/fairfaxcommunity.png";
-import springs from "../../card-pics/fm-pics/springscommunity.png";
-import novato from "../../card-pics/fm-pics/downtownnovato.png";
-import fairfax2 from "../../card-pics/fm-pics/fminstance-pics/fairfaxinstance.jpg";
-import springs2 from "../../card-pics/fm-pics/fminstance-pics/springsinstance.jpg";
-import novato2 from "../../card-pics/fm-pics/fminstance-pics/novatosinstance.jpg";
-import fresno from "../../card-pics/locations-pics/fresno.png";
-import LocationCard from "../../components/LocationCard/LocationCard";
-import NPCard from "../../components/NPCard/NPCard";
-import californiafresh from "../../card-pics/np-pics/californiafresh.png";
 import { useState, useEffect } from "react";
-import { fetchSpecMarket } from "../../utils/ApiUtils"; 
-
-
-const FMData = [
-  { title: "Fairfax Community Farmers' Market", image: fairfax, location: "Location: 142 Bolinas Road, Fairfax, California 94930, USA", hours: "Hours: Wednesday: 04:00 PM - 08:00 PM", contact: "Email: agriculturalcommunityevents@gmail.com\nPhone Number: (415) 999-5635", seasons: "Seasons: May to October", vendors: "# of vendors: 35", assistance: "WIC, SNAP, WIC Farmers Market, Senior Farmers' Market Nutrition Program", image2: fairfax2 },
-  { title: "The Springs Community Farmers' Market", image: springs, location: "Location: Parking lot at Boyes Blvd & Hwy 12, Boyes Hot Springs , California 95476", hours: "Hours: N/A", contact: "Email: agriculturalcommunityevents@gmail.com\nPhone Number: (415) 999-5635", seasons: "Seasons: September to November", vendors: "# of vendors: 20", assistance: "WIC, SNAP, WIC Farmers Market, Senior Farmers' Market Nutrition Program", image2: springs2 },
-  { title: "Downtown Novato Community Farmers' Market", image: novato, location: "Location: 7th Street behind the CVS between Grant Ave & Novato Blvd , Novato , California 94947", hours: "Hours: Tuesday: 04:00 PM - 08:00 PM", contact: "Email: agriculturalcommunityevents@gmail.com\nPhone Number: (415) 999-5635", seasons: "Seasons: May to September", vendors: "# of vendors: 45", assistance: "WIC, SNAP, WIC Farmers Market, Senior Farmers' Market Nutrition Program", image2: novato2 },
-];
+import { fetchSpecMarket, fetchSpecNonProfit } from "../../utils/ApiUtils";
+import { Carousel, Col, Container, Row, Stack } from "react-bootstrap";
+import NPCard from "../../components/NPCard/NPCard";
 
 function FMInstance() {
-    const { id } = useParams();
-    const [ FMData, setFMData] = useState({});
+  const { id } = useParams();
 
-    useEffect(() => {
-      const fetchData = async () => {
-        const res = await fetchSpecMarket(id);
-        setFMData(res.data);
-      };
+  const [ FMData, setFMData] = useState({});
+  const [ nonProfits, setNonProfits] = useState([]);
+  const [ loading, setLoading] = useState(true);
 
-      fetchData();
-    }, []);
+  useEffect(() => {
+    const fetchData = async () => {
+      setLoading(true);
+      const res = await fetchSpecMarket(id);
+      console.log(res.data[0]);
+      setFMData(res.data[0]);
+      let nps = [];
+      for (let i = 0; i < res.data[0].closest_charities.nearby_charities.length; ++i) {
+        const np = await fetchSpecNonProfit(res.data[0].closest_charities.nearby_charities[i]);
+        nps.push(np.data[0]);
+      }
+      setNonProfits(nps);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
   
-    return (
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
-        <h1 style={{ marginBottom: "15px", marginTop: "10px" }}>{FMData.market_name}</h1>
-        <img src={Object.values(FMData.photo_references)[0]} alt={FMData.market_name} className="fm-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative" }}/>
-        <p>Location description: {FMData.location_desc}</p>
-        <p>Address: {FMData.location_address}</p>
-        <p>Contact info: {FMData.phone}</p>
-        <p>Indoor status: {FMData.location_indoor}</p>
-        <p>Production methods: {FMData.special_prod}</p>
-        <p>FNAP Programs: {FMData.fnap}</p>
-        <img src={Object.values(FMData.photo_references)[0]} alt={FMData.market_name} className="fm-card-image mx-auto border border-dark" style={{ width: "100%", maxWidth: "300px", height: "auto", maxHeight: "300px", position: "relative", marginBottom: "20px"}}/>
-        <h2>Nearby Counties</h2>
-        <h2>Nearby Nonprofits</h2>
-        {/* <FMCard 
-          title={"Fresno"}
-          image={fresno}
-          crops={"Crops: Corn, Cotton"}
-          population={"Population: 1.014 million"}
-          unemployment={"Unemployment Rate: 7.10%"}
-          labor_force={"Labor Force: 458,361"}/>
-        <h2>Nearby Nonprofits</h2>
-        <NPCard 
-          title={"California Fresh Farmers' Markets Association"}
-          image={californiafresh}
-          county= "County: Fresno"
-          NTEE_code="NTEE Code: K03"
-          phone= "Phone: (559) 417-7970"
-          employees= "Num. Employees: 16"
-          year= "Est: 2015"/> */}
-      </div>
-    );
-  }
+  return (
+    <Container className="fm-instance">
+    {!loading &&
+    (<React.Fragment>
+      <Container className="fm-carousel">
+        <Carousel>
+          {FMData.photo_references.map((photo) => (
+            <Carousel.Item>
+              <img className="carousel-img" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${photo}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}></img>
+            </Carousel.Item>
+          ))}
+        </Carousel>
+      </Container>
+      <Container className="fm-body">
+        <Row>
+          <h1 className="fm-header">
+            {FMData.listing_name}
+          </h1>
+        </Row>
+        <Row>
+          <Col>
+            <Container className="fm-attributes">
+              <Stack gap={3}>
+                {FMData.listing_desc !== "0" && 
+                <div className="p-2">
+                  <h3>Description: </h3>
+                  {FMData.listing_desc}
+                </div>}
+                {FMData.orgnization !== "0" && 
+                <div className="p-2">
+                  <h3>Organization: </h3>
+                  {FMData.orgnization}
+                </div>}
+                <div className="p-2">
+                  <h3>Address: </h3>
+                  <Stack gap={2}>
+                    <div>
+                      {FMData.location_address}
+                    </div>
+                    <div>
+                      {FMData.location_desc}
+                    </div>
+                    <div>
+                      {FMData.location_site}
+                    </div>
+                    {FMData.location_site_otherdesc !== "0" && 
+                    <div>
+                      {FMData.location_site_otherdesc}
+                    </div>}
+                  </Stack>
+                </div>
+                {FMData.website && 
+                <div className="p-2">
+                  <h3>Website: </h3>
+                  <a href={FMData.website}>
+                    {FMData.website}
+                  </a>
+                </div>}
+                {FMData.phone && 
+                <div className="p-2">
+                  <h3>Phone: </h3>
+                  {FMData.phone}
+                </div>}
+                <div className="p-2">
+                  <h3>Rating: </h3>
+                  {FMData.rating}
+                </div>
+                <div className="p-2">
+                  <h3>Wheelchair Accessible: </h3>
+                  {FMData.wheelchair_accessible}
+                </div>
+                <div className="p-2">
+                  <h3>FNAP: </h3>
+                  <Stack gap={1}>
+                    {FMData.fnap.split(";").map(fnap => (
+                      <div>{fnap}</div>
+                    ))}
+                  </Stack>
+                </div>
+              </Stack>
+            </Container>
+          </Col>
+          <Col>
+            <Container className="fm-map">
+              <iframe
+              title="map"
+              className="map"
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              width="100%"
+              height="600"
+              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&q=${encodeURIComponent(FMData.listing_name)}`}
+              ></iframe>
+            </Container>
+          </Col>
+        </Row>
+        <Row>
+          <h2>Location</h2>
+        </Row>
+        <Row>
+          <h2>Nearby Non Profits</h2>
+        </Row>
+        <Row className="row gx-3">
+          {(nonProfits.map((np, index) => (
+            <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
+              <NPCard
+                charityName={np.charityName}
+                category={np.category}
+                city={np.city}
+                phone={np.phone}
+                url={np.url}
+                img={np.photo_references.photos[0]}
+              />
+            </Col>
+          )))}
+        </Row>
+      </Container>
+    </React.Fragment>)}
+  </Container>
+  );
+}
 
 export default FMInstance;
