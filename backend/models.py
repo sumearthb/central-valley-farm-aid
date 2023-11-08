@@ -25,6 +25,7 @@ class Locations(db.Model):
     map = db.Column(db.String(255))
     population = db.Column(db.Integer)
     crops = db.Column(JSON)
+    crops_str = db.Column(db.String(255))
     closest_farmers_markets    = db.Column(db.JSON)
     closest_charities    = db.Column(db.JSON)
     photo_references = db.Column(JSON)

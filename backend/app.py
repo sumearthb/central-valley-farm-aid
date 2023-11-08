@@ -51,47 +51,28 @@ def home():
 def search_locations(search_terms):
     query = db.session.query(Locations)
     
+    search_terms_arr = search_terms.split(",") if search_terms else []
+
     # Set up search conditions 
-    search_conditions = [Locations.name.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [Locations.county_seat.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [Locations.crops.ilike(f"%{term}%") for term in search_terms]
+    search_conditions = [Locations.name.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [Locations.county_seat.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [Locations.crops.ilike(f"%{term}%") for term in search_terms_arr]
    
     query = query.filter(or_(*search_conditions))
 
-    # possible solution: use the json full text solution, where we convert the json key into a column BUT just convert the crop list we have into a string.
-    # then use this method to serach for the sequence of crop in the croplist https://stackoverflow.com/questions/40412034/flask-sqlalchemy-contains-ilike-producing-different-results
-
-    # Calculate relevance score: 
-    # calculates the relevance score for each search term. The relevance score is determined 
-    # by counting how many times each term matches in the columns
-    relevance_order_conditions = [
-        case(
-            (Locations.name.ilike(f"%{term}%"), 1),
-            (Locations.county_seat.ilike(f"%{term}%"), 1),
-            (Locations.crops.ilike(f"%{term}%"), 1),
-            else_=0
-        ).label(f"relevance_{i}")
-        for i, term in enumerate(search_terms)
-    ]
-    # print("BEFORE----------")
-    # print(str(query))
-    # print(query.statement.compile().params)
-
-    # Add the relevance conditions as a column in the result set
-    query = query.add_columns(*relevance_order_conditions)
-
-    # Group the results by the primary key of the 'Locations' table (assuming it's 'id')
-    query = query.group_by(Locations.id)
+    # SEARCH relevance sorting
+    # Perform search using FULLTEXT index of charities
+    indexed_cols = [Locations.name, Locations.county_seat, Locations.crops_str]
+    # Construct MATCH...AGAINST SQL expression (using the already created FULLTEXT index)
+    match_expression = match(
+        *indexed_cols,
+        against = search_terms,
+        in_natural_language_mode = True
+    )
+    # Search for relevant charities using MATCH...AGAINST expression and sort by descending relevance
+    query = query.order_by(match_expression.desc())
+    #query = query.order_by(match_expression.desc())
     
-    # calculates the sum of the relevance scores for each search term.
-    # orders the results based on the total relevance score as we yuse desc()
-    query = query.order_by(desc(func.sum(*relevance_order_conditions)))
-
-
-    # print("after----------")
-    # print(str(query))
-    # print(query.statement.compile().params)
-
     return query
 
 # Search for NPs using the provided search terms
@@ -170,8 +151,7 @@ def get_all_locations():
     query = db.session.query(Locations)
     
     # Searching for locations
-    search = request.args.get("search")
-    search_terms = search.split(',') if search else []
+    search_terms = request.args.get("search")
     if search_terms:    # search_locations triggered only if search_terms isn't empty
         query = search_locations(search_terms)
     
