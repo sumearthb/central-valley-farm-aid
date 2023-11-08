@@ -39,6 +39,7 @@ def create_location_table():
             map VARCHAR(255),
             population INT,
             crops JSON,
+            crops_str VARCHAR(255),
             closest_farmers_markets JSON,
             closest_charities JSON,
             photo_references JSON
@@ -270,6 +271,10 @@ def fetch_location_crop_data():
             # Add the crop to the crops' county data field
             county_data['crops'].add(obj['commodity_desc'])
 
+    # Create a string format for crops data
+    for county in complete_data.values():
+        county['crops_str'] = ';'.join(list(county['crops']))
+    
     fm_data = query_fm_data()
     charity_data = fetch_charity_data()
     fm_threshold = 3
@@ -302,9 +307,10 @@ def insert_location_data_to_db():
         for location, vals in data.items():
             if location != 'Other (combined) Counties':
                 crop_data_json = json.dumps({"crops" : tuple(vals['crops'])})
-                record = {'name': location, 
-                          'crops': crop_data_json, 
-                          'photo_references': vals['photo_references'], 
+                record = {'name': location,
+                          'crops': crop_data_json,
+                          'crops_str': vals['crops_str'],
+                          'photo_references': vals['photo_references'],
                           'est': vals['est'],
                           'map': vals['map'],
                           'population': vals['population'],
@@ -314,7 +320,8 @@ def insert_location_data_to_db():
                           'county_seat': vals['county_seat']}
                 insert_query = '''INSERT INTO final_location_data (
                 name, 
-                crops, 
+                crops,
+                crops_str,
                 photo_references, 
                 est, 
                 map, 
@@ -325,7 +332,8 @@ def insert_location_data_to_db():
                 county_seat) 
                 VALUES (
                     %(name)s, 
-                    %(crops)s, 
+                    %(crops)s,
+                    %(crops_str)s,
                     %(photo_references)s, 
                     %(est)s, 
                     %(map)s, 
@@ -744,8 +752,8 @@ def get_county_data():
 # Defining main function
 def main(): 
     # location crop data DONE
-    # create_location_table()
-    # insert_location_data_to_db()
+    create_location_table()
+    insert_location_data_to_db()
 
     # charities data DONE
     # create_charity_table()
