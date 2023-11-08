@@ -6,7 +6,7 @@ from flask_cors import CORS
 from sqlalchemy import or_, func, cast, and_, Integer, case, literal, select, text, desc, func
 from sqlalchemy.sql.expression import asc, desc
 from sqlalchemy.orm import aliased
-from sqlalchemy.dialects.mysql import match
+from sqlalchemy.dialects.mysql import match, JSON
 import googlemaps
 import json
 
@@ -155,6 +155,14 @@ def get_all_locations():
     if search_terms:    # search_locations triggered only if search_terms isn't empty
         query = search_locations(search_terms)
     
+    # Filtering for locations
+    crop = request.args.get("crop", type=str, default=None)
+    if crop:
+        query = query.filter(Locations.crops_str.ilike(f"%{crop}%"))
+    est = request.args.get("est", type=int)
+    if est:
+        query = query.filter(Locations.est == est)
+
     # Sorting for locations
     sort_by = request.args.get("sort_by", type=str, default="name")
     sort_order = request.args.get("sort_order", type=str, default="asc")
@@ -169,11 +177,11 @@ def get_all_locations():
             query = query.order_by(asc(Locations.county_seat))
         elif sort_order == "desc":
             query = query.order_by(desc(Locations.county_seat))
-    elif sort_by == "crops":
+    elif sort_by == "num_crops":
         if sort_order == "asc":
             query = query.order_by(asc(Locations.crops['crops']))
         elif sort_order == "desc":
-            query = query.order_by(desc(Locations.crops['crops']))
+            query = query.order_by(desc(Locations.crops['crops']))            
     elif sort_by == "area":
         if sort_order == "asc":
             query = query.order_by(cast(Locations.area, Integer))
