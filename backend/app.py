@@ -69,7 +69,9 @@ def search_locations(search_terms):
         ).label(f"relevance_{i}")
         for i, term in enumerate(search_terms)
     ]
-    
+    # print("BEFORE----------")
+    # print(str(query))
+    # print(query.statement.compile().params)
     # Add the relevance conditions as a column in the result set
     query = query.add_columns(*relevance_order_conditions)
 
@@ -79,6 +81,11 @@ def search_locations(search_terms):
     # calculates the sum of the relevance scores for each search term.
     # orders the results based on the total relevance score as we yuse desc()
     query = query.order_by(desc(func.sum(*relevance_order_conditions)))
+
+
+    # print("after----------")
+    # print(str(query))
+    # print(query.statement.compile().params)
 
     return query
 
@@ -318,5 +325,5 @@ def paginate(query, page_num, page_size=PER_PAGE):
 
 # Running app
 if __name__ == '__main__':
-	app.run(host="0.0.0.0", port=4998, debug = True)
+	app.run(host="0.0.0.0", port=4997, debug = True)
 
