@@ -6,6 +6,7 @@ from flask_cors import CORS
 from sqlalchemy import or_, func, cast, and_, Integer, case, literal, select, text, desc, func
 from sqlalchemy.sql.expression import asc, desc
 from sqlalchemy.orm import aliased
+from sqlalchemy.dialects.mysql import match
 import googlemaps
 import json
 
@@ -57,6 +58,9 @@ def search_locations(search_terms):
    
     query = query.filter(or_(*search_conditions))
 
+    # possible solution: use the json full text solution, where we convert the json key into a column BUT just convert the crop list we have into a string.
+    # then use this method to serach for the sequence of crop in the croplist https://stackoverflow.com/questions/40412034/flask-sqlalchemy-contains-ilike-producing-different-results
+
     # Calculate relevance score: 
     # calculates the relevance score for each search term. The relevance score is determined 
     # by counting how many times each term matches in the columns
@@ -72,6 +76,7 @@ def search_locations(search_terms):
     # print("BEFORE----------")
     # print(str(query))
     # print(query.statement.compile().params)
+
     # Add the relevance conditions as a column in the result set
     query = query.add_columns(*relevance_order_conditions)
 
@@ -93,27 +98,57 @@ def search_locations(search_terms):
 def search_NPs(search_terms):
     query = db.session.query(NPs)
     
-    search_conditions = [NPs.charityName.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [NPs.state.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [NPs.city.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [NPs.zipCode.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [NPs.category.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [NPs.missionStatement.ilike(f"%{term}%") for term in search_terms]
+    search_terms_arr = search_terms.split(",") if search_terms else []
+    
+    search_conditions = [NPs.charityName.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [NPs.state.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [NPs.city.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [NPs.zipCode.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [NPs.category.ilike(f"%{term}%") for term in search_terms_arr]
     query = query.filter(or_(*search_conditions))
+
+    # SEARCH relevance sorting
+    # Perform search using FULLTEXT index of charities
+    indexed_cols = [NPs.charityName, NPs.state, NPs.city, NPs.zipCode, NPs.category]
+    # Construct MATCH...AGAINST SQL expression (using the already created FULLTEXT index)
+    match_expression = match(
+        *indexed_cols,
+        against = search_terms,
+        in_natural_language_mode = True
+    )
+
+    # Search for relevant charities using MATCH...AGAINST expression and sort by descending relevance
+    query = query.order_by(match_expression.desc())
+    #query = query.order_by(match_expression.desc())
     
     return query
 
 # Search for FMs using the provided search terms
 def search_FMs(search_terms):
     query = db.session.query(FMs)
+
+    search_terms_arr = search_terms.split(",") if search_terms else []
     
-    search_conditions = [FMs.listing_name.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [FMs.listing_desc.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [FMs.location_address.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [FMs.location_desc.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [FMs.specialproductionmethods.ilike(f"%{term}%") for term in search_terms]
-    search_conditions += [FMs.fnap.ilike(f"%{term}%") for term in search_terms]
+    search_conditions = [FMs.listing_name.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [FMs.listing_desc.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [FMs.location_address.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [FMs.location_desc.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [FMs.specialproductionmethods.ilike(f"%{term}%") for term in search_terms_arr]
+    search_conditions += [FMs.fnap.ilike(f"%{term}%") for term in search_terms_arr]
     query = query.filter(or_(*search_conditions))
+
+    # SEARCH relevance sorting
+    # Perform search using FULLTEXT index of charities
+    indexed_cols = [FMs.listing_name, FMs.location_address]
+    # Construct MATCH...AGAINST SQL expression (using the already created FULLTEXT index)
+    match_expression = match(
+        *indexed_cols,
+        against = search_terms,
+        in_natural_language_mode = True
+    )
+    # Search for relevant charities using MATCH...AGAINST expression and sort by descending relevance
+    query = query.order_by(match_expression.desc())
+    #query = query.order_by(match_expression.desc())
     
     return query
 
@@ -136,7 +171,7 @@ def get_all_locations():
     
     # Searching for locations
     search = request.args.get("search")
-    search_terms = search.split() if search else []
+    search_terms = search.split(',') if search else []
     if search_terms:    # search_locations triggered only if search_terms isn't empty
         query = search_locations(search_terms)
     
@@ -202,10 +237,10 @@ def get_all_nonprofits():
     per_page = request.args.get("per_page")
     query = db.session.query(NPs)
 
-    # Searching for NPs
-    search = request.args.get('search')
-    search_terms = search.split() if search else []
-    query = search_NPs(search_terms)
+    # Searching for locations
+    search_terms = request.args.get("search")
+    if search_terms:    # search_locations triggered only if search_terms isn't empty
+        query = search_NPs(search_terms)
 
     # Filtering for NPs
     city = request.args.get("city", type=str, default=None)
@@ -260,10 +295,10 @@ def get_all_markets():
     per_page = request.args.get("per_page")
     query = db.session.query(FMs)
 
-    # Searching for FMs
-    search = request.args.get("search")
-    search_terms = search.split() if search else []
-    query = search_FMs(search_terms)
+    # Searching for markets
+    search_terms = request.args.get("search")
+    if search_terms:    # search_locations triggered only if search_terms isn't empty
+        query = search_FMs(search_terms)
 
     # Filtering for FMs
     wheelchair_accessible = request.args.get("wheelchair_accessible", type=str, default=None)
