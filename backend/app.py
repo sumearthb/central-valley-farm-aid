@@ -223,10 +223,6 @@ def get_all_nonprofits():
         query = search_NPs(search_terms)
 
     # Filtering for NPs
-    city = request.args.get("city", type=str, default=None)
-    if city:
-        query = query.filter(NPs.city == city)
-        city = request.args.get("city", type=str, default=None)
     category = request.args.get("category", type=str, default=None)
     if category:
         query = query.filter(NPs.category == category)  
@@ -247,6 +243,11 @@ def get_all_nonprofits():
             query = query.order_by(asc(NPs.statusCd))
         elif sort_order == "desc":
             query = query.order_by(desc(NPs.statusCd))
+    elif sort_by == "city":
+        if sort_order == "asc":
+            query = query.order_by(asc(NPs.city))
+        elif sort_order == "desc":
+            query = query.order_by(desc(NPs.city))
 
     if page is not None:
         query = paginate(query, int(page), int(per_page))
