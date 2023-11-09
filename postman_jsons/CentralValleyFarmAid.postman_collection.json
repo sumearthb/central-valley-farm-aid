@@ -2,7 +2,7 @@
 	"info": {
 		"_postman_id": "0c42d6be-b98c-47bb-a52e-9ea7880453c3",
 		"name": "Central Valley Farm Aid",
-		"description": "# API\n\nThese endpoints will return information about our three models: locations, nonprofits, and farmers' markets.",
+		"description": "# API\n\nThese endpoints will return information about our three models: locations, nonprofits, and farmers' markets.\n\nThe endpoints can be accessed by going to [www.centralvalleyfarmaid.me/api](https://www.centralvalleyfarmaid.me/api).",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
 		"_exporter_id": "24011705",
 		"_collection_link": "https://www.postman.com/gold-moon-138414/workspace/group14-cvfa/collection/24011705-0c42d6be-b98c-47bb-a52e-9ea7880453c3?action=share&source=collection_link&creator=24011705"
@@ -39,22 +39,7 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "closest_charities",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "FNAP",
-							"value": "",
-							"type": "text"
-						},
-						{
 							"key": "id",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "listing_desc",
 							"value": "",
 							"type": "text"
 						},
@@ -69,22 +54,12 @@
 							"type": "text"
 						},
 						{
-							"key": "location_desc",
+							"key": "orgnization",
 							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "location_indoor",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "location_site",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "location_site_otherdesc",
+							"key": "listing_desc",
 							"value": "",
 							"type": "text"
 						},
@@ -99,7 +74,22 @@
 							"type": "text"
 						},
 						{
-							"key": "orgnization",
+							"key": "location_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site_otherdesc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_indoor",
 							"value": "",
 							"type": "text"
 						},
@@ -107,11 +97,51 @@
 							"key": "specialproductionmethods",
 							"value": "",
 							"type": "text"
+						},
+						{
+							"key": "fnap",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "photo_references",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "closest_charities",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "closest_locations",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "wheelchair_accessible",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "rating",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "website",
+							"value": "",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetAllMarkets?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}",
+					"raw": "{{main_url}}/api/GetAllMarkets?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&wheelchair_accessible={{wheelchair_accessible}}&indoor={{indoor}}&fnap_access={{fnap_access}}",
 					"host": [
 						"{{main_url}}"
 					],
@@ -139,6 +169,18 @@
 							"key": "sort_order",
 							"value": "{{sort_order}}",
 							"description": "Sort by ascending or descending"
+						},
+						{
+							"key": "wheelchair_accessible",
+							"value": "{{wheelchair_accessible}}"
+						},
+						{
+							"key": "indoor",
+							"value": "{{indoor}}"
+						},
+						{
+							"key": "fnap_access",
+							"value": "{{fnap_access}}"
 						}
 					]
 				}
@@ -176,22 +218,7 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "closest_charities",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "FNAP",
-							"value": "",
-							"type": "text"
-						},
-						{
 							"key": "id",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "listing_desc",
 							"value": "",
 							"type": "text"
 						},
@@ -206,22 +233,12 @@
 							"type": "text"
 						},
 						{
-							"key": "location_desc",
+							"key": "orgnization",
 							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "location_indoor",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "location_site",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "location_site_otherdesc",
+							"key": "listing_desc",
 							"value": "",
 							"type": "text"
 						},
@@ -236,12 +253,67 @@
 							"type": "text"
 						},
 						{
-							"key": "orgnization",
+							"key": "location_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site_otherdesc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_indoor",
 							"value": "",
 							"type": "text"
 						},
 						{
 							"key": "specialproductionmethods",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "fnap",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "phone",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "photo_references",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "closest_charities",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "closest_locations",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "wheelchair_accessible",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "rating",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "website",
 							"value": "",
 							"type": "text"
 						}
@@ -360,50 +432,59 @@
 							"type": "text"
 						},
 						{
-							"key": "crops",
-							"value": "[]",
+							"key": "est",
+							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "cropsTypes",
-							"value": "[]",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "climate",
+							"key": "area",
 							"value": "",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						},
 						{
-							"key": "cropsCount",
+							"key": "county_seat",
 							"value": "",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						},
 						{
-							"key": "markets",
-							"value": "[]",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "productionVolume",
+							"key": "map",
 							"value": "",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						},
 						{
-							"key": "nonProfits",
-							"value": "[]",
-							"type": "text",
-							"disabled": true
+							"key": "population",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "crops",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "crops_str",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "closest_farmers_markets",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "closest_charities",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "photo_references",
+							"value": "",
+							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetAllLocations?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}",
+					"raw": "{{main_url}}/api/GetAllLocations?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&crop={{crop}}",
 					"host": [
 						"{{main_url}}"
 					],
@@ -431,6 +512,10 @@
 							"key": "sort_order",
 							"value": "{{sort_order}}",
 							"description": "Sort by ascending or descending"
+						},
+						{
+							"key": "crop",
+							"value": "{{crop}}"
 						}
 					]
 				}
@@ -478,45 +563,54 @@
 							"type": "text"
 						},
 						{
-							"key": "crops",
-							"value": "[]",
+							"key": "est",
+							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "cropsTypes",
-							"value": "[]",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "climate",
+							"key": "area",
 							"value": "",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						},
 						{
-							"key": "cropsCount",
+							"key": "county_seat",
 							"value": "",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						},
 						{
-							"key": "markets",
-							"value": "[]",
-							"type": "text",
-							"disabled": true
-						},
-						{
-							"key": "productionVolume",
+							"key": "map",
 							"value": "",
-							"type": "text",
-							"disabled": true
+							"type": "text"
 						},
 						{
-							"key": "nonProfits",
-							"value": "[]",
-							"type": "text",
-							"disabled": true
+							"key": "population",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "crops",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "crops_str",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "closest_farmers_markets",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "closest_charities",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "photo_references",
+							"value": "",
+							"type": "text"
 						}
 					]
 				},
@@ -623,27 +717,7 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "category",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "charityName",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "city",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "deductibilityCD",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "donationUrl",
+							"key": "id",
 							"value": "",
 							"type": "text"
 						},
@@ -653,12 +727,67 @@
 							"type": "text"
 						},
 						{
-							"key": "eligibleCD",
+							"key": "charityName",
 							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "id",
+							"key": "url",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "donationUrl",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "zipCode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "eligibleCd",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "deductibilityCd",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "statusCd",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "website",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "missionStatement",
 							"value": "",
 							"type": "text"
 						},
@@ -673,37 +802,17 @@
 							"type": "text"
 						},
 						{
-							"key": "missionStatement",
+							"key": "photo_references",
 							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "start",
+							"key": "closest_farmers_markets",
 							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "state",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "statusCD",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "url",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "website",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "zipcode",
+							"key": "closest_locations",
 							"value": "",
 							"type": "text"
 						}
@@ -761,27 +870,7 @@
 					"mode": "formdata",
 					"formdata": [
 						{
-							"key": "category",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "charityName",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "city",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "deductibilityCD",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "donationUrl",
+							"key": "id",
 							"value": "",
 							"type": "text"
 						},
@@ -791,12 +880,67 @@
 							"type": "text"
 						},
 						{
-							"key": "eligibleCD",
+							"key": "charityName",
 							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "id",
+							"key": "url",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "donationUrl",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "zipCode",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "category",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "eligibleCd",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "deductibilityCd",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "statusCd",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "website",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "missionStatement",
 							"value": "",
 							"type": "text"
 						},
@@ -811,44 +955,24 @@
 							"type": "text"
 						},
 						{
-							"key": "missionStatement",
+							"key": "photo_references",
 							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "start",
+							"key": "closest_farmers_markets",
 							"value": "",
 							"type": "text"
 						},
 						{
-							"key": "state",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "statusCD",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "url",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "website",
-							"value": "",
-							"type": "text"
-						},
-						{
-							"key": "zipcode",
+							"key": "closest_locations",
 							"value": "",
 							"type": "text"
 						}
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetAllNonProfit?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}",
+					"raw": "{{main_url}}/api/GetAllNonProfit?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&category={{category}}&has_mission={{has_mission}}",
 					"host": [
 						"{{main_url}}"
 					],
@@ -876,6 +1000,14 @@
 							"key": "sort_order",
 							"value": "{{sort_order}}",
 							"description": "Sort by ascending or descending"
+						},
+						{
+							"key": "category",
+							"value": "{{category}}"
+						},
+						{
+							"key": "has_mission",
+							"value": "{{has_mission}}"
 						}
 					]
 				}
@@ -928,74 +1060,6 @@
 					"path": [
 						"api",
 						"GetNumNonProfits"
-					]
-				}
-			},
-			"response": []
-		},
-		{
-			"name": "SearchAll",
-			"event": [
-				{
-					"listen": "test",
-					"script": {
-						"exec": [
-							"pm.test(\"Returns data list in response\", function () {\r",
-							"    var jsonData = pm.response.json();\r",
-							"    pm.expect(jsonData.data).to.exist\r",
-							"});\r",
-							"\r",
-							"pm.test(\"Status code is 200\", function () {\r",
-							"    pm.response.to.have.status(200);\r",
-							"});\r",
-							""
-						],
-						"type": "text/javascript"
-					}
-				}
-			],
-			"protocolProfileBehavior": {
-				"disableBodyPruning": true
-			},
-			"request": {
-				"method": "GET",
-				"header": [],
-				"body": {
-					"mode": "formdata",
-					"formdata": [
-						{
-							"key": "farmersMarket",
-							"value": "[]",
-							"type": "text"
-						},
-						{
-							"key": "location",
-							"value": "[]",
-							"type": "text"
-						},
-						{
-							"key": "nonProfits",
-							"value": "[]",
-							"type": "text"
-						}
-					]
-				},
-				"url": {
-					"raw": "{{main_url}}/api/SearchAll/:query",
-					"host": [
-						"{{main_url}}"
-					],
-					"path": [
-						"api",
-						"SearchAll",
-						":query"
-					],
-					"variable": [
-						{
-							"key": "query",
-							"value": "",
-							"description": "Searches the database for terms requested"
-						}
 					]
 				}
 			},
