@@ -22,7 +22,6 @@ const Search = () => {
         setLoading(true);
         const fetchedLocations = await fetchLocations(1, 999, "", "", search);
         setLocations(fetchedLocations.data);
-        setLoading(false);
     };
 
     const loadNonProfits = async () => {
@@ -50,6 +49,7 @@ const Search = () => {
         loadLocations();
         loadNonProfits();
         loadMarkets();
+        // eslint-disable-next-line
     }, []);
 
     return (
@@ -68,6 +68,7 @@ const Search = () => {
             className="mb-3"
             justify>
                 <Tab eventKey="locations" title="Locations">
+                    {loading &&
                     <Container className="px-4">
                         <Row className="row gx-3">
                         {( locations.map((location, index) => (
@@ -80,8 +81,10 @@ const Search = () => {
                         )))}
                         </Row>
                     </Container>
+                    }
                 </Tab>
                 <Tab eventKey="nonprofits" title="Non Profits">
+                    {loading &&
                     <Container className="px-4">
                         <Row className="row gx-3">
                         {( nonprofits.map((nonprofit, index) => (
@@ -94,8 +97,10 @@ const Search = () => {
                         )))}
                         </Row>
                     </Container>
+                    }
                 </Tab>
                 <Tab eventKey="markets" title="Farmers' Markets">
+                    {loading &&
                     <Container className="px-4">
                         <Row className="row gx-3">
                         {( markets.map((market, index) => (
@@ -108,6 +113,7 @@ const Search = () => {
                         )))}
                         </Row>
                     </Container>
+                    }
                 </Tab>
             </Tabs>
         </Container>

@@ -35,7 +35,8 @@ const LocationsGrid = () => {
       setLocations(fetchedLocations.data);
       setLoading(false);
     };
-    loadLocations();  
+    loadLocations(); 
+    // eslint-disable-next-line
   }, [curPage, sortBy, orderBy]);
 
   const handleSearch = async (e) => {

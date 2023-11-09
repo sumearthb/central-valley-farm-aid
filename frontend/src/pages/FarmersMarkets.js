@@ -37,6 +37,7 @@ const FMGrid = () => {
       setLoading(false);
     };
     loadMarkets();
+    // eslint-disable-next-line
   }, [curPage, sortBy, orderBy, wheelchairAccessible, indoors]);
 
   const handleSearch = async (e) => {

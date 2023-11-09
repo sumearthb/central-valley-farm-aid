@@ -39,6 +39,7 @@ function FMInstance() {
     };
 
     fetchData();
+    // eslint-disable-next-line
   }, []);
   
   return (
@@ -49,7 +50,7 @@ function FMInstance() {
         <Carousel>
           {FMData.photo_references.map((photo) => (
             <Carousel.Item>
-              <img className="carousel-img" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${photo}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}></img>
+              <img className="carousel-img" alt="" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${photo}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs` }></img>
             </Carousel.Item>
           ))}
         </Carousel>

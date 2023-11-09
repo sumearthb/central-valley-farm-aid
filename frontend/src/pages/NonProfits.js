@@ -39,7 +39,7 @@ const NPGrid = () => {
       setLoading(false);
     };
     loadNonProfits();
-    
+    // eslint-disable-next-line
   }, [curPage, sortBy, orderBy, category]);
 
   const handleSearch = async (e) => {

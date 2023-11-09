@@ -40,6 +40,7 @@ function LocationInstance() {
     };
 
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -49,11 +50,11 @@ function LocationInstance() {
         <Container className="location-carousel">
           <Carousel>
             <Carousel.Item>
-              <img className="carousel-img" src={locationData.map.replace("100px","1000px")} />
+              <img className="carousel-img" alt="" src={locationData.map.replace("100px","1000px")} />
             </Carousel.Item>
             {locationData.photo_references.photos.map((photo) => (
               <Carousel.Item>
-                <img className="carousel-img" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${photo}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}></img>
+                <img className="carousel-img" alt="" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${photo}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}></img>
               </Carousel.Item>
             ))}
           </Carousel>

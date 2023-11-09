@@ -40,6 +40,7 @@ function NPInstance() {
     };
 
     fetchData();
+    // eslint-disable-next-line
   }, []);
 
   return (
@@ -50,7 +51,7 @@ function NPInstance() {
         <Carousel>
           {NPData.photo_references.photos.map((photo) => (
             <Carousel.Item>
-              <img className="np-img" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${photo}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}></img>
+              <img className="np-img" alt="" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${photo}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}></img>
             </Carousel.Item>
           ))}
         </Carousel>
