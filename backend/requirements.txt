@@ -35,3 +35,5 @@ flask-cors
 jsonschema
 requests
 waitress
+googlemaps
+beautifulsoup4
