@@ -42,7 +42,6 @@
 
 .location-card-body {
   text-align: left;
-  background-color: #F0FDEE;
   display: flex;
   flex-direction: column;
   justify-content: space-between;

@@ -5,38 +5,32 @@ import ListGroup from 'react-bootstrap/ListGroup';
 
 function MemberCard(props) {
   const {
-    name,
-    username,
-    bio,
-    role,
-    commits,
-    issues,
-    tests,
+    member
   } = props;
 
   return (
     <Card className="member-card">
       <Card.Img className="member-card-image" variant="top"
-        src={`${process.env.PUBLIC_URL}/member-pics/${username}.jpg`} />
+        src={`${process.env.PUBLIC_URL}/member-pics/${member.username}.jpg`} />
       <Card.Body className="member-card-body">
         <Card.Title className="member-card-name">
-          {name}
+          {member.name}
         </Card.Title>
         <Card.Text className="member-card-gitlab">
-          <a href={"https://gitlab.com/" + username}>
-            {username}
+          <a href={"https://gitlab.com/" + member.username}>
+            {member.username}
           </a>
         </Card.Text>
         <Card.Text className="member-card-role">
-          {role}
+          {member.role}
         </Card.Text>
         <Card.Text className="member-card-bio">
-          {bio}
+          {member.bio}
         </Card.Text>
         <ListGroup horizontal id="member-card-stats">
-          <ListGroup.Item>{`${commits} Commits`}</ListGroup.Item>
-          <ListGroup.Item>{`${issues} Issues`}</ListGroup.Item>
-          <ListGroup.Item>{`${tests} Unit Tests`}</ListGroup.Item>
+          <ListGroup.Item>{`${member.commits} Commits`}</ListGroup.Item>
+          <ListGroup.Item>{`${member.issues} Issues`}</ListGroup.Item>
+          <ListGroup.Item>{`${member.tests} Unit Tests`}</ListGroup.Item>
         </ListGroup>
       </Card.Body>
     </Card>

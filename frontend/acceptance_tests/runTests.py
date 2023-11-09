@@ -5,7 +5,14 @@ from sys import platform
 # Edited code to implement the tests that we want
 
 if __name__ == "__main__":
+    # Use chromedriver based on OS
+    if platform == "win32":
+        PATH = "./chromedriver.exe"
+    elif platform == "linux":
+        PATH = "./chromedriver_linux"
+    else:
+        print("Unsupported OS")
+        exit(-1)
 
-    # Run all of the gui tests
-    os.system("python ./navBarTests.py")
+    os.system("python3 ./acceptance_tests/navBarTests.py")
 
