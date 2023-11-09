@@ -8,7 +8,7 @@ Group 14
     * Gitlab: @martinmurtiono
 -   Akif Abidi (asa3676)
     * Gitlab: @akif.abidi1
--   Anthony Do (atd945)
+-   Anthony Do (atd945) (Phase 3 Team Lead)
     * Gitlab: @anthonydo8196
 -   Kunal Mody (km49555) (Phase 2 Team Lead)
     * Gitlab: @kunal.mody1
@@ -22,11 +22,12 @@ Group 14
 <https://www.centralvalleyfarmaid.me/api/>
 
 **API Documentation - Postman:**
-<https://www.postman.com/gold-moon-138414/workspace/group14-cvfa/overview>
+<https://documenter.getpostman.com/view/24011705/2s9YRFVVQB>
 
 **Git SHA**
 Phase 1: 536b3ac36e7b49fcdfe3f897c5928c912134c84b
 Phase 2: 66cef773793aed0430418bafcdcb4eebbf1f528a
+Phase 3: a65d0f6fd5a9460fa97e6a3a7c63de734e663513
 
 **Gitlab Pipeline**
 <https://gitlab.com/cs373-group-14/idb/-/pipelines>
@@ -65,6 +66,23 @@ Phase 2:
 -   Samarth Bhat
     * Estimated: 30 hours
     * Actual: 30 hours
+
+Phase 3:
+-   Martin Murtiono
+    * Estimated: 23 hours
+    * Actual: 26 hours
+-   Akif Abidi
+    * Estimated: 22 hours
+    * Actual: 23 hours
+-   Anthony Do
+    * Estimated: 24 hours
+    * Actual: 24 hours
+-   Kunal Mody
+    * Estimated: 23 hours
+    * Actual: 23 hours
+-   Samarth Bhat
+    * Estimated: 26 hours
+    * Actual: 25 hours
 
 **Acknowledgements**
 Our home page contains code which references that of Group 7's from Spring 2023: <https://gitlab.com/petarilievCS/cs373-idb7/-/tree/main?ref_type=heads>. We also drew inspiration (and code) from the GeoJobs group from a previous semester: <https://gitlab.com/sarthaksirotiya/cs373-idb>
