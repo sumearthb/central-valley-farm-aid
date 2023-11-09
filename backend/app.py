@@ -159,9 +159,6 @@ def get_all_locations():
     crop = request.args.get("crop", type=str, default=None)
     if crop:
         query = query.filter(Locations.crops_str.ilike(f"%{crop}%"))
-    est = request.args.get("est", type=int)
-    if est:
-        query = query.filter(Locations.est == est)
 
     # Sorting for locations
     sort_by = request.args.get("sort_by", type=str, default="name")
@@ -192,6 +189,11 @@ def get_all_locations():
             query = query.order_by(Locations.population.asc())
         elif sort_order == "desc":
             query = query.order_by(Locations.population.desc())
+    elif sort_by == "est":
+        if sort_order == "asc":
+            query = query.order_by(Locations.est)
+        elif sort_order == "desc":
+            query = query.order_by(Locations.est)
     
     if page is not None:
         query = paginate(query, int(page), int(per_page))
