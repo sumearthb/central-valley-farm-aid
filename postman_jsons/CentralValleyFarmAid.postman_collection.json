@@ -141,9 +141,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetAllMarkets?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&wheelchair_accessible={{wheelchair_accessible}}&indoor={{indoor}}&fnap_access={{fnap_access}}",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetAllMarkets?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&wheelchair_accessible={{wheelchair_accessible}}&indoor={{indoor}}&fnap_access={{fnap_access}}",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
@@ -320,9 +320,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetMarket/:instance",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetMarket/:instance",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
@@ -379,9 +379,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetNumMarkets",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetNumMarkets",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
@@ -484,9 +484,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetAllLocations?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&crop={{crop}}",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetAllLocations?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&crop={{crop}}",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
@@ -615,9 +615,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetLocation/:instance",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetLocation/:instance",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
@@ -674,9 +674,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetNumLocations",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetNumLocations",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
@@ -819,9 +819,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetNonProfit/:instance",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetNonProfit/:instance",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
@@ -972,9 +972,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetAllNonProfit?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&category={{category}}&has_mission={{has_mission}}",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetAllNonProfit?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}&category={{category}}&has_mission={{has_mission}}",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
@@ -1053,9 +1053,9 @@
 					]
 				},
 				"url": {
-					"raw": "{{main_url}}/api/GetNumNonProfits",
+					"raw": "https://www.centralvalleyfarmaid.me/api/GetNumNonProfits",
 					"host": [
-						"{{main_url}}"
+						"https://www.centralvalleyfarmaid.me"
 					],
 					"path": [
 						"api",
