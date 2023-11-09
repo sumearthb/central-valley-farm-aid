@@ -246,11 +246,11 @@ def get_all_nonprofits():
             query = query.order_by(asc(NPs.charityName))
         elif sort_order == "desc":
             query = query.order_by(desc(NPs.charityName))
-    elif sort_by == "statusCd":
+    elif sort_by == "ein":
         if sort_order == "asc":
-            query = query.order_by(asc(NPs.statusCd))
+            query = query.order_by(asc(NPs.ein))
         elif sort_order == "desc":
-            query = query.order_by(desc(NPs.statusCd))
+            query = query.order_by(desc(NPs.ein))
     elif sort_by == "city":
         if sort_order == "asc":
             query = query.order_by(asc(NPs.city))
