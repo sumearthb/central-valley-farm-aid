@@ -65,52 +65,48 @@ function LocationInstance() {
               {locationData.name + " County"}
             </h1>
           </Row>
-          <Row>
-            <Col>
-              <Container className="location-attributes">
-                <Stack gap={3}>
-                  <div className="p-2">
-                    <h3>County Seat: </h3>
-                    {locationData.county_seat}
-                  </div>
-                  <div className="p-2">
-                    <h3>Established: </h3>
-                    {locationData.est}
-                  </div>
-                  <div className="p-2">
-                    <h3>Population: </h3>
-                    {locationData.population}
-                  </div>
-                  <div className="p-2">
-                    <h3>Area: </h3>
-                    {locationData.area} sq mi
-                  </div>
-                  <div className="p-2">
-                    <h3>Crops: </h3>
-                    <Stack gap={1}>
-                      {locationData.crops.crops.map(crop => (
-                        <div>{crop}</div>
-                      ))}
-                    </Stack>
-                  </div>
-                </Stack>
-              </Container>
-            </Col>
-            <Col>
-              <Container className="location-map">
-                <iframe
-                title="map"
-                className="map"
-                loading="lazy"
-                allowFullScreen
-                referrerPolicy="no-referrer-when-downgrade"
-                width="100%"
-                height="600"
-                src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&q=${locationData.name} County`}
-                ></iframe>
-              </Container>
-            </Col>
-          </Row>
+          <Container className="main" >
+            <Container className="location-attributes">
+              <Stack gap={3}>
+                <div className="p-2">
+                  <h3>County Seat: </h3>
+                  {locationData.county_seat}
+                </div>
+                <div className="p-2">
+                  <h3>Established: </h3>
+                  {locationData.est}
+                </div>
+                <div className="p-2">
+                  <h3>Population: </h3>
+                  {locationData.population}
+                </div>
+                <div className="p-2">
+                  <h3>Area: </h3>
+                  {locationData.area} sq mi
+                </div>
+                <div className="p-2">
+                  <h3>Crops: </h3>
+                  <Stack gap={1}>
+                    {locationData.crops.crops.map(crop => (
+                      <div>{crop}</div>
+                    ))}
+                  </Stack>
+                </div>
+              </Stack>
+            </Container>
+            <Container className="location-map">
+              <iframe
+              title="map"
+              className="map"
+              loading="lazy"
+              allowFullScreen
+              referrerPolicy="no-referrer-when-downgrade"
+              width="100%"
+              height="600"
+              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&q=${locationData.name} County`}
+              ></iframe>
+            </Container>
+          </Container>
           <Row>
             <h2>Nearby Nonprofits</h2>
           </Row>

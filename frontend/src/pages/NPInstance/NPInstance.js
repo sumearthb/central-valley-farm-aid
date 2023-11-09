@@ -62,56 +62,52 @@ function NPInstance() {
             {NPData.charityName}
           </h1>
         </Row>
-        <Row>
-          <Col>
-            <Container className="np-attributes">
-              <Stack gap={3}>
-                <div className="p-2">
-                  <h3>Category: </h3>
-                  {NPData.category}
-                </div>
-                <div className="p-2">
-                  <h3>City: </h3>
-                  {NPData.city}
-                </div>
-                <div className="p-2">
-                  <h3>Zip Code: </h3>
-                  {NPData.zipCode}
-                </div>
-                <div className="p-2">
-                  <h3>Employer Identification Number: </h3>
-                  {NPData.ein}
-                </div>
-                <div className="p-2">
-                  <h3>Website: </h3>
-                  <a href={NPData.url}>
-                    {NPData.url}
-                  </a>
-                </div>
-                <div className="p-2">
-                  <h3>Donate: </h3>
-                  <a href={NPData.donationUrl}>
-                    {NPData.donationUrl}
-                  </a>
-                </div>
-              </Stack>
-            </Container>
-          </Col>
-          <Col>
-            <Container className="fm-map">
-              <iframe
-              title="map"
-              className="map"
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              width="100%"
-              height="600"
-              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&q=${encodeURIComponent(NPData.charityName)} ${NPData.zipCode}`}
-              ></iframe>
-            </Container>
-          </Col>
-        </Row>
+        <Container className="main">
+          <Container className="np-attributes">
+            <Stack gap={3}>
+              <div className="p-2">
+                <h3>Category: </h3>
+                {NPData.category}
+              </div>
+              <div className="p-2">
+                <h3>City: </h3>
+                {NPData.city}
+              </div>
+              <div className="p-2">
+                <h3>Zip Code: </h3>
+                {NPData.zipCode}
+              </div>
+              <div className="p-2">
+                <h3>Employer Identification Number: </h3>
+                {NPData.ein}
+              </div>
+              <div className="p-2">
+                <h3>Website: </h3>
+                <a href={NPData.url}>
+                  {NPData.url}
+                </a>
+              </div>
+              <div className="p-2">
+                <h3>Donate: </h3>
+                <a href={NPData.donationUrl}>
+                  {NPData.donationUrl}
+                </a>
+              </div>
+            </Stack>
+          </Container>
+          <Container className="fm-map">
+            <iframe
+            title="map"
+            className="map"
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            width="100%"
+            height="600"
+            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&q=${encodeURIComponent(NPData.charityName)} ${NPData.zipCode}`}
+            ></iframe>
+          </Container>
+        </Container>
         <Row>
           <h2>Location</h2>
         </Row>

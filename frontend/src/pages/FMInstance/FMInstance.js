@@ -61,89 +61,85 @@ function FMInstance() {
             {FMData.listing_name}
           </h1>
         </Row>
-        <Row>
-          <Col>
-            <Container className="fm-attributes">
-              <Stack gap={3}>
-                {FMData.listing_desc !== "0" && 
-                <div className="p-2">
-                  <h3>Description: </h3>
-                  {FMData.listing_desc}
-                </div>}
-                {FMData.orgnization !== "0" && 
-                <div className="p-2">
-                  <h3>Organization: </h3>
-                  {FMData.orgnization}
-                </div>}
-                <div className="p-2">
-                  <h3>Address: </h3>
-                  <Stack gap={2}>
-                    <div>
-                      {FMData.location_address}
-                    </div>
-                    <div>
-                      {FMData.location_desc}
-                    </div>
-                    <div>
-                      {FMData.location_site}
-                    </div>
-                    {FMData.location_site_otherdesc !== "0" && 
-                    <div>
-                      {FMData.location_site_otherdesc}
-                    </div>}
-                  </Stack>
-                </div>
-                {FMData.website && 
-                <div className="p-2">
-                  <h3>Website: </h3>
-                  <a href={FMData.website}>
-                    {FMData.website}
-                  </a>
-                </div>}
-                {FMData.phone && 
-                <div className="p-2">
-                  <h3>Phone: </h3>
-                  {FMData.phone}
-                </div>}
-                <div className="p-2">
-                  <h3>Rating: </h3>
-                  {FMData.rating}
-                </div>
-                {FMData.specialproductionmethods && 
-                <div className="p-2">
-                  <h3>Special Production Methods: </h3>
-                    {FMData.specialproductionmethods}
-                </div>}
-                <div className="p-2">
-                  <h3>Wheelchair Accessible: </h3>
-                  {FMData.wheelchair_accessible}
-                </div>
-                <div className="p-2">
-                  <h3>FNAP: </h3>
-                  <Stack gap={1}>
-                    {FMData.fnap.split(";").map(fnap => (
-                      <div>{fnap}</div>
-                    ))}
-                  </Stack>
-                </div>
-              </Stack>
-            </Container>
-          </Col>
-          <Col>
-            <Container className="fm-map">
-              <iframe
-              title="map"
-              className="map"
-              loading="lazy"
-              allowFullScreen
-              referrerPolicy="no-referrer-when-downgrade"
-              width="100%"
-              height="600"
-              src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&q=${encodeURIComponent(FMData.listing_name)}`}
-              ></iframe>
-            </Container>
-          </Col>
-        </Row>
+        <Container className="main">
+          <Container className="fm-attributes">
+            <Stack gap={3}>
+              {FMData.listing_desc !== "0" && 
+              <div className="p-2">
+                <h3>Description: </h3>
+                {FMData.listing_desc}
+              </div>}
+              {FMData.orgnization !== "0" && 
+              <div className="p-2">
+                <h3>Organization: </h3>
+                {FMData.orgnization}
+              </div>}
+              <div className="p-2">
+                <h3>Address: </h3>
+                <Stack gap={2}>
+                  <div>
+                    {FMData.location_address}
+                  </div>
+                  <div>
+                    {FMData.location_desc}
+                  </div>
+                  <div>
+                    {FMData.location_site}
+                  </div>
+                  {FMData.location_site_otherdesc !== "0" && 
+                  <div>
+                    {FMData.location_site_otherdesc}
+                  </div>}
+                </Stack>
+              </div>
+              {FMData.website && 
+              <div className="p-2">
+                <h3>Website: </h3>
+                <a href={FMData.website}>
+                  {FMData.website}
+                </a>
+              </div>}
+              {FMData.phone && 
+              <div className="p-2">
+                <h3>Phone: </h3>
+                {FMData.phone}
+              </div>}
+              <div className="p-2">
+                <h3>Rating: </h3>
+                {FMData.rating}
+              </div>
+              {FMData.specialproductionmethods && 
+              <div className="p-2">
+                <h3>Special Production Methods: </h3>
+                  {FMData.specialproductionmethods}
+              </div>}
+              <div className="p-2">
+                <h3>Wheelchair Accessible: </h3>
+                {FMData.wheelchair_accessible}
+              </div>
+              <div className="p-2">
+                <h3>FNAP: </h3>
+                <Stack gap={1}>
+                  {FMData.fnap.split(";").map(fnap => (
+                    <div>{fnap}</div>
+                  ))}
+                </Stack>
+              </div>
+            </Stack>
+          </Container>
+          <Container className="fm-map">
+            <iframe
+            title="map"
+            className="map"
+            loading="lazy"
+            allowFullScreen
+            referrerPolicy="no-referrer-when-downgrade"
+            width="100%"
+            height="600"
+            src={`https://www.google.com/maps/embed/v1/place?key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs&q=${encodeURIComponent(FMData.listing_name)}`}
+            ></iframe>
+          </Container>
+        </Container>
         <Row>
           <h2>Location</h2>
         </Row>
