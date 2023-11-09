@@ -47,13 +47,7 @@ const About = () => {
                 {memberInfo.map((member) => (
                 <MemberCard
                 key={member.id}
-                name={member.name}
-                username={member.username}
-                bio={member.bio}
-                role={member.role}
-                commits={member.commits}
-                issues={member.issues}
-                tests={member.tests}
+                member={member}
                 />
                 ))}
             </div>
