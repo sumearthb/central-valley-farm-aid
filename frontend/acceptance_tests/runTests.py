@@ -14,5 +14,5 @@ if __name__ == "__main__":
         print("Unsupported OS")
         exit(-1)
 
-    os.system("python3 ./navBarTests.py")
+    os.system("python3 ./acceptance_tests/navBarTests.py")
 
