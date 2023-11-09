@@ -17,9 +17,8 @@ class Test(unittest.TestCase):
     def setUpClass(self) -> None:
         options = webdriver.ChromeOptions()
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
-        options.add_argument("--headless")
-        options.add_argument("--no-sandbox")
-        options.add_argument("--disable-dev-shm-usage")
+        options.add_argument('--ignore-ssl-errors=yes')
+        options.add_argument('--ignore-certificate-errors')
         chrome_prefs = {}
         options.experimental_options["prefs"] = chrome_prefs
         # Disable images
@@ -28,8 +27,11 @@ class Test(unittest.TestCase):
         self.driver = webdriver.Chrome(
             options=options, service=Service(ChromeDriverManager().install())
         )
+        # self.driver = webdriver.Remote(
+        #     command_executor='http://localhost:4444/wd/hub',
+        #     options=options
+        # )
         self.driver.get(URL)
-
 
     @classmethod
     def tearDownClass(self):
