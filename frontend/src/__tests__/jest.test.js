@@ -25,7 +25,8 @@ test("test location card snapshot", () => {
     .create(
       <Router>
         <LocationCard
-        location={location} />
+        location={location}
+        search={""}/>
       </Router>
     )
     .toJSON();
@@ -37,7 +38,9 @@ test("test nonprofit card snapshot", () => {
   const tree = renderer
     .create(
       <Router>
-        <NPCard nonprofit={nonprofit} />
+        <NPCard
+        nonprofit={nonprofit}
+        search={""} />
       </Router>
     )
     .toJSON();
@@ -49,7 +52,9 @@ test("test farmers market card snapshot", () => {
   const tree = renderer
     .create(
       <Router>
-        <FMCard market={market} />
+        <FMCard
+        market={market}
+        search={""} />
       </Router>
     )
     .toJSON();

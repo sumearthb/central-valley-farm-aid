@@ -87,11 +87,13 @@ exports[`Test whether the Navbar works 1`] = `
       </div>
       <form
         className="d-flex justify-content-end"
+        onSubmit={[Function]}
       >
         <input
           aria-label="Search"
           className="mx-2 form-control"
           id="searchText"
+          onChange={[Function]}
           placeholder="Search..."
           type="search"
         />
@@ -122,40 +124,76 @@ exports[`test farmers market card snapshot 1`] = `
     <div
       className="fm-card-title card-title h5"
     >
-      Benica Certified Farmers Market
+      <span>
+        <span
+          className=""
+        >
+          Benica Certified Farmers Market
+        </span>
+      </span>
     </div>
     <p
       className="fm-card-rating card-text"
     >
       Rating: 
-      4.4
+      <span>
+        <span
+          className=""
+        >
+          4.4
+        </span>
+      </span>
     </p>
     <p
       className="fm-card-indoor card-text"
     >
       Indoor Status: 
-      No Indoor;
+      <span>
+        <span
+          className=""
+        >
+          No Indoor;
+        </span>
+      </span>
     </p>
     <p
       className="fm-card-production card-text"
     >
       Crop Production: 
-      Organic (USDA Certified);
+      <span>
+        <span
+          className=""
+        >
+          Organic (USDA Certified);
+        </span>
+      </span>
     </p>
     <p
       className="fm-card-fnap card-text"
     >
       FNAP Status: 
-      WIC;SNAP;Accept EBT at a central location;;
+      <span>
+        <span
+          className=""
+        >
+          WIC;SNAP;Accept EBT at a central location;;
+        </span>
+      </span>
     </p>
     <p
       className="fm-card-wheelchair card-text"
     >
       Wheelchair Accessible: 
-      True
+      <span>
+        <span
+          className=""
+        >
+          True
+        </span>
+      </span>
     </p>
     <a
-      href="/farmersmarkets/undefined"
+      href="/farmersmarkets/Benica Certified Farmers Market"
       onClick={[Function]}
       style={
         Object {
@@ -194,38 +232,73 @@ exports[`test location card snapshot 1`] = `
     <div
       className="location-card-title card-title h5"
     >
-      Alameda County
+      <span>
+        <span
+          className=""
+        >
+          Alameda County
+        </span>
+      </span>
     </div>
     <p
       className="location-card-countyseat card-text"
     >
       County Seat: 
-      Oakland
+      <span>
+        <span
+          className=""
+        >
+          Oakland
+        </span>
+      </span>
     </p>
     <p
       className="location-card-crop card-text"
     >
       # of Crops: 
-      8
+      <span>
+        <span
+          className=""
+        >
+          8
+        </span>
+      </span>
     </p>
     <p
       className="location-card-population card-text"
     >
       Population: 
-      1628997
+      <span>
+        <span
+          className=""
+        >
+          1628997
+        </span>
+      </span>
     </p>
     <p
       className="location-card-established card-text"
     >
       Established: 
-      1853
+      <span>
+        <span
+          className=""
+        >
+          1853
+        </span>
+      </span>
     </p>
     <p
       className="location-card-area card-text"
     >
       Area: 
-      738
-       sq mi
+      <span>
+        <span
+          className=""
+        >
+          738 sq mi
+        </span>
+      </span>
     </p>
     <a
       href="/locations/Alameda"
@@ -333,31 +406,61 @@ exports[`test nonprofit card snapshot 1`] = `
     <div
       className="np-card-name card-title h5"
     >
-      R & S FARMERS MARKET R & S GILROY FARMERS MARKET
+      <span>
+        <span
+          className=""
+        >
+          R & S FARMERS MARKET R & S GILROY FARMERS MARKET
+        </span>
+      </span>
     </div>
     <p
       className="np-card-category card-text"
     >
       Category: 
-      Food, Agriculture and Nutrition
+      <span>
+        <span
+          className=""
+        >
+          Food, Agriculture and Nutrition
+        </span>
+      </span>
     </p>
     <p
       className="np-card-city card-text"
     >
       City: 
-      SALINAS
+      <span>
+        <span
+          className=""
+        >
+          SALINAS
+        </span>
+      </span>
     </p>
     <p
       className="np-card-zip card-text"
     >
       Zip Code: 
-      93907-9016
+      <span>
+        <span
+          className=""
+        >
+          93907-9016
+        </span>
+      </span>
     </p>
     <p
       className="np-card-ein card-text"
     >
       Employee Identification Number: 
-      881734546
+      <span>
+        <span
+          className=""
+        >
+          881734546
+        </span>
+      </span>
     </p>
     <a
       href="http://www.orghunter.com/organization/881734546"
@@ -367,7 +470,13 @@ exports[`test nonprofit card snapshot 1`] = `
         }
       }
     >
-      http://www.orghunter.com/organization/881734546
+      <span>
+        <span
+          className=""
+        >
+          http://www.orghunter.com/organization/881734546
+        </span>
+      </span>
     </a>
     <a
       href="/nonprofits/R & S FARMERS MARKET R & S GILROY FARMERS MARKET"

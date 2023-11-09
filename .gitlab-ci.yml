@@ -26,7 +26,7 @@ acceptance_tests:
   script:
     - cd frontend
     - pip install --upgrade pip
-    - pip install --no-cache-dir -r ./acceptance_tests/requirements.txt
+    - pip install --no-cache-dir selenium
     - docker pull selenium/standalone-chrome
     - docker run -dp 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome
     - python ./acceptance_tests/runTests.py
