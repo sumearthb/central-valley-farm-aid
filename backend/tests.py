@@ -14,7 +14,7 @@ engine = create_engine("sqlite:///:memory:")
 Session = sessionmaker(bind=engine)
 
 class mockLocationsTable(Base):
-    __tablename__ = "location_data"
+    __tablename__ = "final_location_data"
     
     id = Column(Integer, primary_key=True, nullable=False)
     name = Column(String(255))
@@ -24,10 +24,13 @@ class mockLocationsTable(Base):
     map = Column(String(255))
     population = Column(Integer)
     crops = Column(JSON)
+    crops_str = Column(String(255))
+    closest_farmers_markets    = Column(JSON)
+    closest_charities    = Column(JSON)
     photo_references = Column(JSON)
-
+    
 class mockNPsTable(Base):
-    __tablename__ = "charity_table"
+    __tablename__ = "final_charity_table"
       
     id                   = Column(Integer, primary_key=True, autoincrement=True)
     ein                  = Column(String(20), nullable=False)
@@ -47,9 +50,11 @@ class mockNPsTable(Base):
     latitude             = Column(Double)
     longitude            = Column(Double)  
     photo_references     = Column(JSON)
+    closest_farmers_markets    = Column(JSON)
+    closest_locations    = Column(JSON)
     
 class mockFMsTable(Base):
-    __tablename__ = "farmers_market_table"
+    __tablename__ = "final_farmers_market_table"
     
     id = Column(Integer, primary_key=True, autoincrement=True)
     listing_name         = Column(String(255))
@@ -67,6 +72,7 @@ class mockFMsTable(Base):
     phone                = Column(String(20))
     photo_references     = Column(JSON)
     closest_charities    = Column(JSON)
+    closest_locations    = Column(JSON)
     wheelchair_accessible = Column(String(20))
     rating               = Column(Float)
     website              = Column(String(255))
@@ -288,7 +294,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertIsNotNone(data)
-            self.assertEqual(response.json["instance_count"], 129)
+            self.assertEqual(response.json["instance_count"], 110)
     
     def test_get_NP_by_name(self):
         with self.client:
@@ -304,7 +310,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             data = response.json["data"]
             self.assertIsNotNone(data)
-            self.assertEqual(response.json["instance_count"], 107)
+            self.assertEqual(response.json["instance_count"], 105)
 
     def test_get_FM_by_id(self):
         with self.client:
@@ -349,7 +355,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             resp = response.json
             count = resp["count"]
-            self.assertEqual(count, 129)
+            self.assertEqual(count, 110)
 
     def test_get_num_markets(self):
         with self.client:
@@ -357,7 +363,7 @@ class Tests(unittest.TestCase):
             self.assertEqual(response.status_code, 200)
             resp = response.json
             count = resp["count"]
-            self.assertEqual(count, 107)
+            self.assertEqual(count, 105)
     
     def teardown_class(self):
         Base.metadata.drop_all(engine)

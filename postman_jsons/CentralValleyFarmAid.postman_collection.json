@@ -1,0 +1,1005 @@
+{
+	"info": {
+		"_postman_id": "0c42d6be-b98c-47bb-a52e-9ea7880453c3",
+		"name": "Central Valley Farm Aid",
+		"description": "# API\n\nThese endpoints will return information about our three models: locations, nonprofits, and farmers' markets.",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "24011705",
+		"_collection_link": "https://www.postman.com/gold-moon-138414/workspace/group14-cvfa/collection/24011705-0c42d6be-b98c-47bb-a52e-9ea7880453c3?action=share&source=collection_link&creator=24011705"
+	},
+	"item": [
+		{
+			"name": "GetAllMarkets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "closest_charities",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "FNAP",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "listing_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "listing_name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_address",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_indoor",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site_otherdesc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_x",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_y",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "orgnization",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "specialproductionmethods",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetAllMarkets?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetAllMarkets"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{page_number}}",
+							"description": "Desired page to access"
+						},
+						{
+							"key": "per_page",
+							"value": "{{per_page}}",
+							"description": "Number of instances to show per page"
+						},
+						{
+							"key": "sort_by",
+							"value": "{{sort_requirment}}",
+							"description": "Sort by criteria"
+						},
+						{
+							"key": "sort_order",
+							"value": "{{sort_order}}",
+							"description": "Sort by ascending or descending"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetMarket",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "closest_charities",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "FNAP",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "listing_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "listing_name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_address",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_desc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_indoor",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_site_otherdesc",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_x",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "location_y",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "orgnization",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "specialproductionmethods",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetMarket/:instance",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetMarket",
+						":instance"
+					],
+					"variable": [
+						{
+							"key": "instance",
+							"value": "",
+							"description": "Farmers' market name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNumMarkets",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "count",
+							"value": "Number of instances",
+							"description": "Returns number of instances for the model",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetNumMarkets",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetNumMarkets"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllLocations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "crops",
+							"value": "[]",
+							"type": "text"
+						},
+						{
+							"key": "cropsTypes",
+							"value": "[]",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "climate",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "cropsCount",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "markets",
+							"value": "[]",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "productionVolume",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "nonProfits",
+							"value": "[]",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetAllLocations?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetAllLocations"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{page_number}}",
+							"description": "Desired page to access"
+						},
+						{
+							"key": "per_page",
+							"value": "{{per_page}}",
+							"description": "Number of instances to show per page"
+						},
+						{
+							"key": "sort_by",
+							"value": "{{sort_requirment}}",
+							"description": "Sort by criteria"
+						},
+						{
+							"key": "sort_order",
+							"value": "{{sort_order}}",
+							"description": "Sort by ascending or descending"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetLocations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "name",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "crops",
+							"value": "[]",
+							"type": "text"
+						},
+						{
+							"key": "cropsTypes",
+							"value": "[]",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "climate",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "cropsCount",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "markets",
+							"value": "[]",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "productionVolume",
+							"value": "",
+							"type": "text",
+							"disabled": true
+						},
+						{
+							"key": "nonProfits",
+							"value": "[]",
+							"type": "text",
+							"disabled": true
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetLocation/:instance",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetLocation",
+						":instance"
+					],
+					"variable": [
+						{
+							"key": "instance",
+							"value": "",
+							"description": "Location (county) name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNumLocations",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "count",
+							"value": "Number of instances",
+							"description": "Returns number of instances for the model",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetNumLocations",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetNumLocations"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNonProfit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "category",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "charityName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "deductibilityCD",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "donationUrl",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "ein",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "eligibleCD",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "latitude",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "longitude",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "missionStatement",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "statusCD",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "url",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "website",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "zipcode",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetNonProfit/:instance",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetNonProfit",
+						":instance"
+					],
+					"variable": [
+						{
+							"key": "instance",
+							"value": "",
+							"description": "Nonprofit name"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetAllNonProfit",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "category",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "charityName",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "city",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "deductibilityCD",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "donationUrl",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "ein",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "eligibleCD",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "id",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "latitude",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "longitude",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "missionStatement",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "start",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "state",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "statusCD",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "url",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "website",
+							"value": "",
+							"type": "text"
+						},
+						{
+							"key": "zipcode",
+							"value": "",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetAllNonProfit?page={{page_number}}&per_page={{per_page}}&sort_by={{sort_requirment}}&sort_order={{sort_order}}",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetAllNonProfit"
+					],
+					"query": [
+						{
+							"key": "page",
+							"value": "{{page_number}}",
+							"description": "Desired page to access"
+						},
+						{
+							"key": "per_page",
+							"value": "{{per_page}}",
+							"description": "Number of instances to show per page"
+						},
+						{
+							"key": "sort_by",
+							"value": "{{sort_requirment}}",
+							"description": "Sort by criteria"
+						},
+						{
+							"key": "sort_order",
+							"value": "{{sort_order}}",
+							"description": "Sort by ascending or descending"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetNumNonProfits",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "count",
+							"value": "Number of instances",
+							"description": "Returns number of instances for the model",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/GetNumNonProfits",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"GetNumNonProfits"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "SearchAll",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"exec": [
+							"pm.test(\"Returns data list in response\", function () {\r",
+							"    var jsonData = pm.response.json();\r",
+							"    pm.expect(jsonData.data).to.exist\r",
+							"});\r",
+							"\r",
+							"pm.test(\"Status code is 200\", function () {\r",
+							"    pm.response.to.have.status(200);\r",
+							"});\r",
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [],
+				"body": {
+					"mode": "formdata",
+					"formdata": [
+						{
+							"key": "farmersMarket",
+							"value": "[]",
+							"type": "text"
+						},
+						{
+							"key": "location",
+							"value": "[]",
+							"type": "text"
+						},
+						{
+							"key": "nonProfits",
+							"value": "[]",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "{{main_url}}/api/SearchAll/:query",
+					"host": [
+						"{{main_url}}"
+					],
+					"path": [
+						"api",
+						"SearchAll",
+						":query"
+					],
+					"variable": [
+						{
+							"key": "query",
+							"value": "",
+							"description": "Searches the database for terms requested"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}
