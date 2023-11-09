@@ -26,13 +26,13 @@ class Test(unittest.TestCase):
         # Disable images
         chrome_prefs["profile.default_content_settings"] = {"images": 2}
 
-        # self.driver = webdriver.Chrome(
-        #     options=options, service=Service(ChromeDriverManager().install())
-        # )
-        self.driver = webdriver.Remote(
-            command_executor='http://localhost:4444/wd/hub',
-            options=options
+        self.driver = webdriver.Chrome(
+            options=options, service=Service(ChromeDriverManager().install())
         )
+        # self.driver = webdriver.Remote(
+        #     command_executor='http://localhost:4444/wd/hub',
+        #     options=options
+        # )
         self.driver.get(URL)
 
     @classmethod
