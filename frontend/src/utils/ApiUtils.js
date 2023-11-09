@@ -29,13 +29,16 @@ export const fetchSpecNonProfit = async(charity_name) => {
     return response.data;
 }
 
-export const fetchNonProfits = async(page, per_page, sort_by, order_by, search) => {
+export const fetchNonProfits = async(page, per_page, sort_by, order_by, search, category) => {
     let request = `${URL}GetAllNonProfit?page=${page}&per_page=${per_page}&sort_order=${order_by}`
     if (sort_by) {
         request += `&sort_by=${sort_by}`
     }
     if (search) {
         request += `&search=${search}`
+    }
+    if (category) {
+        request += `&category=${category}`
     }
     let response = await axios.get(request);
     return response.data;
@@ -51,13 +54,19 @@ export const fetchSpecMarket = async(market_name) => {
     return response.data;
 }
 
-export const fetchMarkets = async(page, per_page, sort_by, order_by, search) => {
+export const fetchMarkets = async(page, per_page, sort_by, order_by, search, wheelchair_accessible, indoors) => {
     let request = `${URL}GetAllMarkets?page=${page}&per_page=${per_page}&sort_order=${order_by}`
     if (sort_by) {
         request += `&sort_by=${sort_by}`
     }
     if (search) {
         request += `&search=${search}`
+    }
+    if (wheelchair_accessible) {
+        request += `&wheelchair_accessible=${wheelchair_accessible}`
+    }
+    if (indoors) {
+        request += `&indoor_status=${indoors}`
     }
     let response = await axios.get(request);
     return response.data;

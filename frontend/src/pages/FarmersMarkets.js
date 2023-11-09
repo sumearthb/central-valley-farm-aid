@@ -1,7 +1,7 @@
 import "../styles/FarmersMarkets.css";
 import React, { useState, useEffect, Fragment } from "react";
 import FMCard from "../components/FMCard/FMCard";
-import { Button, Container, Col, Row, Form, Dropdown, DropdownButton } from "react-bootstrap";
+import { Button, Container, Col, Row, Dropdown, DropdownButton, Form } from "react-bootstrap";
 import PageSelector from "../components/PageSelector";
 import { fetchMarkets, fetchMarketsLength } from "../utils/ApiUtils";
 
@@ -32,16 +32,18 @@ const FMGrid = () => {
   useEffect(() => {
     const loadMarkets = async () => {
       setLoading(true);
-      const fetchedMarkets = await fetchMarkets(curPage, 9);
+      const fetchedMarkets = await fetchMarkets(curPage, 9, sortBy, orderBy, search, wheelchairAccessible, indoors);
       setMarkets(fetchedMarkets.data);
       setLoading(false);
     };
     loadMarkets();
   }, [curPage, sortBy, orderBy, wheelchairAccessible, indoors]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
+    e.preventDefault();
     setLoading(true);
     const fetchedMarkets = await fetchMarkets(1, 999, sortBy, orderBy, search);
+    setMarkets(fetchedMarkets.data);
     setTotalMarkets(fetchedMarkets.instance_count);
     setNumPages(Math.ceil(fetchedMarkets.instance_count / 9));
     setCurPage(1);
@@ -49,17 +51,17 @@ const FMGrid = () => {
   };
 
   return (
-<Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
+    <Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <Container className="container text-center mt-5 mb-4">
         <h1>Farmers' Markets</h1>
       </Container>
 
       <Container>
         <Row className="p-3">
-        <Form className="d-flex justify-content-end">
+          <Form className="d-flex justify-content-end" onSubmit={handleSearch}>
             <Form.Control type="search" id="searchText" placeholder="Search..." 
                 className="mx-2" aria-label="Search" onChange={(e) => setSearch(e.target.value)}></Form.Control>
-            <Button variant="dark" onClick={() => handleSearch()}>Search</Button>
+            <Button type="submit" variant="dark">Search</Button>
           </Form>
         </Row>
         <Row>
@@ -71,7 +73,7 @@ const FMGrid = () => {
                 <Dropdown.Divider />
               </Fragment>}
               <Dropdown.Item onClick={() => setSortBy("name")}>Name</Dropdown.Item>
-              <Dropdown.Item onClick={() => setSortBy("rating")}>Number of Crops</Dropdown.Item>
+              <Dropdown.Item onClick={() => setSortBy("rating")}>Rating</Dropdown.Item>
             </DropdownButton>
           </Col>
           <Col>
@@ -81,7 +83,7 @@ const FMGrid = () => {
             </DropdownButton>
           </Col>
           <Col>
-            <DropdownButton id="dropdown-basic-button" title={`Wheelchair Accessible: ${wheelchairAccessible.charAt(0).toUpperCase() + wheelchairAccessible.slice(1)}`}>
+            <DropdownButton id="dropdown-basic-button" title={`Wheelchair Accessible: ${wheelchairAccessible}`}>
               {wheelchairAccessible &&
               <Fragment>
                 <Dropdown.Item onClick={() => setWheelchairAccessible("")}>None</Dropdown.Item>
@@ -92,7 +94,7 @@ const FMGrid = () => {
             </DropdownButton>
           </Col>
           <Col>
-            <DropdownButton id="dropdown-basic-button" title={`Indoors: ${indoors.charAt(0).toUpperCase() + indoors.slice(1)}`}>
+            <DropdownButton id="dropdown-basic-button" title={`Indoors: ${indoors}`}>
               {indoors && 
               <Fragment>
                 <Dropdown.Item onClick={() => setIndoors("")}>None</Dropdown.Item>
@@ -121,6 +123,7 @@ const FMGrid = () => {
             <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
               <FMCard
               market={market}
+              search={search}
               />
             </Col>
           )))}

@@ -38,9 +38,11 @@ const LocationsGrid = () => {
     loadLocations();  
   }, [curPage, sortBy, orderBy]);
 
-  const handleSearch = async () => {
+  const handleSearch = async (e) => {
+    e.preventDefault();
     setLoading(true);
     const fetchedLocations = await fetchLocations(1, 999, sortBy, orderBy, search);
+    setLocations(fetchedLocations.data);
     setTotalLocations(fetchedLocations.instance_count);
     setNumPages(Math.ceil(fetchedLocations.instance_count / 9));
     setCurPage(1);
@@ -54,21 +56,22 @@ const LocationsGrid = () => {
       </Container>
       <Container>
         <Row className="p-3">
-        <Form className="d-flex justify-content-end">
-            <Form.Control type="search" id="searchText" placeholder="Search..." 
-                className="mx-2" aria-label="Search" onChange={(e) => setSearch(e.target.value)}></Form.Control>
-            <Button variant="dark" onClick={() => handleSearch()}>Search</Button>
-          </Form>
+        <Form className="d-flex justify-content-end" onSubmit={handleSearch}>
+          <Form.Control type="search" id="searchText" placeholder="Search..." 
+              className="mx-2" aria-label="Search" onChange={(e) => setSearch(e.target.value)}></Form.Control>
+          <Button type="submit" variant="dark">Search</Button>
+        </Form>
         </Row>
         <Row>
           <Col>
-            <DropdownButton id="dropdown-basic-button" title={`Sort By: ${sortBy.charAt(0).toUpperCase() + sortBy.slice(1)}`}>
+            <DropdownButton id="dropdown-basic-button" title={`Sort By: ${(sortBy.charAt(0).toUpperCase() + sortBy.slice(1)).replace("_", " ")}`}>
               {sortBy &&
               <Fragment>
                 <Dropdown.Item onClick={() => setSortBy("")}>None</Dropdown.Item>
                 <Dropdown.Divider />
               </Fragment>}
               <Dropdown.Item onClick={() => setSortBy("name")}>Name</Dropdown.Item>
+              <Dropdown.Item onClick={() => setSortBy("county_seat")}>County Seat</Dropdown.Item>
               <Dropdown.Item onClick={() => setSortBy("crops")}>Number of Crops</Dropdown.Item>
               <Dropdown.Item onClick={() => setSortBy("population")}>Population</Dropdown.Item>
               <Dropdown.Item onClick={() => setSortBy("established")}>Established</Dropdown.Item>
@@ -100,6 +103,7 @@ const LocationsGrid = () => {
             <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
               <LocationCard
                 location={location}
+                search={search}
               />
             </Col>
           )))}

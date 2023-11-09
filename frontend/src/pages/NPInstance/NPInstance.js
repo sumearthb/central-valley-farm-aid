@@ -3,21 +3,39 @@ import React from "react";
 import { useParams } from "react-router-dom";
 import "../../components/NPCard/NPCard";
 import { useState, useEffect } from "react"; 
-import { fetchSpecNonProfit } from "../../utils/ApiUtils";
+import { fetchSpecLocation, fetchSpecMarket, fetchSpecNonProfit } from "../../utils/ApiUtils";
 import { Carousel, Col, Container, Row, Stack } from "react-bootstrap";
+import LocationCard from "../../components/LocationCard/LocationCard";
+import FMCard from "../../components/FMCard/FMCard";
 
 function NPInstance() {
   const { id } = useParams();
 
   const [ NPData, setNPData] = useState({});
+  const [ locations, setLocations] = useState([]);
+  const [ markets, setMarkets] = useState([]);
   const [ loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const res = await fetchSpecNonProfit(id);
-      console.log(res.data[0]);
       setNPData(res.data[0]);
+
+      let loc = [];
+      for (let i = 0; i < Math.min(res.data[0].closest_locations.closest_locations.length, 6); ++i) {
+        const location = await fetchSpecLocation(res.data[0].closest_locations.closest_locations[i]);
+        loc.push(location.data[0]);
+      }
+      setLocations(loc);
+
+      let mkts = [];
+      for (let i = 0; i < Math.min(res.data[0].closest_farmers_markets.closest_farmers_markets.length, 6); ++i) {
+        const mkt = await fetchSpecMarket(res.data[0].closest_farmers_markets.closest_farmers_markets[i]);
+        mkts.push(mkt.data[0]);
+      }
+      setMarkets(mkts);
+
       setLoading(false);
     };
 
@@ -96,9 +114,29 @@ function NPInstance() {
         <Row>
           <h2>Location</h2>
         </Row>
+        <Row className="row gx-3">
+          {(locations.map((location, index) => (
+            <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
+              <LocationCard
+                location={location}
+                search={""}
+              />
+            </Col>
+          )))}
+        </Row>
         <Row>
           <h2>Nearby Farmers' Markets</h2>
         </Row>
+        <Row className="row gx-3">
+          {(markets.map((market, index) => (
+            <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
+              <FMCard
+                market={market}
+                search={""}
+              />
+            </Col>
+          )))}
+          </Row>
       </Container>
     </React.Fragment>)}
   </Container>

@@ -2,29 +2,39 @@ import "../../styles/FMInstance.css"
 import React from "react";
 import { useParams } from 'react-router-dom';
 import { useState, useEffect } from "react";
-import { fetchSpecMarket, fetchSpecNonProfit } from "../../utils/ApiUtils";
+import { fetchSpecLocation, fetchSpecMarket, fetchSpecNonProfit } from "../../utils/ApiUtils";
 import { Carousel, Col, Container, Row, Stack } from "react-bootstrap";
 import NPCard from "../../components/NPCard/NPCard";
+import LocationCard from "../../components/LocationCard/LocationCard";
 
 function FMInstance() {
   const { id } = useParams();
 
   const [ FMData, setFMData] = useState({});
   const [ nonProfits, setNonProfits] = useState([]);
+  const [ locations, setLocations] = useState([]);
   const [ loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const res = await fetchSpecMarket(id);
-      console.log(res.data[0]);
       setFMData(res.data[0]);
+
       let nps = [];
-      for (let i = 0; i < res.data[0].closest_charities.nearby_charities.length; ++i) {
+      for (let i = 0; i < Math.min(res.data[0].closest_charities.nearby_charities.length, 6); ++i) {
         const np = await fetchSpecNonProfit(res.data[0].closest_charities.nearby_charities[i]);
         nps.push(np.data[0]);
       }
       setNonProfits(nps);
+
+      let loc = [];
+      for (let i = 0; i < Math.min(res.data[0].closest_locations.nearby_locations.length, 6); ++i) {
+        const location = await fetchSpecLocation(res.data[0].closest_locations.nearby_locations[i]);
+        loc.push(location.data[0]);
+      }
+      setLocations(loc);
+
       setLoading(false);
     };
 
@@ -98,6 +108,11 @@ function FMInstance() {
                   <h3>Rating: </h3>
                   {FMData.rating}
                 </div>
+                {FMData.specialproductionmethods && 
+                <div className="p-2">
+                  <h3>Special Production Methods: </h3>
+                    {FMData.specialproductionmethods}
+                </div>}
                 <div className="p-2">
                   <h3>Wheelchair Accessible: </h3>
                   {FMData.wheelchair_accessible}
@@ -131,6 +146,16 @@ function FMInstance() {
         <Row>
           <h2>Location</h2>
         </Row>
+        <Row className="row gx-3">
+          {(locations.map((location, index) => (
+            <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
+              <LocationCard
+                location={location}
+                search={""}
+              />
+            </Col>
+          )))}
+        </Row>
         <Row>
           <h2>Nearby Non Profits</h2>
         </Row>
@@ -138,12 +163,8 @@ function FMInstance() {
           {(nonProfits.map((np, index) => (
             <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
               <NPCard
-                charityName={np.charityName}
-                category={np.category}
-                city={np.city}
-                phone={np.phone}
-                url={np.url}
-                img={np.photo_references.photos[0]}
+                nonprofit={np}
+                search={""}
               />
             </Col>
           )))}

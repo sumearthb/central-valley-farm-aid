@@ -4,20 +4,38 @@ import { useState, useEffect } from "react";
 import { Carousel, Col, Container, Row, Stack } from "react-bootstrap";
 import "../../components/LocationCard/LocationCard.css";
 import { useParams } from "react-router-dom";
-import { fetchSpecLocation } from "../../utils/ApiUtils";
+import { fetchSpecLocation, fetchSpecMarket, fetchSpecNonProfit } from "../../utils/ApiUtils";
+import NPCard from "../../components/NPCard/NPCard";
+import FMCard from "../../components/FMCard/FMCard";
 
 function LocationInstance() {
   const { id } = useParams();
 
   const [ locationData, setLocationData] = useState({});
+  const [ nonProfits, setNonProfits] = useState([]);
+  const [ markets, setMarkets] = useState([]);
   const [ loading, setLoading] = useState(true);
 
   useEffect(() => {
     const fetchData = async () => {
       setLoading(true);
       const res = await fetchSpecLocation(id);
-      console.log(res.data[0]);
       setLocationData(res.data[0]);
+
+      let nps = [];
+      for (let i = 0; i < Math.min(res.data[0].closest_charities.closest_charities, 6); ++i) {
+        const np = await fetchSpecNonProfit(res.data[0].closest_charities.closest_charities[i]);
+        nps.push(np.data[0]);
+      }
+      setNonProfits(nps);
+
+      let mkts = [];
+      for (let i = 0; i < Math.min(res.data[0].closest_farmers_markets.closest_farmers_markets.length, 6); ++i) {
+        const mkt = await fetchSpecMarket(res.data[0].closest_farmers_markets.closest_farmers_markets[i]);
+        mkts.push(mkt.data[0]);
+      }
+      setMarkets(mkts);
+
       setLoading(false);
     };
 
@@ -50,6 +68,10 @@ function LocationInstance() {
             <Col>
               <Container className="location-attributes">
                 <Stack gap={3}>
+                  <div className="p-2">
+                    <h3>County Seat: </h3>
+                    {locationData.county_seat}
+                  </div>
                   <div className="p-2">
                     <h3>Established: </h3>
                     {locationData.est}
@@ -91,8 +113,28 @@ function LocationInstance() {
           <Row>
             <h2>Nearby Nonprofits</h2>
           </Row>
+          <Row className="row gx-3">
+          {(nonProfits.map((np, index) => (
+            <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
+              <NPCard
+                nonprofit={np}
+                search={""}
+              />
+            </Col>
+          )))}
+          </Row>
           <Row>
             <h2>Nearby Farmers' Markets</h2>
+          </Row>
+          <Row className="row gx-3">
+          {(markets.map((market, index) => (
+            <Col key={index} xs={12} sm={8} md={5} lg={4} className="d-flex justify-content-center">
+              <FMCard
+                market={market}
+                search={""}
+              />
+            </Col>
+          )))}
           </Row>
         </Container>
       </React.Fragment>)}

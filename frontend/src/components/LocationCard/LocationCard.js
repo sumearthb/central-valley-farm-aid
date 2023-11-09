@@ -2,29 +2,30 @@ import React from "react";
 import "./LocationCard.css";
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Highlighter from "react-highlight-words";
 
-const LocationCard = ({ location }) => {
+const LocationCard = ({ location, search }) => {
   return (
     <Card className="location-card">
       <Card.Img className="location-card-image" src={location.map.replace("100px", "400px")}/>
       <Card.Body className="location-card-body">
         <Card.Title className="location-card-title">
-          {location.name + " County"}
+        <Highlighter textToHighlight={location.name + " County"} searchWords={search.split(" ")}/>
         </Card.Title>
         <Card.Text className="location-card-countyseat">
-          County Seat: {location.county_seat}
+          County Seat: <Highlighter textToHighlight={location.county_seat} searchWords={search.split(" ")}/>
         </Card.Text>
         <Card.Text className="location-card-crop">
-          # of Crops: {location.crops.crops.length}
+          # of Crops: <Highlighter textToHighlight={location.crops.crops.length.toString()} searchWords={search.split(" ")}/>
         </Card.Text>
         <Card.Text className="location-card-population">
-          Population: {location.population}
+          Population: <Highlighter textToHighlight={location.population.toString()} searchWords={search.split(" ")}/>
         </Card.Text>
         <Card.Text className="location-card-established">
-          Established: {location.est}
+          Established: <Highlighter textToHighlight={location.est.toString()} searchWords={search.split(" ")}/>
         </Card.Text>
         <Card.Text className="location-card-area">
-          Area: {location.area} sq mi
+          Area: <Highlighter textToHighlight={location.area + " sq mi"} searchWords={search.split(" ")}/>
         </Card.Text>
         <Link
           to={`/locations/${location.name}`}
