@@ -19,6 +19,7 @@ class Test(unittest.TestCase):
         options.add_experimental_option("excludeSwitches", ["enable-logging"])
         options.add_argument('--ignore-ssl-errors=yes')
         options.add_argument('--ignore-certificate-errors')
+        options.add_argument("--disable-dev-shm-usage")
         chrome_prefs = {}
         options.experimental_options["prefs"] = chrome_prefs
         # Disable images
