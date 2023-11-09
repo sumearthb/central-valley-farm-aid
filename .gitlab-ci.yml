@@ -1,7 +1,5 @@
 stages:          
-  - pre
   - build
-  # - post
   - test
 
 build_frontend:
@@ -21,12 +19,12 @@ build_frontend:
 #     - npm test
 
 test_backend:
-  image: python:3
   stage: test
+  image: python:3.10
   before_script:
     - pip install -r backend/requirements.txt
   script:
-    - cd backend && python3 tests.py
+    - python3 backend/tests.py
 
 # test_postman:
 #   image: 
@@ -40,16 +38,34 @@ test_backend:
 #     - newman run ../postman_jsons/Farmers' Markets.postman_collection.json
 #     - newman run ../postman_jsons/Nonprofits.postman_collection.json
 
-acceptance_tests:
-  image: python:3.10
+test-postman:
   stage: test
+  image: 
+    name: postman/newman:alpine
+    entrypoint: [""]
   script:
-    - cd frontend
-    - pip install --upgrade pip
-    - pip install --no-cache-dir -r ./acceptance_tests/requirements.txt
-    - docker pull selenium/standalone-chrome
-    - docker run -dp 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome
-    - python ./acceptance_tests/runTests.py
+    - newman run postman_jsons/Central Valley Farm Aid.postman_collection.json
+
+
+# acceptance_tests:
+#   image: python:3.10
+#   stage: test
+#   script:
+#     - cd frontend
+#     - pip install --upgrade pip
+#     - pip install --no-cache-dir -r ./acceptance_tests/requirements.txt
+#     - docker pull selenium/standalone-chrome
+#     - docker run -dp 4444:4444 -v /dev/shm:/dev/shm selenium/standalone-chrome
+#     - python ./acceptance_tests/runTests.py
+
+# gui-tests:
+#     image: joyzoursky/python-chromedriver:3.9-selenium
+#     stage: test
+#     before_script:
+#         - pip install -r requirements.txt
+#     script:
+#         - python3 src/gui-tests.py
+
 
 # test_backend:
 #   image: python:3
