@@ -32,7 +32,7 @@ test_postman:
     name: postman/newman:alpine
     entrypoint: [""]
   script:
-    - newman run postman_jsons/Central Valley Farm Aid.postman_collection.json
+    - newman run postman_jsons/CentralValleyFarmAid.postman_collection.json
 
 # acceptance_tests:
 #   image: python:3.10
