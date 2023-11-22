@@ -1,8 +1,11 @@
 import unittest
 from selenium import webdriver
+from selenium.webdriver.chrome.service import Service
+from webdriver_manager.chrome import ChromeDriverManager
 from selenium.webdriver.common.by import By
 from selenium.webdriver.support.ui import WebDriverWait
 from selenium.webdriver.support import expected_conditions as EC
+
 
 # Copied from https://gitlab.com/sarthaksirotiya/cs373-idb/-/blob/main/front-end/flow_tests/navbarTests.py
 
@@ -13,12 +16,23 @@ class Test(unittest.TestCase):
     @classmethod
     def setUpClass(self) -> None:
         options = webdriver.ChromeOptions()
+        options.add_experimental_option("excludeSwitches", ["enable-logging"])
         options.add_argument('--ignore-ssl-errors=yes')
         options.add_argument('--ignore-certificate-errors')
-        self.driver = webdriver.Remote(
-            command_executor='http://localhost:4444/wd/hub',
-            options=options
+        options.add_argument("--no-sandbox")
+        options.add_argument("--disable-dev-shm-usage")
+        chrome_prefs = {}
+        options.experimental_options["prefs"] = chrome_prefs
+        # Disable images
+        chrome_prefs["profile.default_content_settings"] = {"images": 2}
+
+        self.driver = webdriver.Chrome(
+            options=options, service=Service(ChromeDriverManager().install())
         )
+        # self.driver = webdriver.Remote(
+        #     command_executor='http://localhost:4444/wd/hub',
+        #     options=options
+        # )
         self.driver.get(URL)
 
     @classmethod
