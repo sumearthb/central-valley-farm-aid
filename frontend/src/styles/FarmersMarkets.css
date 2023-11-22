@@ -1,0 +1,8 @@
+.pageselector {
+    display: flex;
+    justify-content: center;
+}
+
+.row {
+    justify-content: center;
+}

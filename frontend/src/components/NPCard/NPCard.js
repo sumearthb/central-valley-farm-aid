@@ -2,31 +2,42 @@ import React from "react";
 import "./NPCard.css";
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
+import Highlighter from "react-highlight-words";
 
-// may have to import proptypes later?
+const NPCard = ({ nonprofit, search }) => {
+  return (
+    // specifies CSS class used
+    <Card className="np-card">
+      <Card.Img className="np-card-image" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${nonprofit.photo_references.photos[0]}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}/>
+      <Card.Body className="np-card-body">
+        <Card.Title className="np-card-name">
+          <Highlighter textToHighlight={nonprofit.charityName} searchWords={search.split(" ")}/>
+        </Card.Title>
+        <Card.Text className="np-card-category">
+          Category: <Highlighter textToHighlight={nonprofit.category} searchWords={search.split(" ")}/>
+        </Card.Text>
+        <Card.Text className="np-card-city">
+          City: <Highlighter textToHighlight={nonprofit.city} searchWords={search.split(" ")}/>
+        </Card.Text>
+        <Card.Text className="np-card-zip">
+          Zip Code: <Highlighter textToHighlight={nonprofit.zipCode} searchWords={search.split(" ")}/>
+        </Card.Text>
+        <Card.Text className="np-card-ein">
+          Employee Identification Number: <Highlighter textToHighlight={nonprofit.ein} searchWords={search.split(" ")}/>
+        </Card.Text>
+        <Link
+          to={nonprofit.url}
+          style={{ textDecoration: "none" }}>
+          <Highlighter textToHighlight={nonprofit.url} searchWords={search.split(" ")}/>
+        </Link>
+        <Link
+          to={`/nonprofits/${nonprofit.charityName}`}
+          style={{ textDecoration: "none" }}>
+          <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="align-self-end border-white">More info</Button>
+        </Link>
+      </Card.Body>
+    </Card>
+  );
+};
 
-const NPCard = ({ title, image, county, year, NTEE_code, phone, employees }) => {
-    return (
-      // specifies CSS class used
-      <Card className="location-card d-flex flex-column">
-          <img src={image} alt={title} className="np-card-image" />
-          <div className="np-card-details">
-            <h2 className="np-card-title" style={{ marginBottom: "10px" }}>{title}</h2>
-            <p className="np-card-county">{county}</p>
-            <h3 className="np-card-year">{year}</h3>
-            <p className="np-card-NTEE_code">{NTEE_code}</p>  
-            <p className="np-card-phone">{phone}</p>
-            <p className="np-card-employees">{employees}</p>
-            <Link
-            to={`/nonprofits/${title}`}
-            style={{ textDecoration: "none" }}
-          >
-            <Button variant="primary" style={{ backgroundColor: '#69A765'}} className="align-self-end border-white">More info</Button>
-          </Link>
-          {/* Add more details if needed */}
-          </div>
-      </Card>
-    );
-  };
-  
-  export default NPCard;
+export default NPCard;

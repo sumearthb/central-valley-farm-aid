@@ -4,19 +4,48 @@ SHELL := bash
 clean: 
 	rm -f *.tmp
 
-run: 
-	echo "Running application..."
-	cd ./frontend/ && npm start
-	echo "Successfully ran"
-
 pull:
 	make clean
 	@echo
 	git pull
 	git status
 
+status:
+	make clean
+	@echo
+	git branch
+	git remote -v
+	git status
+
+log:
+	git log > idb.log.txt
+
+run-frontend-local: 
+	echo "Running application..."
+	cd ./frontend/ && npm start
+	echo "Successfully ran"
+
+# test-frontend:
+# 	echo "Running frontend unit tests..."
+# 	cd ./frontend/ && ...
+# 	echo "Successfully ran tests"
+
+test-backend:
+	echo "Running backend unit tests..."
+	cd ./backend/ && python3 tests.py
+	echo "Successfully ran tests"
+
 build-frontend :
 	docker build -t idb-frontend frontend/
 
+build-backend :
+	docker build -t idb-backend backend/
+
 run-frontend:
 	docker run -dp 80:3000 idb-frontend
+
+build-backend :
+	docker build -t idb-backend backend/
+
+run-backend:
+	docker run idb-backend

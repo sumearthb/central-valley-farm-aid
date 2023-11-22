@@ -11,6 +11,7 @@ import NavBar from "./components/NavBar";
 import LocationInstance from "./pages/LocationInstance/LocationInstance";
 import FMInstance from "./pages/FMInstance/FMInstance";
 import NPInstance from "./pages/NPInstance/NPInstance";
+import Search from './pages/Search';
 
 function App() {
   return (
@@ -24,9 +25,10 @@ function App() {
             <Route path="/locations" element={<Locations/>} />
             <Route path="/nonprofits" element={<NonProfits/>} />
             <Route path="/farmersmarkets" element={<FarmersMarkets/>} />
-            <Route path="/location/:id" element={<LocationInstance />} />
+            <Route path="/locations/:id" element={<LocationInstance />} />
             <Route path="/farmersmarkets/:id" element={<FMInstance/>} />
             <Route path="/nonprofits/:id" element={<NPInstance />} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </div>
       </Router>

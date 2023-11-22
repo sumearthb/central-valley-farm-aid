@@ -1,13 +1,23 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import "../styles/NavBar.css";
+import React, { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
 import {Container, Nav, Navbar, Form, Button} from "react-bootstrap";
 
 function NavBar() {
+
+  const [ search, setSearch ] = useState("");
+  const navigate = useNavigate();
+
+  const handleSearch = (e) => {
+    e.preventDefault();
+    navigate('/search', { state: { search: search } });
+  };
+
   return (
-    <Navbar style={{ backgroundColor: '#69A765'}}>
+    <Navbar expand="lg" className="navbar" data-testid="navbar">
       <Container>
         <Navbar.Brand>
-          <Link style={{ color: "inherit", textDecoration: "inherit" }} 
+          <Link className="navbar-link"
             to="/">
             Central Valley Farm Aid
           </Link>
@@ -15,42 +25,28 @@ function NavBar() {
         <Navbar.Toggle aria-controls="basic-navbar-nav" />
         <Navbar.Collapse id="basic-navbar-nav">
           <Nav className="ms-auto">
-            <Nav.Link>
-              <Link style={{ color: "inherit", textDecoration: "inherit" }}
-                to="/">
-                Home
-              </Link>
+            <Nav.Link href="/">
+              Home
             </Nav.Link>
-            <Nav.Link>
-              <Link style={{ color: "inherit", textDecoration: "inherit" }}
-                to="/about">
-                About
-              </Link>
+            <Nav.Link href="/about">
+              About
             </Nav.Link>
-            <Nav.Link>
-              <Link style={{ color: "inherit", textDecoration: "inherit" }}
-                to="/locations">
-                Locations
-              </Link>
+            <Nav.Link href="/locations">
+              Locations
             </Nav.Link>
-            <Nav.Link>
-              <Link style={{ color: "inherit", textDecoration: "inherit" }}
-                to="/nonprofits">
-                Nonprofits
-              </Link>
+            <Nav.Link href="/nonprofits">
+              Nonprofits
             </Nav.Link>
-            <Nav.Link>
-              <Link style={{ color: "inherit", textDecoration: "inherit" }}
-                to="/farmersmarkets">
-                Farmers' Markets
-              </Link>
+            <Nav.Link href="/farmersmarkets">
+              Farmers' Markets
             </Nav.Link>
           </Nav>
-          <Form className="d-flex justify-content-end">
+          <Form className="d-flex justify-content-end" onSubmit={handleSearch}>
             <Form.Control type="search" id="searchText" placeholder="Search..." 
-                className="mx-2" aria-label="Search"></Form.Control>
+                className="mx-2" aria-label="Search" onChange={(e) => setSearch(e.target.value)}></Form.Control>
             <Button type="submit" variant="dark">Search</Button>
           </Form>
+          
 
         </Navbar.Collapse>
       </Container>

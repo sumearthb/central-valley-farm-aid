@@ -8,9 +8,9 @@ Group 14
     * Gitlab: @martinmurtiono
 -   Akif Abidi (asa3676)
     * Gitlab: @akif.abidi1
--   Anthony Do (atd945)
+-   Anthony Do (atd945) (Phase 3 Team Lead)
     * Gitlab: @anthonydo8196
--   Kunal Mody (km49555)
+-   Kunal Mody (km49555) (Phase 2 Team Lead)
     * Gitlab: @kunal.mody1
 -   Samarth Bhat (sb59742)
     * Gitlab: @samarthbhat
@@ -18,13 +18,22 @@ Group 14
 **Website URL**
 <https://www.centralvalleyfarmaid.me>
 
+**API URL**
+<https://www.centralvalleyfarmaid.me/api/>
+
+**API Documentation - Postman:**
+<https://documenter.getpostman.com/view/24011705/2s9YRFVVQB>
+
 **Git SHA**
-536b3ac36e7b49fcdfe3f897c5928c912134c84b
+Phase 1: 536b3ac36e7b49fcdfe3f897c5928c912134c84b
+Phase 2: 66cef773793aed0430418bafcdcb4eebbf1f528a
+Phase 3: a65d0f6fd5a9460fa97e6a3a7c63de734e663513
 
 **Gitlab Pipeline**
 <https://gitlab.com/cs373-group-14/idb/-/pipelines>
 
 **Estimated Completion Times**
+Phase 1:
 -   Martin Murtiono
     * Estimated: 20 hours
     * Actual: 24 hours
@@ -41,172 +50,39 @@ Group 14
     * Estimated: 19 hours
     * Actual: 22 hours
 
+Phase 2:
+-   Martin Murtiono
+    * Estimated: 30 hours
+    * Actual: 35 hours
+-   Akif Abidi
+    * Estimated: 24 hours
+    * Actual: 25 hours
+-   Anthony Do
+    * Estimated: 24 hours
+    * Actual: 28 hours
+-   Kunal Mody
+    * Estimated: 25 hours
+    * Actual: 27 hours
+-   Samarth Bhat
+    * Estimated: 30 hours
+    * Actual: 30 hours
+
+Phase 3:
+-   Martin Murtiono
+    * Estimated: 23 hours
+    * Actual: 26 hours
+-   Akif Abidi
+    * Estimated: 22 hours
+    * Actual: 23 hours
+-   Anthony Do
+    * Estimated: 24 hours
+    * Actual: 24 hours
+-   Kunal Mody
+    * Estimated: 23 hours
+    * Actual: 23 hours
+-   Samarth Bhat
+    * Estimated: 26 hours
+    * Actual: 25 hours
+
 **Acknowledgements**
-Our home page contains code which references that of Group 7's from Spring 2023: <https://gitlab.com/petarilievCS/cs373-idb7/-/tree/main?ref_type=heads>.
-
-**Name of the project:**
-
-Central Valley Farm Aid
-
-**The proposed project:**
-
-Rural and small family farmers inherently face many threats to the viability of their establishments, ranging anywhere from infrastructure to financial constraints. Our website helps rural farmers in the counties of the Central Valley of California identify where they can sell their crops in farmers' markets based on their location. It also shows them what non-profit organizations can provide assistance based on their location.
-
-**API Documentation - Postman:**
-<https://gitlab.com/api/v4/projects/50541840/repository/contributors>
-
-**URLs of at least three data sources that you will programmatically scrape using a RESTful API**
-
-<https://www.usdalocalfoodportal.com/fe/fregisterpublicapi/>
-
-<https://charityapi.orghunter.com>
-
-<https://quickstats.nass.usda.gov/>
-
-<https://developers.google.com/maps/>
-
-**At least three models:**
-
--   Location (counties)
-
--   Non-profits
-
--   Farmers' markets
-
-**An estimate of the number of instances of each model:**
-
--   Location: ~50
-
--   Non-profits: ~100
-
--   Farmers' markets: ~570
-
-**Each model must have many attributes:**
-
-Location (counties and cities)
-
-1.  Number/variety of crops sold
-
-2.  Crops that are grown in the region
-
-3.  Climate
-
-4.  Name
-
-5.  Non-profits in the region
-
-6.  Number of markets in the region
-
-7.  Volume of agricultural production
-
-Non-profits
-
-1.  Location
-
-2.  Specializations (grants, infrastructure, materials)
-
-3.  Name of organization
-
-4.  Logo
-
-5.  Contact info
-
-6.  Mission statement
-
-7.  Fees of service (free, low-cost, or some other value)
-
-Farmers' markets
-
-1.  Location
-
-2.  Hours of operation
-
-3.  Name
-
-4.  Produce offered
-
-5.  Non-profits connected
-
-6.  Contact info
-
-7.  Description
-
-**Describe five of those attributes for each model that you can filter or sort:**
-
-Location (counties and cities)
-
-1.  Number/variety of crops sold
-
-2.  Name
-
-3.  Number of markets in the region
-
-4.  Number of non-profits in the region
-
-5.  Volume of agricultural production
-
-Non-profits
-
-1.  Location
-
-2.  Specializations (grants, infrastructure, materials)
-
-3.  Name
-
-4.  Crop focus
-
-5.  If service has fees or not
-
-Farmers' markets
-
-1.  Location
-
-2.  Hours of operation
-
-3.  Name
-
-4.  Number/variety of produce
-
-5.  Number of vendors
-
-**Instances of each model must connect to instances of at least two other models:**
-
--   Non-profits → location/types of crops
-
--   Farmers' markets → location/non-profits
-
-Number of connections:
-
-Location: 3
-
-Non-profits: 3
-
-Farmers' Markets: 3
-
-**Describe two types of media for instances of each model:**
-
-Location
-
-1.  Map of the particular area
-
-2.  Most common crops in a location (could be a graph) 
-
-Non-profits
-
-1.  Links to more information about the organization
-
-2.  Image (logo) 
-
-Farmers' Markets
-
-1.  Add the hours of operation for each instance
-
-2.  Map -- could also integrate Google Maps API to enter an origin and find the shortest route to said market
-
-**Describe three questions that your site will answer:**
-
-1.  Where can rural and small family farmers go to sell their products in nearby farmers' markets?
-
-2.  What non-profit organizations can help rural and small family farmers sell their products based on location?
-
-3.  How can the farmers get started or receive assistance in selling their crops?
+Our home page contains code which references that of Group 7's from Spring 2023: <https://gitlab.com/petarilievCS/cs373-idb7/-/tree/main?ref_type=heads>. We also drew inspiration (and code) from the GeoJobs group from a previous semester: <https://gitlab.com/sarthaksirotiya/cs373-idb>

@@ -14,3 +14,23 @@
     text-align: center;
     padding-top: 35vh;
 }
+
+.home-container {
+    padding-block: 2rem;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+    justify-content: space-evenly;
+}
+
+.model-card {
+    width: 24rem;
+    margin: 1rem;
+}
+
+.model-card-body {
+    background-color: #69A765;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}

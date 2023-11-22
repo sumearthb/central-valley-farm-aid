@@ -1,0 +1,9 @@
+.navbar {
+    background-color: #69A765;
+}
+
+.navbar-link {
+    color: white;
+    text-decoration: inherit;
+    white-space: nowrap;
+}

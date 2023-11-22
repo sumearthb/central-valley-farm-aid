@@ -1,13 +1,17 @@
 .about-section {
-    padding-inline: 16rem;
     padding-block: 2rem;
+}
+
+@media (min-width: 1200px) {
+    .about-section {
+        padding-inline: 14rem;
+    }
 }
 
 .team-members {
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
-    padding-inline: 1rem;
 }
 
 .member-card {
