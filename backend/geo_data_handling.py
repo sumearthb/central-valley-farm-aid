@@ -12,7 +12,7 @@ def googleAPILocation(data):
         find_place = gmaps.find_place(
             obj["county_name"] + " County, CA",
             "textquery",
-            fields=["photos"]) # This is the different fields u can get from a place, for locations we only want photos
+            fields=["photos"]) # This is the different fields you can get from a place, for locations we only want photos
 
         # Add data if exists
         if (len(find_place["candidates"]) > 0):
