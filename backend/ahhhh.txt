@@ -1,0 +1,13 @@
+Table 'farmers_market_table' created successfully.
+23      0
+36      0
+48      0
+60      0
+106     0
+       ..
+1642    0
+1803    0
+1879    0
+2322    0
+4987    0
+Name: listing_desc, Length: 107, dtype: object
