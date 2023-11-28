@@ -31,6 +31,7 @@ function App() {
             <Route path="/nonprofits/:id" element={<NPInstance />} />
             <Route path="/search" element={<Search />} />
             <Route path="/visualizations" element={<Visualizations/>} />
+            <Route path="/search" element={<Search />} />
           </Routes>
         </div>
       </Router>
