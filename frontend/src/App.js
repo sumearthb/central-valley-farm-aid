@@ -13,6 +13,7 @@ import FMInstance from "./pages/FMInstance/FMInstance";
 import NPInstance from "./pages/NPInstance/NPInstance";
 import Search from './pages/Search';
 import Visualizations from "./pages/Visualizations";
+import ProviderVis from './pages/ProviderVis';
 
 function App() {
   return (
@@ -31,7 +32,7 @@ function App() {
             <Route path="/nonprofits/:id" element={<NPInstance />} />
             <Route path="/search" element={<Search />} />
             <Route path="/visualizations" element={<Visualizations/>} />
-            <Route path="/search" element={<Search />} />
+            <Route path="/providervisualizations" element={<ProviderVis/>} />
           </Routes>
         </div>
       </Router>
