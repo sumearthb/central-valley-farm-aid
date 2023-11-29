@@ -19,6 +19,11 @@ export const fetchLocations = async(page, per_page, sort_by, order_by, search) =
     return response.data;
 }
 
+export const fetchAllLocations = async () => {
+    let response = await axios.get(`${URL}GetAllLocations`);
+    return response.data;
+}
+
 export const fetchLocationsLength = async() => {
     let response = await axios.get(`${URL}GetNumLocations`);
     return response.data.count;
