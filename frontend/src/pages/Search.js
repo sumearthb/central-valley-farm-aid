@@ -50,13 +50,13 @@ const Search = () => {
         loadNonProfits();
         loadMarkets();
         // eslint-disable-next-line
-    }, []);
+    }, [search]);
 
     return (
         <Container>
             <Container className='search-bar'>
                 <Form className="d-flex justify-content-end" onSubmit={handleSearch}>
-                <Form.Control type="search" id="searchText" placeholder="Search..." 
+                <Form.Control type="search" id="searchText" placeholder="Search..." value={search}
                     className="mx-2" aria-label="Search" onChange={(e) => setSearch(e.target.value)}></Form.Control>
                     <Button type="submit" variant="dark">Search</Button>
                 </Form>
@@ -68,7 +68,7 @@ const Search = () => {
             className="mb-3"
             justify>
                 <Tab eventKey="locations" title="Locations">
-                    {loading &&
+                    {!loading &&
                     <Container className="px-4">
                         <Row className="row gx-3">
                         {( locations.map((location, index) => (
@@ -84,7 +84,7 @@ const Search = () => {
                     }
                 </Tab>
                 <Tab eventKey="nonprofits" title="Non Profits">
-                    {loading &&
+                    {!loading &&
                     <Container className="px-4">
                         <Row className="row gx-3">
                         {( nonprofits.map((nonprofit, index) => (
@@ -100,7 +100,7 @@ const Search = () => {
                     }
                 </Tab>
                 <Tab eventKey="markets" title="Farmers' Markets">
-                    {loading &&
+                    {!loading &&
                     <Container className="px-4">
                         <Row className="row gx-3">
                         {( markets.map((market, index) => (

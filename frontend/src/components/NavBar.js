@@ -1,16 +1,21 @@
 import "../styles/NavBar.css";
 import React, { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import {Container, Nav, Navbar, Form, Button} from "react-bootstrap";
 
 function NavBar() {
 
   const [ search, setSearch ] = useState("");
   const navigate = useNavigate();
+  const location = useLocation();
 
   const handleSearch = (e) => {
     e.preventDefault();
-    navigate('/search', { state: { search: search } });
+    if (location.pathname === '/search') {
+      location.state = {search: search};
+    } else {
+      navigate('/search', { state: { search: search } });
+    }
   };
 
   return (
