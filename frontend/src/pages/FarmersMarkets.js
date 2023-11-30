@@ -120,7 +120,6 @@ const FMGrid = () => {
       <Container>
         <h3 style={{ marginBottom: "30px"}}>{`Displaying ${markets.length} out of ${totalMarkets} results`}</h3>
       </Container>
- 
       {pagination()}
 
       <Container className="px-4">

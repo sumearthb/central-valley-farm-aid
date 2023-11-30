@@ -58,6 +58,7 @@ const LocationsGrid = () => {
     </div> 
   );
 
+
   return (
     <Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <Container className="container text-center mt-5 mb-4">
@@ -99,7 +100,6 @@ const LocationsGrid = () => {
       <Container>
         <h3 style={{ marginBottom: "30px"}}>{`Displaying ${locations.length} out of ${totalLocations} results`}</h3>
       </Container>
-
       {pagination()}
 
       <Container className="px-4">

@@ -19,6 +19,11 @@ export const fetchLocations = async(page, per_page, sort_by, order_by, search) =
     return response.data;
 }
 
+export const fetchAllLocations = async () => {
+    let response = await axios.get(`${URL}GetAllLocations`);
+    return response.data;
+}
+
 export const fetchLocationsLength = async() => {
     let response = await axios.get(`${URL}GetNumLocations`);
     return response.data.count;
@@ -40,6 +45,12 @@ export const fetchNonProfits = async(page, per_page, sort_by, order_by, search, 
     if (category) {
         request += `&category=${category}`
     }
+    let response = await axios.get(request);
+    return response.data;
+}
+
+export const fetchNonProfitsNoParam = async(page, per_page, sort_by, order_by, search, category) => {
+    let request = `${URL}GetAllNonProfit`
     let response = await axios.get(request);
     return response.data;
 }

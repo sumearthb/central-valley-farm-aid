@@ -45,6 +45,12 @@ function NavBar() {
             <Nav.Link href="/farmersmarkets">
               Farmers' Markets
             </Nav.Link>
+            <Nav.Link href="/visualizations">
+              Visualizations
+            </Nav.Link>
+            <Nav.Link href="/providervisualizations">
+              Provider Visualizations
+            </Nav.Link>
           </Nav>
           <Form className="d-flex justify-content-end" onSubmit={handleSearch}>
             <Form.Control type="search" id="searchText" placeholder="Search..." 
