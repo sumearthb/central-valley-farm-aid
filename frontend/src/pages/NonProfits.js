@@ -62,15 +62,6 @@ const NPGrid = () => {
     </div> 
   );
 
-  const pagination = () => (
-    !loading && <div className="pageselector">
-    <PageSelector
-    numPages={numPages}
-    curPage={curPage}
-    setCurPage={setCurPage}/>
-    </div> 
-  );
-
   return (
     <Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
       <Container className="container text-center mt-5 mb-4">
