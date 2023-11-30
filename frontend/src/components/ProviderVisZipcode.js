@@ -6,7 +6,7 @@ import data from './visualizationData/feedingSpaceZipcodeData.json';
     
 const MARGIN = { top: 80, right: 80, bottom: 80, left: 80 };
 const width = 1000
-const height = 90
+const height = 900
 
 const ProviderVisScatterPlot = () => {
     // Layout. The div size is set by the given props.
