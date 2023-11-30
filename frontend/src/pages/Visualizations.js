@@ -1,8 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { fetchAllLocations, fetchNonProfitsNoParam } from "../utils/ApiUtils";
-import FarmerMarketMapVis from "../components/FarmerMarketMapVis"
+import CharitiesMapVis from "../components/CharitiesMapVis"
 import { Container } from "react-bootstrap";
+import '../styles/CharitiesVis.css'
 
 const Visualizations = () => {
   const visualizationRef = useRef(null);
@@ -260,8 +261,8 @@ const Visualizations = () => {
           
 
       <Container className="vis">
-        <h2> Farmer Market Locations on Map </h2>
-        <FarmerMarketMapVis />
+        <h2> Charities Locations on Map </h2>
+        <CharitiesMapVis />
 
       </Container>
 

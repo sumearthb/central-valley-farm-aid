@@ -2,11 +2,12 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import data from './visualizationData/us_data.json'
+import ch_data from './visualizationData/charitiesLocationData.json'
 
 const californiaCounties = ["Alameda","Alpine","Amador","Butte","Calaveras","Colusa","Contra Costa","Del Norte","El Dorado","Fresno","Glenn","Humboldt","Imperial","Inyo","Kern","Kings","Lake","Lassen","Los Angeles","Madera","Marin","Mariposa","Mendocino","Merced","Modoc","Mono","Monterey","Napa","Nevada","Orange","Placer","Plumas","Riverside","Sacramento","San Benito","San Bernardino","San Diego","San Francisco","San Joaquin","San Luis Obispo","San Mateo","Santa Barbara","Santa Clara","Santa Cruz","Shasta","Sierra","Siskiyou","Solano","Sonoma","Stanislaus","Sutter","Tehama","Trinity","Tulare","Tuolumne","Ventura","Yolo","Yuba"];
 
 
-const FarmerMarketMapVis = ({ farmersData }) => {
+const CharitiesMapVis = ({ chData }) => {
   const ref = useRef();
 
   useEffect(() => {
@@ -15,7 +16,7 @@ const FarmerMarketMapVis = ({ farmersData }) => {
     const height = 800;
 
     let svg = d3.select(ref.current)
-                .on("click", reset);
+        .on("click", reset);
 
     const zoom = d3.zoom()
         .scaleExtent([1, 2])
@@ -36,7 +37,7 @@ const FarmerMarketMapVis = ({ farmersData }) => {
     
     // State logic
     let state_data = topojson.feature(data, data.objects.states).features.filter((d) => d.properties.name === 'California');
-    let path = d3.geoPath().projection(d3.geoIdentity().fitSize([1000, 800], state_data[0]));
+    let projection = d3.geoPath().projection(d3.geoIdentity().fitSize([width, height], state_data[0]));
 
     const california = g.append('g')
     //   .attr('transform', `scale(2)`)
@@ -45,7 +46,7 @@ const FarmerMarketMapVis = ({ farmersData }) => {
       .data(state_data)
       .join('path')
       .attr('class', 'state')
-      .attr('d', path)
+      .attr('d', projection)
       .attr('fill', '#ddd')
     //   .attr('stroke', '#fff')
     //   .attr('stroke-width', '.5')
@@ -69,7 +70,7 @@ const FarmerMarketMapVis = ({ farmersData }) => {
     .join('path')
     .attr('clip-path', 'url(#clip-state)')
     .attr('class', 'county')
-    .attr('d', path)
+    .attr('d', projection)
     .on('click', clicked)
     .on('mouseover', function (event, d) {
         console.log(d)
@@ -85,6 +86,16 @@ const FarmerMarketMapVis = ({ farmersData }) => {
         this.classList.remove('hovered')
         tooltip.style('display', 'none')
     });
+
+    // farmer's markets overlay
+    //const projection = d3.geoPath().projection(projection);
+    // const [x, y] = projection([fm_data[0][0], fm_data[0][1]]);
+    // svg.append('circle')
+    // .attr('cx', x)
+    // .attr('cy', y)
+    // .attr('r', 5) // Adjust as needed
+    // .attr('fill', 'red');
+
 
     function zoomed(event) {
         const {transform} = event;
@@ -102,10 +113,10 @@ const FarmerMarketMapVis = ({ farmersData }) => {
       }
 
     function clicked(event, d) {
-        const [[x0, y0], [x1, y1]] = path.bounds(d);
+        const [[x0, y0], [x1, y1]] = projection.bounds(d);
         event.stopPropagation();
-        california.transition().style("fill", null);
-        d3.select(this).transition().style("fill", "red");
+        counties.transition().style("fill", null);
+        d3.select(this).transition().style("fill", "orange");
         svg.transition().duration(750).call(
           zoom.transform,
           d3.zoomIdentity
@@ -124,4 +135,4 @@ const FarmerMarketMapVis = ({ farmersData }) => {
   );
 };
 
-export default FarmerMarketMapVis;
+export default CharitiesMapVis;

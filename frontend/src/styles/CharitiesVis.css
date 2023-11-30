@@ -1,0 +1,24 @@
+.states,
+.counties {
+  fill: none;
+  stroke: black;
+  stroke-width: 1px;
+}
+
+.states path,
+.counties path {
+  fill: white;
+}
+
+.counties path.hovered {
+  fill: orange;
+}
+
+.tooltip {
+    background: #333;
+    border-radius: 2px;
+    color: #fff;
+    font-size: 12px;
+    padding: 4px;
+    position: absolute;
+  }
