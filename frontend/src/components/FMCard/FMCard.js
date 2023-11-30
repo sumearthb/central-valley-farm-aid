@@ -3,11 +3,18 @@ import "./FMCard.css";
 import { Card, Button } from "react-bootstrap";
 import { Link } from "react-router-dom";
 import Highlighter from "react-highlight-words";
+import defaultImage from "../../card-pics/default_image.png";
 
 const FMCard = ({ market, search }) => {
   return (
     <Card className="fm-card">
-      <Card.Img className="fm-card-image" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${market.photo_references[0]}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}/>
+      <Card.Img
+        className="fm-card-image"
+        src={ market.photo_references.length > 0
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${market.photo_references[0]}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`
+            : defaultImage 
+        }
+      />
       <Card.Body className="fm-card-body">
         <Card.Title className="fm-card-title">
           <Highlighter textToHighlight={market.listing_name} searchWords={search.split(" ")}/>

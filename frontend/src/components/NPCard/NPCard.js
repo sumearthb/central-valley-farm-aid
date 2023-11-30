@@ -3,12 +3,18 @@ import "./NPCard.css";
 import { Card, Button } from 'react-bootstrap';
 import { Link } from 'react-router-dom';
 import Highlighter from "react-highlight-words";
+import defaultImage from "../../card-pics/default_image.png";
 
 const NPCard = ({ nonprofit, search }) => {
   return (
-    // specifies CSS class used
     <Card className="np-card">
-      <Card.Img className="np-card-image" src={`https://maps.googleapis.com/maps/api/place/photo?maxwidth=400&photo_reference=${nonprofit.photo_references.photos[0]}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`}/>
+      <Card.Img
+        className="np-card-image"
+        src={ nonprofit.photo_references.photos.length > 0
+            ? `https://maps.googleapis.com/maps/api/place/photo?maxwidth=1000&photo_reference=${nonprofit.photo_references.photos[0]}&key=AIzaSyBMJJbFxLfnX8DpE_BGF2dF8t5aWSQJOOs`
+            : defaultImage 
+        }
+      />
       <Card.Body className="np-card-body">
         <Card.Title className="np-card-name">
           <Highlighter textToHighlight={nonprofit.charityName} searchWords={search.split(" ")}/>
