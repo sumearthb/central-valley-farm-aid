@@ -23,7 +23,7 @@ function LocationInstance() {
       setLocationData(res.data[0]);
 
       let nps = [];
-      for (let i = 0; i < Math.min(res.data[0].closest_charities.closest_charities, 6); ++i) {
+      for (let i = 0; i < Math.min(res.data[0].closest_charities.closest_charities.length, 6); ++i) {
         const np = await fetchSpecNonProfit(res.data[0].closest_charities.closest_charities[i]);
         nps.push(np.data[0]);
       }
