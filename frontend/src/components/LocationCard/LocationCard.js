@@ -10,7 +10,7 @@ const LocationCard = ({ location, search }) => {
       <Card.Img className="location-card-image" src={location.map.replace("100px", "400px")}/>
       <Card.Body className="location-card-body">
         <Card.Title className="location-card-title">
-        <Highlighter textToHighlight={location.name + " County"} searchWords={search.split(" ")}/>
+        <Highlighter textToHighlight={location.name} searchWords={search.split(" ")}/>
         </Card.Title>
         <Card.Text className="location-card-countyseat">
           County Seat: <Highlighter textToHighlight={location.county_seat} searchWords={search.split(" ")}/>

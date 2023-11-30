@@ -15,6 +15,10 @@
   width: 21rem;
 }
 
+.card-title {
+  line-height: 1.5 !important;
+}
+
 /* Affects image */
 .np-card img {
   display: block;

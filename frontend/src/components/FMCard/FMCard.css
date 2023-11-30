@@ -14,6 +14,10 @@
     transition: transform 0.2s ease-in-out;
     width: 21rem;
   }
+
+  .card-title {
+    line-height: 1.5 !important;
+  }
   
   /* Affects image */
   .fm-card img {
