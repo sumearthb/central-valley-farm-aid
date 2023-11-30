@@ -72,7 +72,7 @@ const VolunteerOpVis = () => {
 
     useEffect(() => {
         fetchData();
-    });
+    }, []);
 
     useEffect(() => {
         svg.selectAll('zip')
@@ -86,7 +86,7 @@ const VolunteerOpVis = () => {
             .attr('r', function(d) {return (5 + (d.num * 3));})
             .attr('cx', d => projection([d.long, d.lat])[0])
             .attr('cy', d => projection([d.long, d.lat])[1])
-        },[zipcodes]);
+        }, [zipcodes]);
 
     return (
         <svg width={800} height={800} id="map" ref={ref}/>

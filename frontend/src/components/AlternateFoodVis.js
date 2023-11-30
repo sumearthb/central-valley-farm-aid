@@ -6,7 +6,7 @@ import axios from 'axios';
     
 const AlternateFoodVis = () => {
     const URL = "https://api.feedingspace.city/"
-    
+
     const [zipcodes, setZipcodes] = useState({});
     const ref = useRef();
 
@@ -72,7 +72,7 @@ const AlternateFoodVis = () => {
 
     useEffect(() => {
         fetchData();
-    });
+    }, []);
 
     useEffect(() => {
         svg.selectAll('zip')
