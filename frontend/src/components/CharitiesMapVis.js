@@ -2,7 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import * as d3 from 'd3';
 import * as topojson from 'topojson-client';
 import data from './visualizationData/us_data.json'
-import ch_data from './visualizationData/charitiesLocationData.json'
+import ch_data from './visualizationData/charityCountyMapping.json'
 
 const californiaCounties = ["Alameda","Alpine","Amador","Butte","Calaveras","Colusa","Contra Costa","Del Norte","El Dorado","Fresno","Glenn","Humboldt","Imperial","Inyo","Kern","Kings","Lake","Lassen","Los Angeles","Madera","Marin","Mariposa","Mendocino","Merced","Modoc","Mono","Monterey","Napa","Nevada","Orange","Placer","Plumas","Riverside","Sacramento","San Benito","San Bernardino","San Diego","San Francisco","San Joaquin","San Luis Obispo","San Mateo","Santa Barbara","Santa Clara","Santa Cruz","Shasta","Sierra","Siskiyou","Solano","Sonoma","Stanislaus","Sutter","Tehama","Trinity","Tulare","Tuolumne","Ventura","Yolo","Yuba"];
 
@@ -37,7 +37,8 @@ const CharitiesMapVis = ({ chData }) => {
     
     // State logic
     let state_data = topojson.feature(data, data.objects.states).features.filter((d) => d.properties.name === 'California');
-    let projection = d3.geoPath().projection(d3.geoIdentity().fitSize([width, height], state_data[0]));
+    let projection = d3.geoIdentity().fitSize([width, height], state_data[0])
+    let path = d3.geoPath().projection(projection);
 
     const california = g.append('g')
     //   .attr('transform', `scale(2)`)
@@ -46,7 +47,7 @@ const CharitiesMapVis = ({ chData }) => {
       .data(state_data)
       .join('path')
       .attr('class', 'state')
-      .attr('d', projection)
+      .attr('d', path)
       .attr('fill', '#ddd')
     //   .attr('stroke', '#fff')
     //   .attr('stroke-width', '.5')
@@ -70,11 +71,12 @@ const CharitiesMapVis = ({ chData }) => {
     .join('path')
     .attr('clip-path', 'url(#clip-state)')
     .attr('class', 'county')
-    .attr('d', projection)
+    .attr('d', path)
     .on('click', clicked)
     .on('mouseover', function (event, d) {
-        console.log(d)
         this.classList.add('hovered')
+        tooltip.transition()
+              .style('opacity', 1)
         tooltip.text(d.properties.name).style('display', 'block')
     })
     .on('mousemove', function (event, d) {
@@ -84,17 +86,9 @@ const CharitiesMapVis = ({ chData }) => {
     })
     .on('mouseout', function (event, d) {
         this.classList.remove('hovered')
-        tooltip.style('display', 'none')
+        tooltip.transition()
+               .style('opacity', 0)
     });
-
-    // farmer's markets overlay
-    //const projection = d3.geoPath().projection(projection);
-    // const [x, y] = projection([fm_data[0][0], fm_data[0][1]]);
-    // svg.append('circle')
-    // .attr('cx', x)
-    // .attr('cy', y)
-    // .attr('r', 5) // Adjust as needed
-    // .attr('fill', 'red');
 
 
     function zoomed(event) {
@@ -113,7 +107,10 @@ const CharitiesMapVis = ({ chData }) => {
       }
 
     function clicked(event, d) {
-        const [[x0, y0], [x1, y1]] = projection.bounds(d);
+      this.classList.remove('hovered')
+        tooltip.transition()
+               .style('opacity', 0)
+        const [[x0, y0], [x1, y1]] = path.bounds(d);
         event.stopPropagation();
         counties.transition().style("fill", null);
         d3.select(this).transition().style("fill", "orange");
@@ -125,6 +122,20 @@ const CharitiesMapVis = ({ chData }) => {
             .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
           d3.pointer(event, svg.node())
         );
+        let county_np = ch_data[d.properties.name]
+        // All works up to here
+        county_np.forEach(coordinates => {
+          const [longitude, latitude] = coordinates;
+          const [x, y] = projection([longitude, latitude]);
+          console.log(x)
+          console.log(y)
+        
+          svg.append("circle")
+            .attr("cx", x)
+            .attr("cy", y)
+            .attr("r", 5) // Adjust the radius as needed
+            .attr("fill", "red"); // Adjust the color as needed
+        });
       }
 
 
