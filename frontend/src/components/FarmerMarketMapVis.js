@@ -10,8 +10,19 @@ const FarmerMarketMapVis = ({ farmersData }) => {
   const ref = useRef();
 
   useEffect(() => {
-    let svg = d3.select(ref.current);
+
+    const width = 1100;
+    const height = 800;
+
+    let svg = d3.select(ref.current)
+                .on("click", reset);
+
+    const zoom = d3.zoom()
+        .scaleExtent([1, 2])
+        .on("zoom", zoomed);
+    
     const g = svg.append('g')
+
     const tooltip = d3.select('body')
         .append('div')
         .attr('class', 'tooltip')
@@ -25,14 +36,16 @@ const FarmerMarketMapVis = ({ farmersData }) => {
     
     // State logic
     let state_data = topojson.feature(data, data.objects.states).features.filter((d) => d.properties.name === 'California');
+    let path = d3.geoPath().projection(d3.geoIdentity().fitSize([1000, 800], state_data[0]));
 
-    g.append('g')
+    const california = g.append('g')
+    //   .attr('transform', `scale(2)`)
       .attr('class', 'states')
       .selectAll('path')
       .data(state_data)
       .join('path')
       .attr('class', 'state')
-      .attr('d', d3.geoPath().projection(d3.geoIdentity().fitSize([800, 600], state_data[0])))
+      .attr('d', path)
       .attr('fill', '#ddd')
     //   .attr('stroke', '#fff')
     //   .attr('stroke-width', '.5')
@@ -49,14 +62,15 @@ const FarmerMarketMapVis = ({ farmersData }) => {
     let countiesTopology = topojson.feature(data, data.objects.counties);
     let stateCounties = countiesTopology.features.filter(county => californiaCounties.includes(county.properties.name));
 
-    g.append('g')
+    let counties = g.append('g')
     .attr('class', 'counties')
     .selectAll('path')
     .data(stateCounties)
     .join('path')
     .attr('clip-path', 'url(#clip-state)')
     .attr('class', 'county')
-    .attr('d', d3.geoPath().projection(d3.geoIdentity().fitSize([800, 600], state_data[0])))
+    .attr('d', path)
+    .on('click', clicked)
     .on('mouseover', function (event, d) {
         console.log(d)
         this.classList.add('hovered')
@@ -71,10 +85,42 @@ const FarmerMarketMapVis = ({ farmersData }) => {
         this.classList.remove('hovered')
         tooltip.style('display', 'none')
     });
-  });
+
+    function zoomed(event) {
+        const {transform} = event;
+        g.attr("transform", transform);
+        g.attr("stroke-width", 1 / transform.k);
+    }
+
+    function reset() {
+        counties.transition().style("fill", null);
+        svg.transition().duration(750).call(
+          zoom.transform,
+          d3.zoomIdentity,
+          d3.zoomTransform(svg.node()).invert([width / 2, height / 2])
+        );
+      }
+
+    function clicked(event, d) {
+        const [[x0, y0], [x1, y1]] = path.bounds(d);
+        event.stopPropagation();
+        california.transition().style("fill", null);
+        d3.select(this).transition().style("fill", "red");
+        svg.transition().duration(750).call(
+          zoom.transform,
+          d3.zoomIdentity
+            .translate(width / 2, height / 2)
+            .scale(Math.min(2, 0.9 / Math.max((x1 - x0) / width, (y1 - y0) / height)))
+            .translate(-(x0 + x1) / 2, -(y0 + y1) / 2),
+          d3.pointer(event, svg.node())
+        );
+      }
+
+
+  }, []);
 
   return (
-    <svg width={3000} height={2000} id="map" ref={ref} />
+    <svg width={3000} height={1000} id="map" ref={ref} />
   );
 };
 
