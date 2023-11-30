@@ -49,6 +49,12 @@ export const fetchNonProfits = async(page, per_page, sort_by, order_by, search, 
     return response.data;
 }
 
+export const fetchNonProfitsNoParam = async(page, per_page, sort_by, order_by, search, category) => {
+    let request = `${URL}GetAllNonProfit`
+    let response = await axios.get(request);
+    return response.data;
+}
+
 export const fetchNonProfitsLength = async() => {
     let response = await axios.get(`${URL}GetNumNonProfits`);
     return response.data.count;
