@@ -18,7 +18,7 @@ const ProviderVis = () => {
         </Container>
         <Container className="vis">
             <h2>
-                Locations of Alternate Food Sources
+                Locations of Volunteer Opportinities
             </h2>
             <VolunteerOpVis
                 >
