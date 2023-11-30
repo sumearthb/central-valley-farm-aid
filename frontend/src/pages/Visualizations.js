@@ -1,7 +1,8 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { fetchAllLocations, fetchNonProfitsNoParam } from "../utils/ApiUtils";
-import ProviderVisMap from "../components/FarmerMarketMapVis"
+import FarmerMarketMapVis from "../components/FarmerMarketMapVis"
+import { Container } from "react-bootstrap";
 
 const Visualizations = () => {
   const visualizationRef = useRef(null);
