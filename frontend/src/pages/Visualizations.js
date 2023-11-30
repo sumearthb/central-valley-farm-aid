@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import * as d3 from "d3";
 import { fetchAllLocations, fetchNonProfitsNoParam } from "../utils/ApiUtils";
+import ProviderVisMap from "../components/FarmerMarketMapVis"
 
 const Visualizations = () => {
   const visualizationRef = useRef(null);
@@ -251,8 +252,21 @@ const Visualizations = () => {
   }, [locations, pieChartData]);
 
   return (
-    <div ref={visualizationRef}>
-    </div>
+    <Container>
+      <Container className="vis">
+        <div ref={visualizationRef} />
+      </Container>
+          
+
+      <Container className="vis">
+        <h2> Farmer Market Locations on Map </h2>
+        <FarmerMarketMapVis />
+
+      </Container>
+
+
+    </Container>
+   
   );
 };
 
