@@ -6,7 +6,7 @@ Group 14
 
 -   Martin Murtiono (mbm3532) (Phase 1 Team Lead)
     * Gitlab: @martinmurtiono
--   Akif Abidi (asa3676)
+-   Akif Abidi (asa3676) (Phase 4 Team Lead)
     * Gitlab: @akif.abidi1
 -   Anthony Do (atd945) (Phase 3 Team Lead)
     * Gitlab: @anthonydo8196
@@ -28,6 +28,7 @@ Group 14
 Phase 1: 536b3ac36e7b49fcdfe3f897c5928c912134c84b
 Phase 2: 66cef773793aed0430418bafcdcb4eebbf1f528a
 Phase 3: a65d0f6fd5a9460fa97e6a3a7c63de734e663513
+Phase 4: 
 
 **Gitlab Pipeline**
 <https://gitlab.com/cs373-group-14/idb/-/pipelines>
@@ -84,5 +85,22 @@ Phase 3:
     * Estimated: 26 hours
     * Actual: 25 hours
 
+Phase 3:
+-   Martin Murtiono
+    * Estimated: 15 hours
+    * Actual: 15 hours
+-   Akif Abidi
+    * Estimated: 10 hours
+    * Actual: 12 hours
+-   Anthony Do
+    * Estimated: 14 hours
+    * Actual: 15 hours
+-   Kunal Mody
+    * Estimated: 12 hours
+    * Actual: 13 hours
+-   Samarth Bhat
+    * Estimated: 15 hours
+    * Actual: 15 hours
+
 **Acknowledgements**
-Our home page contains code which references that of Group 7's from Spring 2023: <https://gitlab.com/petarilievCS/cs373-idb7/-/tree/main?ref_type=heads>. We also drew inspiration (and code) from the GeoJobs group from a previous semester: <https://gitlab.com/sarthaksirotiya/cs373-idb>
+Our home page contains code which references that of Group 7's from Spring 2023: <https://gitlab.com/petarilievCS/cs373-idb7/-/tree/main?ref_type=heads>. We also drew inspiration (and code) from the GeoJobs group from a previous semester: <https://gitlab.com/sarthaksirotiya/cs373-idb>. We also looked at the Park-Dex repo to model some features as well: <https://gitlab.com/bran.heng/park-dex/-/tree/main?ref_type=heads>.
