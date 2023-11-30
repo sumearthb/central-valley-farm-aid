@@ -16,7 +16,6 @@ const LocationsGrid = () => {
   const [orderBy, setOrderBy] = useState("asc");
   const [search, setSearch] = useState("");
 
-
   useEffect(() => {
     const initPages = async () => {
       setLoading(true);
@@ -49,6 +48,15 @@ const LocationsGrid = () => {
     setCurPage(1);
     setLoading(false);
   };
+
+  const pagination = () => (
+    !loading && <div className="pageselector">
+    <PageSelector
+    numPages={numPages}
+    curPage={curPage}
+    setCurPage={setCurPage}/>
+    </div> 
+  );
 
   return (
     <Container className="d-flex justify-content-center flex-column" style={{ display: "flex", flexDirection: "column", alignItems: "center", justifyContent: "center", minHeight: "100vh" }}>
@@ -91,12 +99,8 @@ const LocationsGrid = () => {
       <Container>
         <h3 style={{ marginBottom: "30px"}}>{`Displaying ${locations.length} out of ${totalLocations} results`}</h3>
       </Container>
-      {!loading && <div className="pageselector">
-        <PageSelector
-        numPages={numPages}
-        curPage={curPage}
-        setCurPage={setCurPage}/>
-        </div> }
+
+      {pagination()}
 
       <Container className="px-4">
         <Row className="row gx-3">
@@ -110,6 +114,9 @@ const LocationsGrid = () => {
           )))}
         </Row>
       </Container>
+
+      {pagination()}
+
     </Container>
   );
 };
