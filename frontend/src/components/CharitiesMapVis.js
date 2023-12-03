@@ -37,7 +37,7 @@ const CharitiesMapVis = ({ chData }) => {
     
     // State logic
     let state_data = topojson.feature(data, data.objects.states).features.filter((d) => d.properties.name === 'California');
-    let projection = d3.geoIdentity().fitSize([width, height], state_data[0])
+    let projection = d3.geoIdentity().fitExtent([[0,0], [width, height]], state_data[0])
     let path = d3.geoPath().projection(projection);
 
     const california = g.append('g')
@@ -111,6 +111,12 @@ const CharitiesMapVis = ({ chData }) => {
         tooltip.transition()
                .style('opacity', 0)
         const [[x0, y0], [x1, y1]] = path.bounds(d);
+        // console.log("NOT SURE")
+        // console.log(x0)
+        // console.log(y0)
+        // console.log(x1)
+        // console.log(y1)
+        // console.log("DONE WITH NOT SURE")
         event.stopPropagation();
         counties.transition().style("fill", null);
         d3.select(this).transition().style("fill", "orange");
@@ -123,16 +129,30 @@ const CharitiesMapVis = ({ chData }) => {
           d3.pointer(event, svg.node())
         );
         let county_np = ch_data[d.properties.name]
+        const features = county_np.map(coord => ({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: [coord[1], coord[0]], // GeoJSON uses [longitude, latitude]
+          }
+        }));
+        console.log("FEATURES")
+        console.log(features)
+        const geoJsonData = {
+          type: 'FeatureCollection',
+          features: features,
+        };
+        let c_projection = d3.geoIdentity().fitExtent([[0,0], [width, height]], geoJsonData)
         // All works up to here
         county_np.forEach(coordinates => {
           const [longitude, latitude] = coordinates;
-          const [x, y] = projection([longitude, latitude]);
+          const [x, y] = c_projection([longitude, latitude]);
           console.log(x)
           console.log(y)
         
           svg.append("circle")
-            .attr("cx", x)
-            .attr("cy", y)
+            .attr("cx", y)
+            .attr("cy", x)
             .attr("r", 5) // Adjust the radius as needed
             .attr("fill", "red"); // Adjust the color as needed
         });
@@ -142,7 +162,7 @@ const CharitiesMapVis = ({ chData }) => {
   }, []);
 
   return (
-    <svg width={3000} height={1000} id="map" ref={ref} />
+    <svg width={1100} height={800} id="map" ref={ref} />
   );
 };
 
