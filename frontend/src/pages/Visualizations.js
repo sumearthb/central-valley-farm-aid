@@ -261,7 +261,7 @@ const Visualizations = () => {
           
 
       <Container className="vis">
-        <h2> Charities Locations on Map </h2>
+        <h2> Locations on California Map </h2>
         <CharitiesMapVis />
 
       </Container>
